@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bowncer Sportz Cricket Academy — Built From The Inside</title>
+<meta name="description" content="Bowncer Sportz Cricket Academy, founded by S. Thiyagarajan — Ex-IPL (RCB) player, ICC & BCCI Level 1 certified coach. Elite cricket coaching in Chennai.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#f4f1ea;
+    --ink-dim:#b8b2a4;
+    --void:#07080a;
+    --void-2:#0d0f12;
+    --ember:#e2380a;
+    --ember-glow:#ff5622;
+    --gold:#c9a15a;
+    --line: rgba(244,241,234,0.14);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Archivo', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ═══════════════════════════════════════════════
+     INTRO CINEMATIC — Ball → Bat Impact → Logo
+     ═══════════════════════════════════════════════ */
+  #intro-cinematic {
+    position:fixed; inset:0;
+    z-index:10000;
+    background:var(--void);
+    display:flex; align-items:center; justify-content:center;
+    animation: introOut 0.4s linear 3.5s forwards;
+  }
+  @keyframes introOut {
+    to { opacity:0; pointer-events:none; visibility:hidden; }
+  }
+
+  .c-ball {
+    position:absolute;
+    width:16px; height:16px;
+    background:#fff;
+    border-radius:50%;
+    top:50%; left:110%;
+    box-shadow: 0 0 24px 12px #fff, 0 0 80px 30px var(--ember-glow);
+    animation: cBallSequence 3.5s linear forwards;
+    opacity:0;
+  }
+  @keyframes cBallSequence {
+    0%   { left:110vw; top:50vh; opacity:1; transform:translate(-50%,-50%) rotate(0deg) scaleX(8); }
+    15%  { left:15vw; top:50vh; opacity:1; transform:translate(-50%,-50%) rotate(0deg) scaleX(1); }
+    17%  { left:15vw; top:50vh; opacity:1; transform:translate(-50%,-50%) scale(2.5); }
+    19%  { left:15vw; top:50vh; opacity:1; transform:translate(-50%,-50%) rotate(-35deg) scaleX(5); }
+    33%  { left:80vw; top:15vh; opacity:1; transform:translate(-50%,-50%) rotate(-35deg) scaleX(1); }
+    35%  { left:80vw; top:15vh; opacity:1; transform:translate(-50%,-50%) scale(2); }
+    37%  { left:80vw; top:15vh; opacity:1; transform:translate(-50%,-50%) rotate(155deg) scaleX(6); }
+    47%  { left:var(--logo-x, 50vw); top:var(--logo-y, 40vh); opacity:1; transform:translate(-50%,-50%) rotate(155deg) scaleX(1); }
+    49%  { left:var(--logo-x, 50vw); top:var(--logo-y, 40vh); opacity:0; }
+    100% { opacity:0; }
+  }
+
+  .c-batsman-wrap {
+    position:absolute;
+    left:15vw; top:50vh;
+    transform:translate(-50%,-50%);
+    width:220px; height:280px;
+    opacity:0;
+    animation: cBatsmanShow 3.5s linear forwards;
+  }
+  @keyframes cBatsmanShow {
+    0%, 10% { opacity:0; }
+    15% { opacity:0.95; }
+    25% { opacity:0.95; }
+    35%, 100% { opacity:0; }
+  }
+  .c-batsman-wrap svg {
+    width:100%; height:100%;
+    filter: drop-shadow(0 0 40px rgba(255,86,34,0.8));
+  }
+
+  .c-impact {
+    position:absolute;
+    left:15vw; top:50vh;
+    width:30px; height:30px;
+    border-radius:50%;
+    background:#fff;
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    animation: cImpact 3.5s linear forwards;
+  }
+  @keyframes cImpact {
+    0%, 14% { opacity:0; transform:translate(-50%,-50%) scale(0); }
+    16% { opacity:1; transform:translate(-50%,-50%) scale(3); }
+    20% { opacity:0.9; transform:translate(-50%,-50%) scale(20); }
+    30%, 100% { opacity:0; transform:translate(-50%,-50%) scale(40); }
+  }
+
+  .c-shockwave {
+    position:absolute;
+    left:var(--logo-x, 50vw); top:var(--logo-y, 40vh);
+    width:100px; height:100px;
+    border-radius:50%;
+    border:4px solid rgba(255,86,34,1);
+    box-shadow: 0 0 50px 20px rgba(255,86,34,0.8), inset 0 0 50px 20px rgba(255,86,34,0.8);
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    animation: cShockwave 3.5s linear forwards;
+  }
+  @keyframes cShockwave {
+    0%, 45% { opacity:0; transform:translate(-50%,-50%) scale(0); border-width:4px; }
+    47% { opacity:1; transform:translate(-50%,-50%) scale(1); }
+    65% { opacity:0; transform:translate(-50%,-50%) scale(25); border-width:0px; }
+    100% { opacity:0; }
+  }
+
+  .c-spark {
+    position:absolute;
+    left:var(--logo-x, 50vw); top:var(--logo-y, 40vh);
+    width:10px; height:10px;
+    border-radius:50%;
+    background:var(--ember-glow);
+    box-shadow: 0 0 16px 8px var(--ember);
+    opacity:0;
+    animation: cSpark 3.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+  }
+  @keyframes cSpark {
+    0%, 45% { opacity:0; transform:translate(-50%,-50%) scale(2); }
+    47% { opacity:1; transform:translate(-50%,-50%) scale(2); }
+    75%, 100% { opacity:0; transform:translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(0); }
+  }
+
+  .c-whiteout {
+    position:absolute; inset:0;
+    background:#fff;
+    opacity:0;
+    animation: cWhiteout 3.5s linear forwards;
+  }
+  @keyframes cWhiteout {
+    0%, 50% { opacity:0; }
+    55% { opacity:1; }
+    85%, 100% { opacity:0; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     GRAIN OVERLAY (site-wide)
+     ═══════════════════════════════════════════════ */
+  .grain{
+    position:fixed; inset:0;
+    z-index:9000;
+    pointer-events:none;
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ═══════════════════════════════════════════════
+     SECTION 1 — ACADEMY HERO
+     ═══════════════════════════════════════════════ */
+  .hero-academy {
+    position:relative;
+    min-height:100vh;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: clamp(32px, 6vw, 80px);
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(226,56,10,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 90%, rgba(201,161,90,0.06) 0%, transparent 50%),
+      linear-gradient(180deg, var(--void-2) 0%, var(--void) 100%);
+  }
+
+  .academy-center {
+    position:relative; z-index:10;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    max-width:900px;
+    width: 100%;
+  }
+
+  .logo-anchor {
+    position: relative;
+    width: clamp(160px, 24vw, 300px);
+    height: clamp(160px, 24vw, 300px);
+    border-radius: 50%;
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.9), 0 0 60px 10px rgba(201,161,90,0.4);
+    margin-bottom: clamp(32px, 5vh, 48px);
+    opacity: 0;
+    display: flex; align-items: center; justify-content: center;
+    animation: logoReveal 1.5s cubic-bezier(0.16,1,0.3,1) 2.0s forwards;
+  }
+  .logo-anchor::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0%,
+      var(--gold) 15%,
+      #fff 25%,
+      var(--ember) 35%,
+      transparent 50%
+    );
+    z-index: 0;
+    animation: spinGold 4s linear infinite;
+    filter: blur(4px);
+  }
+  @keyframes spinGold {
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes logoReveal {
+    0%   { opacity:0; transform:scale(0.3) rotate(-15deg); filter:brightness(3); }
+    50%  { opacity:1; transform:scale(1.08) rotate(3deg); filter:brightness(1.3); }
+    100% { opacity:1; transform:scale(1) rotate(0deg); filter:brightness(1); }
+  }
+  .logo-anchor img {
+    position: relative;
+    z-index: 1;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background: var(--void);
+    border: 3px solid rgba(244,241,234,0.15);
+  }
+
+  .academy-text-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: clamp(32px, 5vh, 48px);
+    opacity: 0;
+    animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 2.5s forwards;
+  }
+
+  .academy-name-glow, .academy-mantra-glow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: linear-gradient(
+      90deg, 
+      var(--ember-glow) 0%,
+      var(--gold) 35%,
+      #fff 48%,
+      #fff 50%,
+      #fff 52%,
+      var(--gold) 65%,
+      var(--ember-glow) 100%
+    );
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: goldenSweep 15s linear infinite;
+  }
+  @keyframes goldenSweep {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .academy-name-glow {
+    font-size: clamp(48px, 9vw, 100px);
+    opacity: 0.9;
+  }
+  
+  .academy-mantra-glow {
+    font-size: clamp(32px, 5vw, 64px);
+  }
+
+  .academy-sub {
+    max-width:54ch;
+    font-size: clamp(16px,1.25vw,20px);
+    line-height:1.6;
+    color:var(--ink-dim);
+    margin-bottom: clamp(32px,5vh,56px);
+    opacity:0;
+    animation:fadeUp .8s ease 2.9s forwards;
+  }
+  .academy-sub strong { color:var(--ink); font-weight:600; }
+
+  .academy-cta {
+    display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+    opacity:0;
+    animation:fadeUp .8s ease 3.1s forwards;
+  }
+
+  .btn {
+    font-family:'Archivo', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:18px 36px;
+    text-decoration:none;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition:transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease, background .35s ease;
+    cursor:pointer;
+    border-radius:0;
+  }
+  .btn--ember {
+    background:var(--ember);
+    color:#fff;
+    border:1px solid var(--ember);
+    box-shadow:0 8px 30px -6px rgba(226,56,10,0.4);
+  }
+  .btn--ember:hover {
+    transform:translateY(-4px);
+    box-shadow:0 16px 36px -8px rgba(226,56,10,0.7);
+    background:var(--ember-glow);
+  }
+  .btn--outline {
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--line);
+  }
+  .btn--outline:hover {
+    border-color:var(--ink-dim);
+    background:rgba(244,241,234,0.04);
+  }
+
+  /* ─── Credentials Bar (bottom of section 1) ─── */
+  .academy-stats {
+    grid-column:1/-1;
+    position:relative; z-index:10;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--line);
+    background:rgba(7,8,10,0.5);
+    backdrop-filter:blur(12px);
+    opacity:0;
+    animation:fadeUp .8s ease 2.7s forwards;
+  }
+  .stat-cell {
+    padding: clamp(18px,2.5vw,36px) clamp(20px,4vw,60px);
+    border-right:1px solid var(--line);
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .stat-cell:last-child { border-right:none; }
+  .stat-cell .val {
+    font-family:'Bebas Neue',sans-serif;
+    font-size: clamp(32px,2.8vw,50px);
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .stat-cell .lbl {
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    font-weight:500;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SECTION 2 — FOUNDER
+     ═══════════════════════════════════════════════ */
+  .hero-founder {
+    position:relative;
+    min-height:100vh;
+    min-height:100svh;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:
+      radial-gradient(ellipse at 70% 90%, rgba(226,56,10,0.07) 0%, transparent 50%),
+      linear-gradient(180deg, var(--void) 0%, var(--void-2) 40%, var(--void) 100%);
+    border-top:1px solid var(--line);
+  }
+
+  .founder-content {
+    position:relative; z-index:10;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding: clamp(32px,6vw,80px);
+  }
+
+  .founder-eyebrow {
+    position: absolute;
+    bottom: 20%;
+    left: -10%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(11, 12, 16, 0.85);
+    padding: 24px 32px;
+    backdrop-filter: blur(12px);
+    border-left: 4px solid var(--gold);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    z-index: 10;
+  }
+  .eyebrow-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4vw, 54px);
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 0.05em;
+  }
+  .eyebrow-title {
+    font-size: clamp(10px, 1vw, 13px);
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  h2.founder-headline {
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    line-height:0.86;
+    letter-spacing:0.01em;
+    font-size: clamp(56px,9vw,140px);
+    text-transform:uppercase;
+    max-width:10ch;
+    margin-bottom:32px;
+  }
+  h2.founder-headline .fw-accent {
+    background:linear-gradient(92deg, var(--ink) 30%, var(--ember-glow) 92%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .founder-bio {
+    max-width:48ch;
+    font-size: clamp(14px,1.15vw,17px);
+    line-height:1.65;
+    color:var(--ink-dim);
+    margin-bottom:40px;
+  }
+  .founder-bio strong { color:var(--ink); font-weight:600; }
+
+  .founder-credentials {
+    display:flex; gap: clamp(20px,3vw,40px); flex-wrap:wrap;
+  }
+  .founder-cred {
+    border-left:2px solid rgba(226,56,10,0.5);
+    padding-left:14px;
+  }
+  .founder-cred .cval {
+    font-family:'Bebas Neue',sans-serif;
+    font-size: clamp(28px,2.8vw,40px);
+    line-height:1;
+    margin-bottom:4px;
+  }
+  .founder-cred .clbl {
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+
+  /* Portrait */
+  .founder-portrait {
+    position:relative; z-index:3;
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-end;
+    filter:drop-shadow(-20px 20px 50px rgba(0,0,0,0.85));
+    pointer-events:none;
+  }
+  .founder-portrait img {
+    height: 110vh;
+    width:auto;
+    max-width:100%;
+    object-fit:contain;
+    object-position:bottom right;
+  }
+
+  /* Portrait rim light */
+  .founder-portrait::after {
+    content:'';
+    position:absolute;
+    right:0; bottom:0;
+    height: 110vh; width:40%;
+    background:linear-gradient(105deg, transparent 50%, rgba(255,143,80,0.14) 76%, transparent 92%);
+    mix-blend-mode:screen;
+    pointer-events:none;
+  }
+
+  /* Scroll reveal for founder section */
+  .founder-reveal { opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s ease; }
+  .founder-reveal.is-visible { opacity:1; transform:translateY(0); }
+
+  /* ═══════════════════════════════════════════════
+     SHARED
+     ═══════════════════════════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+
+  /* ═══════════════════════════════════════════════
+     MARQUEE SECTION
+     ═══════════════════════════════════════════════ */
+  .marquee-section {
+    width: 100%;
+    margin-top: clamp(40px, 6vh, 80px);
+    margin-bottom: clamp(16px, 3vh, 32px);
+    opacity: 0;
+    animation: fadeUp 1s ease 2.8s forwards;
+  }
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid rgba(201,161,90, 0.4);
+    border-bottom: 1px solid rgba(201,161,90, 0.4);
+    background: var(--gold);
+    color: var(--void);
+    box-shadow: 0 0 40px rgba(201,161,90,0.15);
+  }
+  .marquee__track {
+    display: flex;
+    gap: 2.2rem;
+    width: max-content;
+    padding: 1rem 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(24px, 3vw, 36px);
+    letter-spacing: 0.12em;
+    animation: marqueeScroll 26s linear infinite;
+  }
+  .marquee__track span {
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ═══════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════ */
+  @media (max-width:1024px) {
+    .hero-academy { grid-template-columns:1fr 1fr; }
+  }
+
+  @media (max-width:720px) {
+    .logo-anchor {
+      width:140px; height:140px;
+      margin-bottom:24px;
+    }
+
+    .academy-name-glow { font-size: clamp(48px, 14vw, 76px); }
+    .academy-mantra-glow { font-size: clamp(36px, 10vw, 56px); }
+    .academy-sub { max-width:100%; text-align:center; }
+    .academy-cta { flex-direction:column; }
+    .academy-cta .btn { width:100%; }
+    .academy-stats {
+      grid-template-columns:1fr;
+    }
+    .stat-cell { border-right:none; border-bottom:1px solid var(--line); padding:16px 24px; text-align:center; }
+    .stat-cell:last-child { border-bottom:none; }
+
+
+    /* Founder section */
+    .hero-founder {
+      display:flex;
+      flex-direction:column;
+    }
+    .founder-content { padding:32px 24px; }
+    h2.founder-headline { font-size:clamp(48px,14vw,76px); }
+    .founder-portrait {
+      position:relative;
+      order:2;
+      height: 70vh;
+      justify-content:center;
+    }
+    .founder-eyebrow {
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      padding: 16px 20px;
+    }
+    .founder-portrait img { height:100%; }
+    .founder-portrait::after { display:none; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after {
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
+    }
+    #intro-cinematic { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ═══ INTRO CINEMATIC ═══ -->
+<div id="intro-cinematic">
+  <!-- Fast ball -->
+  <div class="c-ball"></div>
+
+  <!-- Batsman silhouette at impact point -->
+  <div class="c-batsman-wrap">
+    <svg viewBox="0 0 90 130" fill="none">
+      <g stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round">
+        <circle cx="42" cy="14" r="9" fill="var(--ink)"/>
+        <line x1="42" y1="23" x2="38" y2="62"/>
+        <line x1="38" y1="62" x2="20" y2="118"/>
+        <line x1="38" y1="62" x2="60" y2="114"/>
+        <line x1="40" y1="32" x2="65" y2="24"/>
+        <line x1="65" y1="24" x2="88" y2="6" stroke="var(--gold)" stroke-width="4.5"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Impact flash -->
+  <div class="c-impact"></div>
+
+  <!-- Shockwave ring -->
+  <div class="c-shockwave"></div>
+
+  <!-- Sparks -->
+  <div class="c-spark" style="--sx:-140px;--sy:-90px"></div>
+  <div class="c-spark" style="--sx:120px;--sy:-120px"></div>
+  <div class="c-spark" style="--sx:-90px;--sy:100px"></div>
+  <div class="c-spark" style="--sx:160px;--sy:70px"></div>
+  <div class="c-spark" style="--sx:-170px;--sy:-30px"></div>
+  <div class="c-spark" style="--sx:70px;--sy:-150px"></div>
+  <div class="c-spark" style="--sx:-50px;--sy:130px"></div>
+  <div class="c-spark" style="--sx:130px;--sy:110px"></div>
+  <div class="c-spark" style="--sx:-130px;--sy:60px"></div>
+  <div class="c-spark" style="--sx:40px;--sy:150px"></div>
+
+  <!-- White-out transition -->
+  <div class="c-whiteout"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — THE ACADEMY
+     ═══════════════════════════════════════════ -->
+<section class="hero-academy">
+
+  <div class="academy-center">
+    <div class="logo-anchor">
+      <img src="assets/logo.webp" alt="Bowncer Sportz Cricket Academy logo" decoding="async">
+    </div>
+
+    <div class="academy-text-stack">
+      <h1 class="academy-mantra-glow">PROCESS. PROGRESS. PERFORM.</h1>
+      <h2 class="academy-name-glow">
+        Bowncer Sportz<br>Cricket Academy
+      </h2>
+    </div>
+
+    <p class="academy-sub">
+      Cricket for all. We work on <strong>TEST, ODI & T/20 Formats</strong>.
+      Emphasis on PROCESS & PROGRESS — coaching shaped by real match experience,
+      not just theory.
+    </p>
+
+    <div class="academy-cta">
+      <a href="https://wa.me/919840568137" target="_blank" rel="noopener noreferrer" class="btn btn--ember">Book a Trial Session</a>
+      <a href="#founder" class="btn btn--outline">Meet the Coach</a>
+    </div>
+  </div>
+
+  <!-- Academy stats bar -->
+  <div class="academy-stats">
+    <div class="stat-cell">
+      <div class="val">5.0★</div>
+      <div class="lbl">196 Reviews · Justdial</div>
+    </div>
+    <div class="stat-cell">
+      <div class="val">8+ Years</div>
+      <div class="lbl">Since 30 Oct 2017</div>
+    </div>
+    <div class="stat-cell">
+      <div class="val">3 Formats</div>
+      <div class="lbl">TEST · ODI · T/20</div>
+    </div>
+  </div>
+
+  <div class="marquee-section">
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Batting Fundamentals</span>
+        <span>Bowling Mechanics</span>
+        <span>Fielding Drills</span>
+        <span>Net Practice</span>
+        <span>Match Simulation</span>
+        <span>Fitness</span>
+        <span>Mental Conditioning</span>
+        <span>TEST</span>
+        <span>ODI</span>
+        <span>T/20</span>
+        <span>Batting Fundamentals</span>
+        <span>Bowling Mechanics</span>
+        <span>Fielding Drills</span>
+        <span>Net Practice</span>
+        <span>Match Simulation</span>
+        <span>Fitness</span>
+        <span>Mental Conditioning</span>
+        <span>TEST</span>
+        <span>ODI</span>
+        <span>T/20</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — THE FOUNDER
+     ═══════════════════════════════════════════ -->
+<section class="hero-founder" id="founder">
+
+  <div class="founder-content founder-reveal">
+
+    <h2 class="founder-headline">
+      BUILT<br>
+      FROM THE<br>
+      <span class="fw-accent">INSIDE.</span>
+    </h2>
+
+    <p class="founder-bio">
+      Cricket coaching shaped by someone who has actually played at the top.
+      <strong>ICC & BCCI Level 1 certified</strong>, with coaching experience
+      across <strong>RCB, Madurai Super Giant, USA Cricket, MLC, and SA20</strong> —
+      now building the next generation, from the ground up, in Chennai.
+    </p>
+
+    <div class="founder-credentials">
+      <div class="founder-cred">
+        <div class="cval">20+</div>
+        <div class="clbl">Players to Nationals</div>
+      </div>
+      <div class="founder-cred">
+        <div class="cval">4</div>
+        <div class="clbl">Countries Coached</div>
+      </div>
+      <div class="founder-cred">
+        <div class="cval">L1</div>
+        <div class="clbl">ICC + BCCI Certified</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="founder-portrait founder-reveal">
+    <div class="founder-eyebrow">
+      <span class="eyebrow-name">S. Thiyagarajan</span>
+      <span class="eyebrow-title">Ex-IPL (RCB) Player & Founder of Bowncer Sportz Cricket Academy</span>
+    </div>
+    <img src="assets/thiyagarajan_hero_graded.webp" alt="S. Thiyagarajan, Founder and Director of Bowncer Sportz Cricket Academy" decoding="async" loading="lazy">
+  </div>
+</section>
+
+
+<script>
+  // Skip intro if already seen this session
+  if (sessionStorage.getItem('intro-seen')) {
+    var intro = document.getElementById('intro-cinematic');
+    if (intro) intro.style.display = 'none';
+  } else {
+    sessionStorage.setItem('intro-seen', '1');
+    
+    // Sync Logo coordinates for exact explosion center
+    var logoEl = document.querySelector('.logo-anchor');
+    var introEl = document.getElementById('intro-cinematic');
+    if(logoEl && introEl) {
+      var rect = logoEl.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      introEl.style.setProperty('--logo-x', cx + 'px');
+      introEl.style.setProperty('--logo-y', cy + 'px');
+    }
+
+    // Screen shake on first impact (Bat Hit at 0.17 * 3500 = 595ms)
+    setTimeout(function() {
+      document.documentElement.style.transform = 'translate(-8px, 5px)';
+      setTimeout(function(){ document.documentElement.style.transform = 'translate(6px, -6px)'; }, 40);
+      setTimeout(function(){ document.documentElement.style.transform = 'translate(-4px, 3px)'; }, 80);
+      setTimeout(function(){ document.documentElement.style.transform = ''; }, 120);
+    }, 595);
+
+    // Massive screen shake on second impact (Logo Smash at 0.47 * 3500 = 1645ms)
+    setTimeout(function() {
+      document.documentElement.style.transform = 'translate(14px, -10px)';
+      setTimeout(function(){ document.documentElement.style.transform = 'translate(-12px, 10px)'; }, 40);
+      setTimeout(function(){ document.documentElement.style.transform = 'translate(8px, -6px)'; }, 80);
+      setTimeout(function(){ document.documentElement.style.transform = 'translate(-6px, 4px)'; }, 120);
+      setTimeout(function(){ document.documentElement.style.transform = ''; }, 160);
+    }, 1645);
+  }
+
+  // Scroll reveal for founder section
+  var founderEls = document.querySelectorAll('.founder-reveal');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    founderEls.forEach(function(el) { obs.observe(el); });
+  } else {
+    founderEls.forEach(function(el) { el.classList.add('is-visible'); });
+  }
+</script>
+
+</body>
+</html>
