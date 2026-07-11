@@ -130,6 +130,54 @@
     border-left: 2px solid var(--gold);
   }
 
+  .loc-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: linear-gradient(90deg, var(--gold) 0%, #ffdf99 50%, var(--gold) 100%);
+    background-size: 200% auto;
+    color: var(--void);
+    box-shadow: 0 0 40px rgba(201,161,90,0.4), 0 0 80px rgba(201,161,90,0.2);
+    font-size: clamp(28px, 4vw, 40px);
+    padding: 24px 48px;
+    border-radius: 4px;
+    width: 100%;
+    animation: goldShine 3s infinite linear;
+  }
+  
+  @keyframes goldShine {
+    to { background-position: 200% center; }
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 60px rgba(201,161,90,0.6), 0 0 100px rgba(201,161,90,0.4);
+    transform: translateY(-4px) scale(1.02);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    font-size: 20px;
+    padding: 16px 32px;
+    width: 100%;
+  }
+
   .loc-map-wrapper {
     position: relative;
     width: 100%;
@@ -202,12 +250,14 @@
       <h2 class="loc-name">Poonamallee</h2>
       <p class="loc-details">Our flagship facility equipped for complete skill development. Featuring turf wickets, dedicated net practice zones, and open fielding grounds designed for rigorous, match-scenario training.</p>
       
+      <div class="loc-address">Visalakshi Street, Aishwarya Garden,<br>Goparasanallur, Poonamallee, Chennai 600056</div>
+
       <div class="loc-actions">
         <a href="https://wa.me/919840568137" target="_blank" class="btn btn-primary">Book a Trial</a>
       </div>
     </div>
     <div class="loc-map-wrapper">
-      <iframe class="loc-map" src="https://maps.google.com/maps?q=Bowncer+Sportz+Cricket+Academy+Poonamallee&t=&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <iframe class="loc-map" src="https://maps.google.com/maps?q=Visalakshi+Street,+Aishwarya+Garden,+Goparasanallur,+Poonamallee,+Chennai&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 
