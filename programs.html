@@ -198,6 +198,114 @@
         linear-gradient(180deg, #14110b 0%, rgba(201,161,90, 0.3) 20%, rgba(201,161,90, 0.6) 50%, rgba(201,161,90, 0.3) 80%, #14110b 100%);
     }
     .pillar-name { text-align: right; transform: none !important; }
+    .apply-form { grid-template-columns: 1fr; }
+    .apply-container { padding: 40px 20px; }
+  }
+
+  /* Application Form Section */
+  .apply-section {
+    padding: 120px 40px;
+    background: var(--void);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: center;
+  }
+  
+  .apply-container {
+    max-width: 800px;
+    width: 100%;
+    background: var(--void-2);
+    border: 1px solid rgba(201,161,90, 0.2);
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .apply-container::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background: linear-gradient(90deg, var(--void) 0%, var(--gold) 50%, var(--void) 100%);
+  }
+
+  .apply-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .apply-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 72px);
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    line-height: 0.9;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .apply-header p {
+    color: var(--ink-dim);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .apply-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+  
+  .form-label {
+    display: block;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  
+  .form-input, .form-select {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    padding: 16px;
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(201,161,90, 0.05);
+  }
+
+  .btn-submit {
+    grid-column: 1 / -1;
+    background: linear-gradient(90deg, var(--gold) 0%, #ffdf99 50%, var(--gold) 100%);
+    background-size: 200% auto;
+    color: var(--void);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.05em;
+    padding: 24px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 24px;
+    transition: all 0.3s ease;
+    animation: goldShine 3s infinite linear;
+    box-shadow: 0 0 40px rgba(201,161,90,0.2);
+  }
+  
+  @keyframes goldShine {
+    to { background-position: 200% center; }
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 60px rgba(201,161,90,0.4);
   }
 </style>
 </head>
@@ -289,6 +397,57 @@
         <div class="pillar-name">Mental<br>Conditioning</div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="apply-section">
+  <div class="apply-container">
+    <div class="apply-header">
+      <h2>Elevate Your Game</h2>
+      <p>Secure your roster spot. Submit your details below and our coaching staff will contact you to schedule a comprehensive player assessment.</p>
+    </div>
+    
+    <form class="apply-form" onsubmit="event.preventDefault(); alert('Application Received. Our coaching staff will contact you shortly.');">
+      <div class="form-group">
+        <label class="form-label">Player First Name</label>
+        <input type="text" class="form-input" required placeholder="Virat">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Player Last Name</label>
+        <input type="text" class="form-input" required placeholder="Kohli">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Player Age</label>
+        <input type="number" class="form-input" required placeholder="e.g. 14" min="6" max="25">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Level</label>
+        <select class="form-select" required>
+          <option value="" disabled selected>Select Level</option>
+          <option value="beginner">Beginner / Foundation</option>
+          <option value="school">School / Academy Team</option>
+          <option value="club">Club / League Level</option>
+          <option value="advanced">Advanced / State Level</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label class="form-label">Parent / Guardian WhatsApp Number</label>
+        <input type="tel" class="form-input" required placeholder="+91 XXXXX XXXXX">
+      </div>
+      
+      <div class="form-group full">
+        <label class="form-label">Preferred Location</label>
+        <select class="form-select" required>
+          <option value="" disabled selected>Select Facility</option>
+          <option value="poonamallee">Poonamallee (Flagship Facility)</option>
+          <option value="mangadu">Mangadu (High-Performance Ground)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit">Request Player Assessment</button>
+    </form>
   </div>
 </section>
 
