@@ -86,7 +86,7 @@
   /* Grid */
   .programs-grid {
     padding:80px 40px; max-width:1200px; margin:0 auto;
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:32px;
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:32px;
   }
   .prog-card {
     border:1px solid var(--line);
@@ -99,35 +99,97 @@
   .prog-title { font-family:'Bebas Neue',sans-serif; font-size:48px; margin-bottom:16px; letter-spacing:0.02em; line-height:1; }
   .prog-desc { font-size:16px; color:var(--ink-dim); line-height:1.6; }
 
-  /* Modules List */
+  /* Pillars List */
   .modules-section {
     padding:80px 40px 120px;
     background:var(--void-2);
     border-top:1px solid var(--line);
   }
-  .modules-container { max-width:900px; margin:0 auto; }
+  .modules-container { max-width:1200px; margin:0 auto; }
   .modules-header { font-family:'Bebas Neue',sans-serif; font-size:72px; text-align:center; margin-bottom:80px; color:var(--ink); }
   
-  .module-row {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:32px 0; border-bottom:1px solid var(--line);
-    transition:padding-left 0.3s ease, border-color 0.3s ease;
-    cursor:default;
+  .pillars-wrap {
+    display: flex;
+    height: 600px;
+    gap: 4px;
+    width: 100%;
   }
-  .module-row:hover { padding-left:24px; border-bottom-color:var(--gold); }
-  .module-name { font-family:'Bebas Neue',sans-serif; font-size:40px; letter-spacing:0.02em; color:var(--ink); transition:color 0.3s ease; }
-  .module-row:hover .module-name { color:var(--gold); }
-  .module-num { font-size:14px; font-weight:700; color:var(--ink-dim); font-family:monospace; }
+  .pillar {
+    flex: 1;
+    position: relative;
+    background: rgba(244,241,234,0.02);
+    border: 1px solid var(--line);
+    transition: flex 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.6s ease, border-color 0.6s ease;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .pillar::before {
+    content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:2px; height:0%; background:var(--gold);
+    transition:height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 20px var(--ember-glow);
+  }
+  .pillar:hover {
+    flex: 3;
+    background: rgba(201,161,90,0.05);
+    border-color: var(--gold);
+  }
+  .pillar:hover::before {
+    height:100%;
+  }
+  
+  .pillar-content {
+    padding-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .pillar-num {
+    font-size: 14px; font-weight: 700; color: var(--gold); font-family: monospace;
+    opacity: 0.5; transition: opacity 0.3s;
+  }
+  .pillar:hover .pillar-num { opacity: 1; }
+  .pillar-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+  .pillar:hover .pillar-name { color: #fff; text-shadow: 0 0 20px rgba(201,161,90,0.5); }
 
   @media(max-width:720px){
     .nav { padding:16px 20px; }
     .programs-hero { padding:120px 20px 60px; }
-    .programs-grid { padding:60px 20px; }
+    .programs-grid { padding:60px 20px; grid-template-columns: 1fr; }
     .prog-card { padding:32px 24px; }
     .modules-section { padding:60px 20px; }
-    .module-row { padding: 24px 0; }
-    .module-row:hover { padding-left:0; }
-    .module-name { font-size: 32px; }
+    
+    .pillars-wrap {
+      flex-direction: column;
+      height: 700px;
+    }
+    .pillar {
+      align-items: center; justify-content: flex-start;
+      padding: 0 24px;
+    }
+    .pillar-content {
+      writing-mode: horizontal-tb;
+      transform: none;
+      padding-bottom: 0;
+    }
+    .pillar-name { font-size: 32px; }
+    .pillar::before {
+      bottom: auto; left: 0; top: 50%; transform: translateY(-50%);
+      height: 2px; width: 0%;
+    }
+    .pillar:hover::before { width: 100%; height: 2px; }
   }
 </style>
 </head>
@@ -188,33 +250,49 @@
   <div class="modules-container">
     <h2 class="modules-header">Training Pillars</h2>
     
-    <div class="module-row">
-      <div class="module-name">Batting Fundamentals</div>
-      <div class="module-num">01</div>
-    </div>
-    <div class="module-row">
-      <div class="module-name">Bowling Mechanics</div>
-      <div class="module-num">02</div>
-    </div>
-    <div class="module-row">
-      <div class="module-name">Fielding Drills</div>
-      <div class="module-num">03</div>
-    </div>
-    <div class="module-row">
-      <div class="module-name">Net Practice</div>
-      <div class="module-num">04</div>
-    </div>
-    <div class="module-row">
-      <div class="module-name">Match Simulation</div>
-      <div class="module-num">05</div>
-    </div>
-    <div class="module-row">
-      <div class="module-name">Fitness</div>
-      <div class="module-num">06</div>
-    </div>
-    <div class="module-row">
-      <div class="module-name">Mental Conditioning</div>
-      <div class="module-num">07</div>
+    <div class="pillars-wrap">
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">01</div>
+          <div class="pillar-name">Batting Fundamentals</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">02</div>
+          <div class="pillar-name">Bowling Mechanics</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">03</div>
+          <div class="pillar-name">Fielding Drills</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">04</div>
+          <div class="pillar-name">Net Practice</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">05</div>
+          <div class="pillar-name">Match Simulation</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">06</div>
+          <div class="pillar-name">Fitness</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-content">
+          <div class="pillar-num">07</div>
+          <div class="pillar-name">Mental Conditioning</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
