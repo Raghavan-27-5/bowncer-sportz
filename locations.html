@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bowncer Sportz — Locations & Facilities</title>
+<meta name="description" content="Elite cricket facilities in Poonamallee and Mangadu, Chennai.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#f4f1ea;
+    --ink-dim:#b8b2a4;
+    --void:#07080a;
+    --void-2:#0d0f12;
+    --ember:#e2380a;
+    --ember-glow:#ff5622;
+    --gold:#c9a15a;
+    --line: rgba(244,241,234,0.14);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Archivo', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .grain {
+    position:fixed; inset:0; z-index:9999; pointer-events:none;
+    background-image:url('assets/noise.webp'); opacity:0.04; mix-blend-mode:overlay;
+  }
+
+  /* Nav */
+  .nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:24px 40px; background:linear-gradient(180deg, var(--void) 0%, transparent 100%);
+  }
+  .nav-logo {
+    display:flex; align-items:center; gap:12px;
+    font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:0.05em; color:var(--ink); text-decoration:none;
+  }
+  .nav-logo img { width:32px; height:auto; }
+  .nav-links { display:flex; gap:32px; }
+  .nav-links a {
+    color:var(--ink-dim); text-decoration:none; font-size:14px; text-transform:uppercase;
+    letter-spacing:0.1em; transition:color 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  /* Hero */
+  .loc-hero {
+    padding: 160px 40px 80px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .page-title {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,10vw,120px);
+    line-height:0.9; text-transform:uppercase; margin-bottom:24px;
+    background: linear-gradient(90deg, #fff 0%, var(--gold) 100%);
+    -webkit-background-clip: text; color: transparent;
+  }
+  .page-sub {
+    font-size: clamp(18px, 3vw, 24px); color: var(--ink-dim); line-height: 1.5;
+    max-width: 700px; margin: 0 auto;
+  }
+
+  /* Locations Stack */
+  .loc-stack {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .loc-panel {
+    position: relative;
+    width: 100%;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 40px;
+    overflow: hidden;
+    background: var(--void-2);
+    border-top: 1px solid var(--line);
+    transition: background 0.6s ease;
+  }
+  .loc-panel:hover {
+    background: #111418;
+  }
+
+  /* Giant background typography */
+  .loc-bg-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(100px, 20vw, 300px);
+    color: rgba(255,255,255,0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    transition: color 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .loc-panel:hover .loc-bg-text {
+    color: rgba(201,161,90, 0.05);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  .loc-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .loc-meta {
+    font-family: monospace;
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    display: flex;
+    gap: 24px;
+    opacity: 0.8;
+  }
+  
+  .loc-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    color: var(--ink);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .loc-details {
+    max-width: 500px;
+    font-size: 18px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+
+  .loc-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--void);
+    box-shadow: 0 0 20px rgba(201,161,90,0.2);
+  }
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: 0 0 30px rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* The Map/Grid decorative element */
+  .loc-grid-dec {
+    position: absolute;
+    right: 10%; top: 50%;
+    transform: translateY(-50%);
+    width: 300px; height: 300px;
+    border: 1px solid var(--line);
+    background-image: 
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+    z-index: 1;
+  }
+  .loc-grid-dec::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    background: var(--gold);
+    top: 30%; left: 40%;
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--gold);
+    animation: pulseMap 3s infinite;
+  }
+
+  @keyframes pulseMap {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media(max-width:900px){
+    .nav { padding:16px 20px; }
+    .loc-hero { padding:120px 20px 60px; }
+    .loc-panel { padding: 60px 20px; min-height: 50vh; }
+    .loc-grid-dec { display: none; }
+    .loc-actions { flex-direction: column; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.webp" alt="Logo">
+    BOWNCER SPORTZ
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="locations.html" class="active">Locations</a>
+  </div>
+</nav>
+
+<section class="loc-hero">
+  <h1 class="page-title">The Grounds</h1>
+  <p class="page-sub">Two elite facilities in Chennai. Built for high-performance training, match simulation, and year-round development.</p>
+</section>
+
+<div class="loc-stack">
+  
+  <!-- Poonamallee -->
+  <div class="loc-panel">
+    <div class="loc-bg-text">POONAMALLEE</div>
+    <div class="loc-grid-dec"></div>
+    
+    <div class="loc-content">
+      <div class="loc-meta">
+        <span>FACILITY 01</span>
+        <span>CHENNAI WEST</span>
+      </div>
+      <h2 class="loc-name">Poonamallee</h2>
+      <p class="loc-details">Our flagship facility equipped for complete skill development. Featuring turf wickets, dedicated net practice zones, and open fielding grounds designed for rigorous, match-scenario training.</p>
+      
+      <div class="loc-actions">
+        <a href="https://wa.me/919840568137" target="_blank" class="btn btn-primary">Book a Trial</a>
+        <a href="#" class="btn btn-outline">Get Directions</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mangadu -->
+  <div class="loc-panel">
+    <div class="loc-bg-text">MANGADU</div>
+    <div class="loc-grid-dec" style="top: 70%; left: 10%; right: auto; animation-delay: 1.5s;"></div>
+    
+    <div class="loc-content">
+      <div class="loc-meta">
+        <span>FACILITY 02</span>
+        <span>CHENNAI WEST</span>
+      </div>
+      <h2 class="loc-name">Mangadu</h2>
+      <p class="loc-details">A dedicated high-performance ground optimized for focused technical interventions, personal training (1-on-1s), and specialized junior foundation camps.</p>
+      
+      <div class="loc-actions">
+        <a href="https://wa.me/919840568137" target="_blank" class="btn btn-primary">Book a Trial</a>
+        <a href="#" class="btn btn-outline">Get Directions</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
