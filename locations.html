@@ -73,58 +73,29 @@
     max-width: 700px; margin: 0 auto;
   }
 
-  /* Locations Stack */
-  .loc-stack {
+  /* Locations Grid Layout */
+  .loc-section {
+    padding: 80px 40px 120px;
+    max-width: 1400px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    gap: 120px;
   }
 
-  .loc-panel {
-    position: relative;
-    width: 100%;
-    min-height: 70vh;
-    display: flex;
+  .loc-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
     align-items: center;
-    padding: 80px 40px;
-    overflow: hidden;
-    background: var(--void-2);
-    border-top: 1px solid var(--line);
-    transition: background 0.6s ease;
-  }
-  .loc-panel:hover {
-    background: #111418;
-  }
-
-  /* Giant background typography */
-  .loc-bg-text {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(100px, 20vw, 300px);
-    color: rgba(255,255,255,0.02);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 0;
-    transition: color 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .loc-panel:hover .loc-bg-text {
-    color: rgba(201,161,90, 0.05);
-    transform: translate(-50%, -50%) scale(1.05);
   }
 
   .loc-content {
-    position: relative;
-    z-index: 2;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 32px;
   }
-
+  
   .loc-meta {
     font-family: monospace;
     color: var(--gold);
@@ -134,10 +105,10 @@
     gap: 24px;
     opacity: 0.8;
   }
-  
+
   .loc-name {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 8vw, 96px);
+    font-size: clamp(60px, 8vw, 100px);
     color: var(--ink);
     line-height: 0.9;
     letter-spacing: 0.02em;
@@ -145,88 +116,55 @@
   }
 
   .loc-details {
-    max-width: 500px;
     font-size: 18px;
     color: var(--ink-dim);
     line-height: 1.6;
+    max-width: 500px;
   }
-
-  .loc-actions {
-    display: flex;
-    gap: 16px;
-    margin-top: 24px;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 32px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: none;
-  }
-  .btn-primary {
-    background: var(--gold);
-    color: var(--void);
-    box-shadow: 0 0 20px rgba(201,161,90,0.2);
-  }
-  .btn-primary:hover {
-    background: #fff;
-    box-shadow: 0 0 30px rgba(255,255,255,0.4);
-    transform: translateY(-2px);
-  }
-  .btn-outline {
-    background: transparent;
+  
+  .loc-address {
+    font-size: 16px;
     color: var(--ink);
-    border: 1px solid var(--line);
-  }
-  .btn-outline:hover {
-    border-color: var(--gold);
-    color: var(--gold);
+    line-height: 1.5;
+    padding-left: 16px;
+    border-left: 2px solid var(--gold);
   }
 
-  /* The Map/Grid decorative element */
-  .loc-grid-dec {
-    position: absolute;
-    right: 10%; top: 50%;
-    transform: translateY(-50%);
-    width: 300px; height: 300px;
-    border: 1px solid var(--line);
-    background-image: 
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 30px 30px;
-    opacity: 0.3;
-    z-index: 1;
+  .loc-map-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    border: 1px solid rgba(201,161,90, 0.3);
+    background: var(--void-2);
+    overflow: hidden;
   }
-  .loc-grid-dec::after {
-    content: '';
-    position: absolute;
-    width: 20px; height: 20px;
-    background: var(--gold);
-    top: 30%; left: 40%;
-    border-radius: 50%;
-    box-shadow: 0 0 20px var(--gold);
-    animation: pulseMap 3s infinite;
+  
+  /* Sci-fi targeting brackets */
+  .loc-map-wrapper::before, .loc-map-wrapper::after {
+    content:''; position:absolute; width:40px; height:40px; border:2px solid var(--gold); z-index:10; pointer-events:none; transition: all 0.4s ease;
   }
+  .loc-map-wrapper::before { top:0px; left:0px; border-right:none; border-bottom:none; }
+  .loc-map-wrapper::after { bottom:0px; right:0px; border-left:none; border-top:none; }
+  .loc-map-wrapper:hover::before { width:100%; height:100%; opacity:0.1; }
+  .loc-map-wrapper:hover::after { width:100%; height:100%; opacity:0.1; }
 
-  @keyframes pulseMap {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.5); opacity: 0.5; }
-    100% { transform: scale(1); opacity: 1; }
+  .loc-map {
+    width: 100%;
+    height: 100%;
+    border: none;
+    /* CSS filter trick to make standard google maps fit the cinematic dark/gold theme */
+    filter: grayscale(100%) invert(92%) sepia(50%) hue-rotate(5deg) contrast(1.2);
+    transition: filter 0.4s ease;
+  }
+  .loc-map-wrapper:hover .loc-map {
+    filter: grayscale(80%) invert(92%) sepia(30%) hue-rotate(5deg) contrast(1.1);
   }
 
   @media(max-width:900px){
     .nav { padding:16px 20px; }
-    .loc-hero { padding:120px 20px 60px; }
-    .loc-panel { padding: 60px 20px; min-height: 50vh; }
-    .loc-grid-dec { display: none; }
+    .loc-hero { padding:120px 20px 40px; }
+    .loc-section { padding: 40px 20px 80px; gap: 80px; }
+    .loc-block { grid-template-columns: 1fr; gap: 40px; }
     .loc-actions { flex-direction: column; }
     .btn { width: 100%; }
   }
@@ -252,13 +190,10 @@
   <p class="page-sub">Two elite facilities in Chennai. Built for high-performance training, match simulation, and year-round development.</p>
 </section>
 
-<div class="loc-stack">
+<div class="loc-section">
   
   <!-- Poonamallee -->
-  <div class="loc-panel">
-    <div class="loc-bg-text">POONAMALLEE</div>
-    <div class="loc-grid-dec"></div>
-    
+  <div class="loc-block">
     <div class="loc-content">
       <div class="loc-meta">
         <span>FACILITY 01</span>
@@ -269,28 +204,31 @@
       
       <div class="loc-actions">
         <a href="https://wa.me/919840568137" target="_blank" class="btn btn-primary">Book a Trial</a>
-        <a href="#" class="btn btn-outline">Get Directions</a>
       </div>
+    </div>
+    <div class="loc-map-wrapper">
+      <iframe class="loc-map" src="https://maps.google.com/maps?q=Bowncer+Sportz+Cricket+Academy+Poonamallee&t=&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 
   <!-- Mangadu -->
-  <div class="loc-panel">
-    <div class="loc-bg-text">MANGADU</div>
-    <div class="loc-grid-dec" style="top: 70%; left: 10%; right: auto; animation-delay: 1.5s;"></div>
-    
+  <div class="loc-block">
     <div class="loc-content">
       <div class="loc-meta">
         <span>FACILITY 02</span>
-        <span>CHENNAI WEST</span>
+        <span>MANGADU</span>
       </div>
       <h2 class="loc-name">Mangadu</h2>
       <p class="loc-details">A dedicated high-performance ground optimized for focused technical interventions, personal training (1-on-1s), and specialized junior foundation camps.</p>
       
+      <div class="loc-address">MKS Gardens, 23/2, Kundrathur Main Road,<br>Kamachi Nagar, Mangadu, Chennai 600122</div>
+
       <div class="loc-actions">
         <a href="https://wa.me/919840568137" target="_blank" class="btn btn-primary">Book a Trial</a>
-        <a href="#" class="btn btn-outline">Get Directions</a>
       </div>
+    </div>
+    <div class="loc-map-wrapper">
+      <iframe class="loc-map" src="https://maps.google.com/maps?q=Bowncer+Sportz+Cricket+Academy+Mangadu&t=&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 
