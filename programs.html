@@ -106,7 +106,14 @@
     border-top:1px solid var(--line);
   }
   .modules-container { max-width: 1400px; margin:0 auto; }
-  .modules-header { font-family:'Bebas Neue',sans-serif; font-size:72px; text-align:center; margin-bottom:80px; color:var(--ink); }
+  .modules-header { 
+    font-family:'Bebas Neue',sans-serif; 
+    font-size:clamp(60px,10vw,120px);
+    line-height:0.9; text-transform:uppercase; 
+    text-align:center; margin-bottom:80px; 
+    background: linear-gradient(90deg, #fff 0%, var(--gold) 100%);
+    -webkit-background-clip: text; color: transparent;
+  }
   
   .pillars-wrap {
     display: grid;
