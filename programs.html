@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programs & Training | Bowncer Sportz Cricket Academy</title>
+<meta name="description" content="Cricket coaching programs in Chennai: Junior Foundations, Skill Development, and Match Readiness across TEST, ODI, and T20 formats.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4f1ea;
+    --ink-dim:#b8b2a4;
+    --void:#07080a;
+    --void-2:#0d0f12;
+    --ember:#e2380a;
+    --ember-glow:#ff5622;
+    --gold:#c9a15a;
+    --line: rgba(244,241,234,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Archivo', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  
+  .grain{
+    position:fixed; inset:0; z-index:9000; pointer-events:none; opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .nav {
+    position:absolute; top:0; left:0; right:0; z-index:100;
+    padding:24px 40px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .nav-logo {
+    font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); text-decoration:none;
+    letter-spacing:0.05em; display:flex; align-items:center; gap:12px;
+  }
+  .nav-logo img { width:32px; height:32px; border-radius:50%; }
+  
+  .nav-links { display:flex; gap:24px; }
+  .nav-links a { color:var(--ink); text-decoration:none; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; opacity:0.6; transition:opacity 0.2s; }
+  .nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+
+  .programs-hero {
+    padding: 160px 40px 80px;
+    min-height: 50vh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+    background: radial-gradient(ellipse at 50% 0%, rgba(226,56,10,0.1) 0%, transparent 60%);
+    border-bottom:1px solid var(--line);
+  }
+  .page-title {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,10vw,120px);
+    line-height:0.9; text-transform:uppercase; margin-bottom:24px;
+    background: linear-gradient(90deg, #fff 0%, var(--gold) 100%);
+    -webkit-background-clip: text; color: transparent;
+  }
+  .page-sub {
+    font-size:18px; color:var(--ink-dim); max-width:600px; line-height:1.6;
+  }
+
+  /* Marquee */
+  .formats-marquee {
+    border-bottom:1px solid var(--line);
+    padding:24px 0; overflow:hidden; background:var(--void-2);
+    display:flex; white-space:nowrap;
+  }
+  .formats-track {
+    display:inline-block;
+    animation:marqueeScroll 15s linear infinite;
+  }
+  .format-item {
+    font-family:'Bebas Neue',sans-serif; font-size:40px; color:var(--ember-glow);
+    margin:0 40px; display:inline-flex; align-items:center; gap:40px;
+  }
+  .format-item::after { content:''; display:block; width:8px; height:8px; background:var(--gold); border-radius:50%; }
+  @keyframes marqueeScroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+  /* Grid */
+  .programs-grid {
+    padding:80px 40px; max-width:1200px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:32px;
+  }
+  .prog-card {
+    border:1px solid var(--line);
+    background: rgba(244,241,234,0.02);
+    padding:48px 40px; position:relative;
+    transition:transform 0.4s ease, border-color 0.4s ease;
+  }
+  .prog-card:hover { transform:translateY(-8px); border-color:var(--gold); background:rgba(201,161,90,0.05); }
+  .prog-eyebrow { font-size:11px; color:var(--ember-glow); letter-spacing:0.15em; text-transform:uppercase; font-weight:700; margin-bottom:24px; }
+  .prog-title { font-family:'Bebas Neue',sans-serif; font-size:48px; margin-bottom:16px; letter-spacing:0.02em; line-height:1; }
+  .prog-desc { font-size:16px; color:var(--ink-dim); line-height:1.6; }
+
+  /* Modules List */
+  .modules-section {
+    padding:80px 40px 120px;
+    background:var(--void-2);
+    border-top:1px solid var(--line);
+  }
+  .modules-container { max-width:900px; margin:0 auto; }
+  .modules-header { font-family:'Bebas Neue',sans-serif; font-size:72px; text-align:center; margin-bottom:80px; color:var(--ink); }
+  
+  .module-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:32px 0; border-bottom:1px solid var(--line);
+    transition:padding-left 0.3s ease, border-color 0.3s ease;
+    cursor:default;
+  }
+  .module-row:hover { padding-left:24px; border-bottom-color:var(--gold); }
+  .module-name { font-family:'Bebas Neue',sans-serif; font-size:40px; letter-spacing:0.02em; color:var(--ink); transition:color 0.3s ease; }
+  .module-row:hover .module-name { color:var(--gold); }
+  .module-num { font-size:14px; font-weight:700; color:var(--ink-dim); font-family:monospace; }
+
+  @media(max-width:720px){
+    .nav { padding:16px 20px; }
+    .programs-hero { padding:120px 20px 60px; }
+    .programs-grid { padding:60px 20px; }
+    .prog-card { padding:32px 24px; }
+    .modules-section { padding:60px 20px; }
+    .module-row { padding: 24px 0; }
+    .module-row:hover { padding-left:0; }
+    .module-name { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.webp" alt="Logo">
+    BOWNCER SPORTZ
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="programs.html" class="active">Programs</a>
+  </div>
+</nav>
+
+<section class="programs-hero">
+  <h1 class="page-title">The Curriculum</h1>
+  <p class="page-sub">Skill acquisition, tactical development, and match readiness. Built for players who want to bridge the gap between net practice and match performance.</p>
+</section>
+
+<div class="formats-marquee">
+  <div class="formats-track">
+    <span class="format-item">TEST FORMAT</span>
+    <span class="format-item">ONE DAY INTERNATIONALS (ODI)</span>
+    <span class="format-item">T20 EXPLOSIVENESS</span>
+    <span class="format-item">TEST FORMAT</span>
+    <span class="format-item">ONE DAY INTERNATIONALS (ODI)</span>
+    <span class="format-item">T20 EXPLOSIVENESS</span>
+  </div>
+</div>
+
+<section class="programs-grid">
+  <div class="prog-card">
+    <div class="prog-eyebrow">Age 6+</div>
+    <h3 class="prog-title">Junior Foundations</h3>
+    <p class="prog-desc">Fundamentals and fun-based learning for juniors taking their first step into cricket. Building the right mechanics from day one.</p>
+  </div>
+  <div class="prog-card">
+    <div class="prog-eyebrow">All Ages</div>
+    <h3 class="prog-title">Skill Development</h3>
+    <p class="prog-desc">Skill acquisition and basic technique work across batting, bowling and fielding to create a complete, well-rounded player.</p>
+  </div>
+  <div class="prog-card">
+    <div class="prog-eyebrow">Age 12–18+</div>
+    <h3 class="prog-title">Match Readiness</h3>
+    <p class="prog-desc">Match readiness and tactical development for teens and advanced players. Focus on game awareness and handling pressure.</p>
+  </div>
+  <div class="prog-card">
+    <div class="prog-eyebrow">1-on-1</div>
+    <h3 class="prog-title">Personal Training</h3>
+    <p class="prog-desc">Bespoke technical interventions and intense one-on-one sessions aimed at correcting specific flaws or accelerating development.</p>
+  </div>
+</section>
+
+<section class="modules-section">
+  <div class="modules-container">
+    <h2 class="modules-header">Training Pillars</h2>
+    
+    <div class="module-row">
+      <div class="module-name">Batting Fundamentals</div>
+      <div class="module-num">01</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Bowling Mechanics</div>
+      <div class="module-num">02</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Fielding Drills</div>
+      <div class="module-num">03</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Net Practice</div>
+      <div class="module-num">04</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Match Simulation</div>
+      <div class="module-num">05</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Fitness</div>
+      <div class="module-num">06</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Mental Conditioning</div>
+      <div class="module-num">07</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

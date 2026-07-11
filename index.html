@@ -163,6 +163,24 @@
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 
+  /* Global Nav */
+  .nav {
+    position:absolute; top:0; left:0; right:0; z-index:100;
+    padding:24px 40px;
+    display:flex; justify-content:space-between; align-items:center;
+    opacity: 0;
+    animation: fadeUp 1s ease 2.5s forwards;
+  }
+  .nav-logo {
+    font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); text-decoration:none;
+    letter-spacing:0.05em; display:flex; align-items:center; gap:12px;
+  }
+  .nav-logo img { width:32px; height:32px; border-radius:50%; }
+  
+  .nav-links { display:flex; gap:24px; }
+  .nav-links a { color:var(--ink); text-decoration:none; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; opacity:0.6; transition:opacity 0.2s; }
+  .nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+
   /* ═══════════════════════════════════════════════
      SECTION 1 — ACADEMY HERO
      ═══════════════════════════════════════════════ */
@@ -595,7 +613,7 @@
     .founder-portrait::after { display:none; }
   }
 
-  /* Reduced motion */
+    /* Reduced motion */
   @media (prefers-reduced-motion:reduce) {
     *, *::before, *::after {
       animation-duration:0.01ms !important;
@@ -603,12 +621,24 @@
       transition-duration:0.01ms !important;
     }
     #intro-cinematic { display:none; }
+    .nav { opacity:1; animation:none; }
   }
 </style>
 </head>
 <body>
 
 <div class="grain"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.webp" alt="Logo">
+    BOWNCER SPORTZ
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="programs.html">Programs</a>
+  </div>
+</nav>
 
 <!-- ═══ INTRO CINEMATIC ═══ -->
 <div id="intro-cinematic">
