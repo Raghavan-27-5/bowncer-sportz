@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Bowncer Sportz</title>
+<meta name="description" content="Meet The Architect: S. Thiyagarajan. Elite cricket coaching and Wall of Fame at Bowncer Sportz.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#f4f1ea;
+    --ink-dim:#b8b2a4;
+    --void:#07080a;
+    --void-2:#0d0f12;
+    --ember:#e2380a;
+    --ember-glow:#ff5622;
+    --gold:#c9a15a;
+    --line: rgba(244,241,234,0.14);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Archivo', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Nav */
+  .nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:24px 40px; background:linear-gradient(180deg, var(--void) 0%, transparent 100%);
+  }
+  .nav-logo {
+    display:flex; align-items:center; gap:12px;
+    font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:0.05em; color:var(--ink); text-decoration:none;
+  }
+  .nav-logo img { width:32px; height:auto; }
+  .nav-links { display:flex; gap:32px; }
+  .nav-links a {
+    color:var(--ink-dim); text-decoration:none; font-size:14px; text-transform:uppercase;
+    letter-spacing:0.1em; transition:color 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  .hamburger .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--gold);
+    transition: all 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger { display: flex; }
+    .nav-links {
+      position: fixed; top: 0; right: -100%; width: 100vw; height: 100vh;
+      background: rgba(10, 8, 6, 0.98); backdrop-filter: blur(10px);
+      flex-direction: column; justify-content: center; align-items: center;
+      transition: right 0.4s ease; z-index: 1000;
+    }
+    .nav-links.active { right: 0; }
+    .nav-links a { font-size: 24px; margin: 16px 0; }
+    .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.active .bar:nth-child(2) { opacity: 0; }
+    .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+  }
+
+  /* About Hero */
+  .about-hero {
+    padding: 180px 40px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-bg {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw; height: 60vw;
+    background: radial-gradient(circle, rgba(201,161,90,0.1) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  .architect-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1200px;
+    width: 100%;
+    z-index: 10;
+    align-items: center;
+  }
+
+  .architect-image {
+    position: relative;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--void-2) 0%, #1a1510 100%);
+    border: 1px solid rgba(201,161,90, 0.1);
+    overflow: hidden;
+    height: 700px;
+  }
+  .architect-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(20%) contrast(1.1);
+    transition: transform 0.6s ease;
+  }
+  .architect-image:hover img {
+    transform: scale(1.05);
+  }
+  .architect-image::after {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(0deg, var(--void) 0%, transparent 40%);
+  }
+  
+  .architect-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .architect-eyebrow {
+    font-family: monospace; font-size: 14px; color: var(--gold);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .architect-eyebrow::before {
+    content: ''; width: 40px; height: 1px; background: var(--gold);
+  }
+
+  .architect-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 8vw, 100px);
+    line-height: 0.9;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .architect-title span {
+    display: block;
+    color: var(--gold);
+  }
+
+  .architect-bio {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    max-width: 500px;
+  }
+
+  .credentials-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+    border-top: 1px solid var(--line);
+    padding-top: 32px;
+  }
+  
+  .credential-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 18px;
+  }
+  .credential-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(201,161,90, 0.1);
+    border: 1px solid rgba(201,161,90, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+  }
+
+  /* Wall of Fame */
+  .roster-section {
+    padding: 120px 40px;
+    background: #0a0806;
+    position: relative;
+    border-top: 1px solid var(--line);
+  }
+
+  .roster-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .roster-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 72px);
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .roster-header p {
+    color: var(--gold);
+    font-family: monospace;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+  }
+
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .player-card {
+    background: var(--void-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .player-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+  }
+
+  .player-img {
+    height: 300px;
+    background: #111;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .player-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: grayscale(80%) sepia(20%) hue-rotate(5deg);
+    transition: filter 0.4s ease;
+  }
+  .player-card:hover .player-img img {
+    filter: grayscale(0%) sepia(0%);
+  }
+  .player-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, var(--void-2) 100%);
+  }
+
+  .player-info {
+    padding: 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .player-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .player-cred {
+    color: var(--gold);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .roster-stat {
+    text-align: center;
+    margin-top: 80px;
+    padding: 40px;
+    border: 1px solid rgba(201,161,90, 0.2);
+    background: radial-gradient(ellipse at center, rgba(201,161,90,0.05) 0%, transparent 70%);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .roster-stat h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  /* Foundation Section */
+  .foundation-section {
+    padding: 120px 40px;
+    text-align: center;
+    background: var(--void);
+  }
+  .foundation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .foundation-block {
+    padding: 40px;
+    border: 1px solid var(--line);
+    background: var(--void-2);
+  }
+  .f-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .f-label {
+    color: var(--ink-dim);
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Mobile Responsive */
+  @media(max-width: 900px) {
+    .architect-grid { grid-template-columns: 1fr; gap: 40px; }
+    .architect-image { height: 500px; order: 1; }
+    .architect-content { order: 2; }
+    .foundation-grid { grid-template-columns: 1fr; }
+  }
+
+  .fab-whatsapp {
+    position: fixed; bottom: 32px; right: 32px; width: 64px; height: 64px;
+    background: var(--gold); color: var(--void); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(201,161,90, 0.4); z-index: 999; transition: all 0.3s ease;
+  }
+  .fab-whatsapp svg { width: 32px; height: 32px; }
+  .fab-whatsapp:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 8px 30px rgba(201,161,90, 0.6); background: #fff; }
+  @media(max-width: 768px) { .fab-whatsapp { bottom: 24px; right: 24px; width: 56px; height: 56px; } }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.webp" alt="Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Toggle menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="programs.html">Programs</a>
+      <a href="locations.html">Locations</a>
+    </div>
+  </nav>
+
+  <!-- THE ARCHITECT -->
+  <section class="about-hero">
+    <div class="hero-bg"></div>
+    <div class="architect-grid">
+      <div class="architect-content">
+        <div class="architect-eyebrow">The Architect</div>
+        <h1 class="architect-title">S. Thiyagarajan <span>Founder & Director</span></h1>
+        <p class="architect-bio">
+          Built from the inside out. S. Thiyagarajan brings elite professional playing experience and global coaching pedigree to Bowncer Sportz, ensuring every player receives world-class tactical and technical instruction.
+        </p>
+        <div class="credentials-list">
+          <div class="credential-item">
+            <div class="credential-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg>
+            </div>
+            <div>Ex-IPL Player — Royal Challengers Bangalore (RCB)</div>
+          </div>
+          <div class="credential-item">
+            <div class="credential-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4 0-8 2-8 6v2h16v-2c0-4-4-6-8-6z"/></svg>
+            </div>
+            <div>ICC & BCCI Certified Coach (Level 1)</div>
+          </div>
+          <div class="credential-item">
+            <div class="credential-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+            </div>
+            <div>Global Coaching Footprint (USA, UK, Dubai, Singapore, Malaysia)</div>
+          </div>
+        </div>
+      </div>
+      <div class="architect-image">
+        <!-- Placeholder for the RCB photo -->
+        <!-- TODO: Swap this src with the real RCB jersey asset once provided -->
+        <img src="assets/thiyagarajan_rcb.webp" alt="S. Thiyagarajan in RCB Jersey" onerror="this.src='assets/thiyagarajan_hero_graded.webp';">
+      </div>
+    </div>
+  </section>
+
+  <!-- WALL OF FAME -->
+  <section class="roster-section">
+    <div class="roster-header">
+      <h2>The Legacy</h2>
+      <p>Players Developed & Elite Alumni</p>
+    </div>
+    
+    <div class="roster-grid">
+      <!-- Player 1 -->
+      <div class="player-card">
+        <div class="player-img">
+          <!-- Placeholder image -->
+          <img src="assets/arun_karthik.webp" alt="K.B. Arun Karthik" onerror="this.style.display='none';">
+        </div>
+        <div class="player-info">
+          <div class="player-name">K.B. Arun Karthik</div>
+          <div class="player-cred">IPL Player (RCB)</div>
+        </div>
+      </div>
+      
+      <!-- Player 2 -->
+      <div class="player-card">
+        <div class="player-img">
+          <img src="assets/r_karthikeyan.webp" alt="R. Karthikeyan" onerror="this.style.display='none';">
+        </div>
+        <div class="player-info">
+          <div class="player-name">R. Karthikeyan</div>
+          <div class="player-cred">IPL Player</div>
+        </div>
+      </div>
+
+      <!-- Player 3 -->
+      <div class="player-card">
+        <div class="player-img">
+          <img src="assets/sanjay_stanley.webp" alt="Sanjay Stanley" onerror="this.style.display='none';">
+        </div>
+        <div class="player-info">
+          <div class="player-name">Sanjay Stanley</div>
+          <div class="player-cred">USA Captain</div>
+        </div>
+      </div>
+
+      <!-- Player 4 -->
+      <div class="player-card">
+        <div class="player-img">
+          <img src="assets/shiva_vashist.webp" alt="Shiva Vashist" onerror="this.style.display='none';">
+        </div>
+        <div class="player-info">
+          <div class="player-name">Shiva Vashist</div>
+          <div class="player-cred">USA U-19 National Team Captain</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="roster-stat">
+      <h3>More than 20 players represented for Nationals</h3>
+    </div>
+  </section>
+
+  <!-- FOUNDATION / TRUST MARKERS -->
+  <section class="foundation-section">
+    <div class="foundation-grid">
+      <div class="foundation-block">
+        <script>
+          const founded = new Date('2017-10-30');
+          const now = new Date();
+          let years = now.getFullYear() - founded.getFullYear();
+          if(now.getMonth() < founded.getMonth() || (now.getMonth() === founded.getMonth() && now.getDate() < founded.getDate())) {
+            years--;
+          }
+          document.write(`<div class="f-num">${years}+</div>`);
+        </script>
+        <div class="f-label">Years of Excellence</div>
+      </div>
+      <div class="foundation-block">
+        <div class="f-num">5.0 ★</div>
+        <div class="f-label">Verified Rating on Justdial</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAB -->
+  <a href="https://wa.me/919840568137" class="fab-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+    </svg>
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const hamburger = document.querySelector('.hamburger');
+      const navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          navLinks.classList.toggle('active');
+          document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        });
+      }
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
