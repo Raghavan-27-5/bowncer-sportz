@@ -228,7 +228,8 @@
 
   .roster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(280px, 400px));
+    justify-content: center;
     gap: 32px;
     max-width: 1200px;
     margin: 0 auto;
@@ -368,6 +369,7 @@
     .architect-image { height: 500px; order: 1; }
     .architect-content { order: 2; }
     .foundation-grid { grid-template-columns: 1fr; }
+    .roster-grid { grid-template-columns: 1fr; }
   }
 
   .fab-whatsapp {
@@ -451,7 +453,17 @@
       <!-- Player 1 -->
       <div class="player-card">
         <div class="player-img">
-          <!-- Placeholder image -->
+          <img src="assets/shiva_vashist.webp" alt="Shiva Vashist" onerror="this.style.display='none';">
+        </div>
+        <div class="player-info">
+          <div class="player-name">Shiva Vashist</div>
+          <div class="player-cred">USA U-19 National Team Captain</div>
+        </div>
+      </div>
+      
+      <!-- Player 2 -->
+      <div class="player-card">
+        <div class="player-img">
           <img src="assets/arun_karthik.webp" alt="K.B. Arun Karthik" onerror="this.style.display='none';">
         </div>
         <div class="player-info">
@@ -459,8 +471,8 @@
           <div class="player-cred">IPL Player (RCB)</div>
         </div>
       </div>
-      
-      <!-- Player 2 -->
+
+      <!-- Player 3 -->
       <div class="player-card">
         <div class="player-img">
           <img src="assets/r_karthikeyan.webp" alt="R. Karthikeyan" onerror="this.style.display='none';">
@@ -471,7 +483,7 @@
         </div>
       </div>
 
-      <!-- Player 3 -->
+      <!-- Player 4 -->
       <div class="player-card">
         <div class="player-img">
           <img src="assets/sanjay_stanley.webp" alt="Sanjay Stanley" onerror="this.style.display='none';">
@@ -479,17 +491,6 @@
         <div class="player-info">
           <div class="player-name">Sanjay Stanley</div>
           <div class="player-cred">USA Captain</div>
-        </div>
-      </div>
-
-      <!-- Player 4 -->
-      <div class="player-card">
-        <div class="player-img">
-          <img src="assets/shiva_vashist.webp" alt="Shiva Vashist" onerror="this.style.display='none';">
-        </div>
-        <div class="player-info">
-          <div class="player-name">Shiva Vashist</div>
-          <div class="player-cred">USA U-19 National Team Captain</div>
         </div>
       </div>
     </div>
