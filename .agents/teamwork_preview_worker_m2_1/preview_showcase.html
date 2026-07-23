@@ -692,14 +692,14 @@
   }
 
 </style>
-</head>
+<style>#intro-cinematic { display: none !important; } .showcase-reveal { opacity: 1 !important; transform: none !important; }</style></head>
 <body>
 
 <div class="grain"></div>
 
 <nav class="nav">
   <a href="index.html" class="nav-logo">
-    <img src="assets/logo.webp" alt="Logo">
+    <img src="../../assets/logo.webp" alt="Logo">
     BOWNCER SPORTZ
   </a>
   
@@ -712,7 +712,6 @@
     <a href="index.html" class="active">Home</a>
     <a href="about.html">About</a>
     <a href="programs.html">Programs</a>
-    <a href="media.html">Media</a>
     <a href="locations.html">Locations</a>
   </div>
 </nav>
@@ -766,7 +765,7 @@
 
   <div class="academy-center">
     <div class="logo-anchor">
-      <img src="assets/logo.webp" alt="Bowncer Sportz Cricket Academy logo" decoding="async">
+      <img src="../../assets/logo.webp" alt="Bowncer Sportz Cricket Academy logo" decoding="async">
     </div>
 
     <div class="academy-text-stack">
@@ -875,7 +874,7 @@
       <span class="eyebrow-name">S. Thiyagarajan</span>
       <span class="eyebrow-title">Ex-IPL (RCB) Player & Founder of Bowncer Sportz Cricket Academy</span>
     </div>
-    <img src="assets/thiyagarajan_hero_graded.webp" alt="S. Thiyagarajan, Founder and Director of Bowncer Sportz Cricket Academy" decoding="async" loading="lazy">
+    <img src="../../assets/thiyagarajan_hero_graded.webp" alt="S. Thiyagarajan, Founder and Director of Bowncer Sportz Cricket Academy" decoding="async" loading="lazy">
   </div>
 </section>
 
@@ -972,6 +971,552 @@
   .dash-grid { grid-template-columns: 1fr; }
 }
 
+/* ═══════════════════════════════════════════════
+   SECTION 3.5 — YOUTUBE MEDIA SHOWCASE
+   ═══════════════════════════════════════════════ */
+.media-showcase-section {
+  position: relative;
+  padding: clamp(80px, 10vh, 140px) clamp(24px, 5vw, 80px);
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(226,56,10,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,161,90,0.05) 0%, transparent 50%),
+    linear-gradient(180deg, var(--void) 0%, var(--void-2) 50%, var(--void) 100%);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.showcase-header {
+  max-width: 800px;
+  margin-bottom: clamp(40px, 6vh, 64px);
+}
+
+.showcase-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.showcase-eyebrow .eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ember-glow);
+  box-shadow: 0 0 10px var(--ember-glow);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
+}
+
+.showcase-eyebrow .eyebrow-text {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.showcase-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 7vw, 96px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.showcase-title .title-accent {
+  background: linear-gradient(92deg, var(--ink) 20%, var(--ember-glow) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.showcase-desc {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.6;
+  color: var(--ink-dim);
+  max-width: 54ch;
+}
+
+/* Asymmetrical Showcase Grid */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(24px, 3vw, 40px);
+  align-items: start;
+}
+
+/* Featured Stage Card */
+.video-stage-card {
+  position: relative;
+  background: rgba(13, 15, 18, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(7, 8, 10, 0.6);
+  transition: border-color 0.35s cubic-bezier(.16,1,.3,1);
+}
+
+.video-stage-card:hover {
+  border-color: rgba(226, 56, 10, 0.5);
+}
+
+.video-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--void-2);
+  overflow: hidden;
+}
+
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(.16,1,.3,1), filter 0.6s ease;
+  filter: brightness(0.9) contrast(1.05);
+}
+
+.video-stage-card:hover .video-thumb {
+  transform: scale(1.03);
+  filter: brightness(0.98) contrast(1.1);
+}
+
+/* Play Button & Overlay */
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 8, 10, 0.35);
+  transition: background 0.35s ease;
+}
+
+.video-stage-card:hover .video-overlay {
+  background: rgba(7, 8, 10, 0.15);
+}
+
+.play-btn {
+  position: relative;
+  width: clamp(60px, 6vw, 80px);
+  height: clamp(60px, 6vw, 80px);
+  border-radius: 50%;
+  background: var(--ember);
+  border: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(226, 56, 10, 0.5);
+  transition: transform 0.35s cubic-bezier(.16,1,.3,1), background 0.35s ease, box-shadow 0.35s ease;
+}
+
+.play-halo {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 86, 34, 0.5);
+  animation: haloPulse 2.5s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes haloPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.play-btn:hover, .video-stage-card:hover .play-btn {
+  transform: scale(1.12);
+  background: var(--ember-glow);
+  box-shadow: 0 12px 40px rgba(255, 86, 34, 0.8);
+}
+
+.play-icon {
+  width: 30px;
+  height: 30px;
+  margin-left: 3px;
+}
+
+/* Badges */
+.stage-badge-group {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  z-index: 2;
+}
+
+.featured-badge {
+  background: var(--gold);
+  color: var(--void);
+  font-family: 'Archivo', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  box-shadow: 0 4px 15px rgba(201,161,90, 0.4);
+}
+
+.pending-badge {
+  background: rgba(13, 15, 18, 0.85);
+  backdrop-filter: blur(6px);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  font-family: 'Archivo', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  padding: 5px 9px;
+  border-radius: 2px;
+}
+
+.duration-badge {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(7, 8, 10, 0.85);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  z-index: 2;
+}
+
+/* Video Stage Meta */
+.video-meta {
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.meta-tag {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.meta-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 2.5vw, 40px);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.meta-sub {
+  font-family: 'Archivo', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  margin-bottom: 16px;
+}
+
+.meta-coach-note {
+  font-family: 'Archivo', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--gold);
+  background: rgba(201, 161, 90, 0.08);
+  border-left: 3px solid var(--gold);
+  padding: 10px 14px;
+  border-radius: 0 4px 4px 0;
+}
+
+.coach-note-label {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-right: 6px;
+}
+
+/* Sidebar Reel */
+.showcase-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-heading {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 4px;
+}
+
+.video-card {
+  display: flex;
+  gap: 14px;
+  padding: 12px;
+  background: rgba(13, 15, 18, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+.video-card:hover {
+  border-color: rgba(226, 56, 10, 0.6);
+  transform: translateX(4px);
+  background: rgba(13, 15, 18, 0.9);
+}
+
+.video-card.is-active {
+  border-color: var(--ember);
+  background: rgba(226, 56, 10, 0.08);
+  box-shadow: 0 0 20px rgba(226, 56, 10, 0.2);
+}
+
+.video-card-thumb {
+  position: relative;
+  width: 120px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--void-2);
+}
+
+.video-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.video-card:hover .video-card-thumb img {
+  transform: scale(1.06);
+}
+
+.mini-play-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 8, 10, 0.4);
+  color: var(--ink);
+  transition: background 0.3s ease;
+}
+
+.mini-play-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.video-card:hover .mini-play-icon {
+  background: rgba(226, 56, 10, 0.6);
+}
+
+.mini-duration {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(7, 8, 10, 0.85);
+  color: var(--ink);
+  font-family: 'Archivo', sans-serif;
+  font-size: 9px;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.video-card-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.card-tag {
+  font-family: 'Archivo', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-transform: uppercase;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-pending {
+  font-family: 'Archivo', sans-serif;
+  font-size: 8px;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+
+/* Channel CTA Card */
+.channel-card {
+  margin-top: 8px;
+  background: radial-gradient(circle at top left, rgba(226, 56, 10, 0.12) 0%, rgba(13, 15, 18, 0.7) 100%);
+  border: 1px dashed rgba(226, 56, 10, 0.4);
+  padding: 20px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.channel-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.channel-icon {
+  color: var(--ember-glow);
+  flex-shrink: 0;
+}
+
+.channel-titles h5 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  line-height: 0.95;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.channel-sub {
+  font-family: 'Archivo', sans-serif;
+  font-size: 9px;
+  font-style: italic;
+  color: var(--gold);
+}
+
+.channel-desc {
+  font-family: 'Archivo', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+.channel-cta-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.btn--sm {
+  padding: 10px 18px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* Offline & Local File Fallback Card */
+.video-offline-card {
+  position: absolute;
+  inset: 0;
+  background: var(--void-2);
+  border: 1px solid var(--line);
+  padding: clamp(24px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+.offline-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(226, 56, 10, 0.12);
+  border: 1px solid var(--ember);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: var(--ember-glow);
+}
+
+.offline-icon-wrap svg {
+  width: 28px;
+  height: 28px;
+}
+
+.offline-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.offline-text {
+  font-family: 'Archivo', sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: 48ch;
+  margin-bottom: 20px;
+}
+
+.offline-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Reveal Observer Animation */
+.showcase-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+}
+
+.showcase-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 900px) {
+  .showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+/* END YOUTUBE MEDIA SHOWCASE */
 </style>
 
 <!-- SECTION 3 — MANIFESTO -->
@@ -984,6 +1529,162 @@
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════
+     SECTION 3.5 — YOUTUBE MEDIA SHOWCASE
+     ═══════════════════════════════════════════ -->
+<section class="media-showcase-section" id="media-showcase">
+  <div class="showcase-header showcase-reveal">
+    <div class="showcase-eyebrow">
+      <span class="eyebrow-dot"></span>
+      <span class="eyebrow-text">ON-FIELD EVIDENCE · ACADEMY MEDIA</span>
+    </div>
+    <h2 class="showcase-title">
+      THE PROCESS <span class="title-accent">IN MOTION.</span>
+    </h2>
+    <p class="showcase-desc">
+      Real match footage, net practice breakdowns, and high-performance drills.
+      Witness the technical standards behind our coaching.
+    </p>
+  </div>
+
+  <!-- Asymmetrical Showcase Grid -->
+  <div class="showcase-grid showcase-reveal">
+    
+    <!-- Main Featured Stage / Facade Player Card (Dominant ~65% Width) -->
+    <article class="video-stage-card" id="video-stage-card">
+      <div class="video-thumb-wrap" id="video-thumb-wrap">
+        <img 
+          src="../../assets/showcase_thumb_featured.webp" 
+          alt="Bowncer Sportz Net Practice & Match Simulation Showcase" 
+          loading="lazy" 
+          decoding="async"
+          class="video-thumb"
+          id="stage-poster-img"
+        >
+        <div class="video-overlay" id="stage-overlay">
+          <button class="play-btn" id="stage-play-btn" aria-label="Play Featured Video: Pro Batting Mechanics & Fast Bowling Analysis">
+            <span class="play-halo"></span>
+            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="stage-badge-group">
+          <span class="featured-badge" id="stage-featured-tag">FEATURED MATCH ANALYSIS</span>
+          <span class="pending-badge" title="Pending Verification">[PENDING VERIFICATION]</span>
+        </div>
+        <span class="duration-badge" id="stage-duration">03:45</span>
+      </div>
+      <div class="video-meta">
+        <div class="meta-tag" id="stage-category">Net Practice & Match Simulation</div>
+        <h3 class="meta-title" id="stage-title">Pro Batting Mechanics & Fast Bowling Analysis</h3>
+        <p class="meta-sub" id="stage-desc">High-speed camera breakdowns of stance, trigger movement, and bowling release at Bowncer Sportz nets.</p>
+        <div class="meta-coach-note" id="stage-coach-note">
+          <span class="coach-note-label">COACHING FOCUS:</span> Weight transfer off the back foot against 135+ kph delivery & wrist alignment at release.
+        </div>
+      </div>
+    </article>
+
+    <!-- Secondary Video Stack / Sidebar Reel (35% Width) -->
+    <div class="showcase-sidebar">
+      <div class="sidebar-heading">PLAYLIST REEL</div>
+      
+      <!-- Secondary Clip 1 (Featured active by default in stage, but clickable thumbnail card) -->
+      <article class="video-card is-active" 
+               data-youtube-id="[PENDING VERIFICATION]"
+               data-poster="../../assets/showcase_thumb_featured.webp"
+               data-title="Pro Batting Mechanics & Fast Bowling Analysis"
+               data-category="Net Practice & Match Simulation"
+               data-duration="03:45"
+               data-featured-tag="FEATURED MATCH ANALYSIS"
+               data-desc="High-speed camera breakdowns of stance, trigger movement, and bowling release at Bowncer Sportz nets."
+               data-coach-note="Weight transfer off the back foot against 135+ kph delivery & wrist alignment at release.">
+        <div class="video-card-thumb">
+          <img src="../../assets/showcase_thumb_featured.webp" alt="Pro Batting Mechanics & Fast Bowling Analysis" loading="lazy" decoding="async">
+          <div class="mini-play-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="mini-duration">03:45</span>
+        </div>
+        <div class="video-card-meta">
+          <div class="card-tag">NET PRACTICE</div>
+          <h4 class="card-title">Pro Batting Mechanics & Fast Bowling Analysis</h4>
+          <span class="card-pending">[PENDING VERIFICATION]</span>
+        </div>
+      </article>
+
+      <!-- Secondary Clip 2 -->
+      <article class="video-card" 
+               data-youtube-id="[PENDING VERIFICATION]"
+               data-poster="../../assets/showcase_thumb_2.webp"
+               data-title="Spin Bowling Flight & Variation Masterclass"
+               data-category="Drill Spotlight"
+               data-duration="02:10"
+               data-featured-tag="DRILL SPOTLIGHT"
+               data-desc="In-depth analysis of wrist position at release, seam alignment, and flight trajectory off the pitch."
+               data-coach-note="BCCI Level 1 drill protocol for consistent revolutions and dip control.">
+        <div class="video-card-thumb">
+          <img src="../../assets/showcase_thumb_2.webp" alt="Spin Bowling Flight & Variation Masterclass" loading="lazy" decoding="async">
+          <div class="mini-play-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="mini-duration">02:10</span>
+        </div>
+        <div class="video-card-meta">
+          <div class="card-tag">DRILL SPOTLIGHT</div>
+          <h4 class="card-title">Spin Bowling Flight & Variation Masterclass</h4>
+          <span class="card-pending">[PENDING VERIFICATION]</span>
+        </div>
+      </article>
+
+      <!-- Secondary Clip 3 -->
+      <article class="video-card" 
+               data-youtube-id="[PENDING VERIFICATION]"
+               data-poster="../../assets/showcase_thumb_3.webp"
+               data-title="Agility, Catching & Reflex Conditioning for Kids"
+               data-category="Junior Foundations"
+               data-duration="01:50"
+               data-featured-tag="JUNIOR FOUNDATIONS"
+               data-desc="Fundamental technique, hand-eye coordination, and fun-based skill acquisition for junior players aged 6+."
+               data-coach-note="Movement fundamentals, soft hands catching, and rapid reflex drills.">
+        <div class="video-card-thumb">
+          <img src="../../assets/showcase_thumb_3.webp" alt="Agility, Catching & Reflex Conditioning for Kids" loading="lazy" decoding="async">
+          <div class="mini-play-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="mini-duration">01:50</span>
+        </div>
+        <div class="video-card-meta">
+          <div class="card-tag">JUNIOR FOUNDATIONS</div>
+          <h4 class="card-title">Agility, Catching & Reflex Conditioning for Kids</h4>
+          <span class="card-pending">[PENDING VERIFICATION]</span>
+        </div>
+      </article>
+
+      <!-- Official Channel / WhatsApp CTA Card -->
+      <div class="channel-card">
+        <div class="channel-header-row">
+          <div class="channel-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </div>
+          <div class="channel-titles">
+            <h5>OFFICIAL ACADEMY MEDIA</h5>
+            <span class="channel-sub">[PENDING VERIFICATION]</span>
+          </div>
+        </div>
+        <p class="channel-desc">Subscribe for weekly coaching breakdowns, match highlights & drill tutorials from Coach S. Thiyagarajan.</p>
+        <div class="channel-cta-row">
+          <a href="https://wa.me/919840568137?text=Hi%20Bowncer%20Sportz,%20I%20am%20interested%20in%20video%20highlights%20and%20coaching%20sessions." target="_blank" rel="noopener" class="btn btn--ember btn--sm">
+            WhatsApp Media Team
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- SECTION 4 — PATHWAY TO PRO -->
 <section class="pathway-section">
@@ -1122,6 +1823,140 @@
   }
 </script>
 
+<script>
+  // YouTube Media Showcase Facade & Playlist Interactivity
+  document.addEventListener('DOMContentLoaded', function() {
+    var showcaseEls = document.querySelectorAll('.showcase-reveal');
+    if ('IntersectionObserver' in window) {
+      var sObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            sObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      showcaseEls.forEach(function(el) { sObs.observe(el); });
+    } else {
+      showcaseEls.forEach(function(el) { el.classList.add('is-visible'); });
+    }
+
+    var thumbWrap = document.getElementById('video-thumb-wrap');
+    var stageTitle = document.getElementById('stage-title');
+    var stageCategory = document.getElementById('stage-category');
+    var stageDesc = document.getElementById('stage-desc');
+    var stageCoachNote = document.getElementById('stage-coach-note');
+    var videoCards = document.querySelectorAll('#media-showcase .video-card');
+
+    function isOfflineOrFileProtocol() {
+      var isFile = window.location.protocol === 'file:';
+      var isOffline = typeof navigator.onLine !== 'undefined' && !navigator.onLine;
+      return isFile || isOffline;
+    }
+
+    function resetStageToPoster(cardEl) {
+      if (!cardEl || !thumbWrap) return;
+      var poster = cardEl.getAttribute('data-poster');
+      var title = cardEl.getAttribute('data-title');
+      var category = cardEl.getAttribute('data-category');
+      var desc = cardEl.getAttribute('data-desc');
+      var note = cardEl.getAttribute('data-coach-note');
+      var duration = cardEl.getAttribute('data-duration');
+      var tag = cardEl.getAttribute('data-featured-tag');
+
+      thumbWrap.innerHTML = '';
+      
+      var posterImg = document.createElement('img');
+      posterImg.src = poster;
+      posterImg.alt = title;
+      posterImg.className = 'video-thumb';
+      posterImg.id = 'stage-poster-img';
+      posterImg.setAttribute('loading', 'lazy');
+      posterImg.setAttribute('decoding', 'async');
+
+      var stageOverlay = document.createElement('div');
+      stageOverlay.className = 'video-overlay';
+      stageOverlay.id = 'stage-overlay';
+      stageOverlay.innerHTML = '<button class="play-btn" id="stage-play-btn" aria-label="Play Video: ' + title + '"><span class="play-halo"></span><svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>';
+
+      var badgeGroup = document.createElement('div');
+      badgeGroup.className = 'stage-badge-group';
+      badgeGroup.innerHTML = '<span class="featured-badge" id="stage-featured-tag">' + (tag || 'ACADEMY MEDIA') + '</span><span class="pending-badge" title="Pending Verification">[PENDING VERIFICATION]</span>';
+
+      var durationEl = document.createElement('span');
+      durationEl.className = 'duration-badge';
+      durationEl.id = 'stage-duration';
+      durationEl.textContent = duration;
+
+      thumbWrap.appendChild(posterImg);
+      thumbWrap.appendChild(stageOverlay);
+      thumbWrap.appendChild(badgeGroup);
+      thumbWrap.appendChild(durationEl);
+
+      if (stageTitle) stageTitle.textContent = title;
+      if (stageCategory) stageCategory.textContent = category;
+      if (stageDesc) stageDesc.textContent = desc;
+      if (stageCoachNote) {
+        stageCoachNote.innerHTML = '<span class="coach-note-label">COACHING FOCUS:</span> ' + note;
+      }
+
+      var playBtn = document.getElementById('stage-play-btn');
+      if (playBtn) {
+        playBtn.addEventListener('click', handlePlayClick);
+      }
+    }
+
+    function handlePlayClick(e) {
+      if (e) e.stopPropagation();
+      var activeCard = document.querySelector('#media-showcase .video-card.is-active');
+      var youtubeId = activeCard ? activeCard.getAttribute('data-youtube-id') : '[PENDING VERIFICATION]';
+
+      if (isOfflineOrFileProtocol() || !youtubeId || youtubeId.indexOf('[PENDING') !== -1) {
+        thumbWrap.innerHTML = 
+          '<div class="video-offline-card">' +
+            '<div class="offline-icon-wrap">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                '<path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.55M5 5a10.94 10.94 0 00-4 7.55M9.88 9.88a4.96 4.96 0 00-1.88 2.67M16 12.55a4.96 4.96 0 00-.56-1.55"></path>' +
+              '</svg>' +
+            '</div>' +
+            '<h4 class="offline-heading">ONLINE STREAMING REQUIRED</h4>' +
+            '<p class="offline-text">YouTube embeds require an active connection and verified media ID. All coaching details, session info, and trial registrations are available offline via WhatsApp.</p>' +
+            '<div class="offline-cta-group">' +
+              '<a href="https://wa.me/919840568137?text=Hi%20Bowncer%20Sportz,%20I%20am%20interested%20in%20video%20highlights%20and%20coaching%20sessions." target="_blank" class="btn btn--ember btn--sm">Chat on WhatsApp (+91 98405 68137)</a>' +
+              '<button class="btn btn--outline btn--sm" id="reset-facade-btn">Back to Poster</button>' +
+            '</div>' +
+          '</div>';
+
+        var resetBtn = document.getElementById('reset-facade-btn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', function() {
+            var curCard = document.querySelector('#media-showcase .video-card.is-active') || videoCards[0];
+            resetStageToPoster(curCard);
+          });
+        }
+      } else {
+        thumbWrap.innerHTML = 
+          '<iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(youtubeId) + '?autoplay=1&rel=0" ' +
+          'title="YouTube video player" frameborder="0" ' +
+          'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+          'allowfullscreen style="width:100%;height:100%;border:none;"></iframe>';
+      }
+    }
+
+    videoCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        videoCards.forEach(function(c) { c.classList.remove('is-active'); });
+        this.classList.add('is-active');
+        resetStageToPoster(this);
+      });
+    });
+
+    var initialPlayBtn = document.getElementById('stage-play-btn');
+    if (initialPlayBtn) {
+      initialPlayBtn.addEventListener('click', handlePlayClick);
+    }
+  });
+</script>
 
 <!-- Floating WhatsApp Button -->
 <a href="https://wa.me/919840568137?text=Hi%20Bowncer%20Sportz,%20I%20would%20like%20more%20information." target="_blank" class="fab-whatsapp" aria-label="Chat on WhatsApp">

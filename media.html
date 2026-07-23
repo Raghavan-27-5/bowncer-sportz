@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Official Media — Bowncer Sportz Cricket Academy</title>
+<meta name="description" content="Watch official media, coaching breakdowns, and highlights from Bowncer Sportz Cricket Academy.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#f4f1ea;
+    --ink-dim:#b8b2a4;
+    --void:#07080a;
+    --void-2:#0d0f12;
+    --ember:#e2380a;
+    --ember-glow:#ff5622;
+    --gold:#c9a15a;
+    --line: rgba(244,241,234,0.14);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Archivo', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .grain{
+    position:fixed; inset:0;
+    z-index:9000;
+    pointer-events:none;
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* Global Nav */
+  .nav {
+    position:absolute; top:0; left:0; right:0; z-index:100;
+    padding:24px 40px;
+    display:flex; justify-content:space-between; align-items:center;
+    animation: fadeUp 1s ease forwards;
+  }
+  .nav-logo {
+    font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); text-decoration:none;
+    letter-spacing:0.05em; display:flex; align-items:center; gap:12px;
+  }
+  .nav-logo img { width:32px; height:32px; border-radius:50%; }
+  
+  .nav-links { display:flex; gap:24px; }
+  .nav-links a { color:var(--ink); text-decoration:none; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; opacity:0.6; transition:opacity 0.2s; }
+  .nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Media Hero Section */
+  .media-hero {
+    position:relative;
+    padding: clamp(140px, 15vh, 200px) clamp(24px, 6vw, 80px) clamp(60px, 8vh, 100px);
+    background: 
+      radial-gradient(ellipse at 50% 0%, rgba(226,56,10,0.1) 0%, transparent 60%),
+      linear-gradient(180deg, var(--void) 0%, var(--void-2) 100%);
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .media-eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: inline-block;
+    animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.2s forwards;
+    opacity: 0;
+  }
+
+  .media-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 8vw, 120px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s forwards;
+    opacity: 0;
+  }
+
+  .media-title span {
+    background: linear-gradient(92deg, var(--ink) 20%, var(--ember-glow) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .media-desc {
+    font-family: 'Archivo', sans-serif;
+    font-size: clamp(16px, 1.2vw, 20px);
+    line-height: 1.6;
+    color: var(--ink-dim);
+    max-width: 60ch;
+    margin: 0 auto;
+    animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.6s forwards;
+    opacity: 0;
+  }
+
+  /* Media Grid */
+  .media-grid {
+    padding: clamp(60px, 8vh, 100px) clamp(24px, 6vw, 80px);
+    background: var(--void);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 80px;
+  }
+
+  .video-block {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(40px, 5vw, 60px);
+    align-items: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  
+  .subscribe-cta-box {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+
+  .video-block.is-visible, .subscribe-cta-box.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .video-block.reverse {
+    grid-template-columns: 1fr 1.2fr;
+  }
+  .video-block.reverse .video-embed {
+    order: 2;
+  }
+  .video-block.reverse .video-info {
+    order: 1;
+  }
+
+  .video-embed {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--void-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .video-embed img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(.16,1,.3,1);
+  }
+
+  .video-embed:hover img {
+    transform: scale(1.05);
+  }
+
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    transition: background 0.3s;
+  }
+
+  .video-embed:hover .play-overlay {
+    background: rgba(0,0,0,0.1);
+  }
+
+  .play-overlay svg {
+    width: 64px;
+    height: 64px;
+    fill: var(--ember);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    transition: transform 0.3s cubic-bezier(.16,1,.3,1), fill 0.3s;
+  }
+
+  .video-embed:hover .play-overlay svg {
+    transform: scale(1.1);
+    fill: var(--ember-glow);
+  }
+
+  .video-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .v-tag {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+
+  .v-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4vw, 64px);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .v-desc {
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    text-decoration: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform 0.35s cubic-bezier(.16,1,.3,1), box-shadow 0.35s ease, background 0.35s ease;
+    cursor: pointer;
+    background: var(--ember);
+    color: #fff;
+    border: 1px solid var(--ember);
+    box-shadow: 0 8px 30px -6px rgba(226,56,10,0.4);
+    align-self: flex-start;
+  }
+
+  .btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px -8px rgba(226,56,10,0.7);
+    background: var(--ember-glow);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .video-block, .video-block.reverse {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .video-block.reverse .video-embed { order: 1; }
+    .video-block.reverse .video-info { order: 2; }
+  }
+
+  /* Floating WhatsApp */
+  .fab-whatsapp {
+    position: fixed; bottom: 32px; right: 32px; width: 64px; height: 64px;
+    background: var(--gold); color: var(--void); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(201,161,90, 0.4); z-index: 999; transition: all 0.3s ease;
+  }
+  .fab-whatsapp svg { width: 32px; height: 32px; }
+  .fab-whatsapp:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 8px 30px rgba(201,161,90, 0.6); background: #fff; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  .hamburger .bar {
+    width: 100%; height: 2px; background-color: var(--gold); transition: all 0.3s ease;
+  }
+  @media (max-width: 768px) {
+    .nav { justify-content: flex-end; }
+    .nav-logo { display: none; }
+    .hamburger { display: flex; }
+    .nav-links {
+      position: fixed; top: 0; right: -100%; width: 100vw; height: 100vh;
+      background: rgba(10, 8, 6, 0.98); backdrop-filter: blur(10px);
+      flex-direction: column; justify-content: center; align-items: center;
+      transition: right 0.4s ease; z-index: 1000;
+    }
+    .nav-links.active { right: 0; }
+    .nav-links a { font-size: 24px; margin: 16px 0; }
+    .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.active .bar:nth-child(2) { opacity: 0; }
+    .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.webp" alt="Logo">
+    BOWNCER SPORTZ
+  </a>
+  <button class="hamburger" aria-label="Toggle menu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="media.html" class="active">Media</a>
+    <a href="locations.html">Locations</a>
+  </div>
+</nav>
+
+<section class="media-hero">
+  <span class="media-eyebrow">Official Channel / @bowncersportzcricketacadem9911</span>
+  <h1 class="media-title">THE COACH'S <span>PERSPECTIVE.</span></h1>
+  <p class="media-desc">Strategic insights, player mentality breakdowns, and high-performance match analysis directly from Head Coach S. Thiyagarajan. Step inside the mind of an elite professional.</p>
+  <div style="margin-top: 40px;">
+    <a href="https://www.youtube.com/@bowncersportzcricketacadem9911" target="_blank" rel="noopener" class="btn" style="font-size: 14px; padding: 20px 40px; border-radius: 4px;">VIEW ALL VIDEOS ON YOUTUBE</a>
+  </div>
+</section>
+
+<section class="media-grid">
+
+  <!-- Video 1 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=sKQWImv-CIs" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/sKQWImv-CIs/hqdefault.jpg" alt="Pro Mentality & Match Preparation">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">COACHING ANALYSIS</span>
+      <h2 class="v-title">Pro Mentality & Match Preparation</h2>
+      <p class="v-desc">Deep dive into the mental conditioning and preparation routines that separate amateurs from professionals. Recorded directly from the academy sessions.</p>
+      <a href="https://www.youtube.com/watch?v=sKQWImv-CIs" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 2 -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=waZmKyal9Oo" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/waZmKyal9Oo/hqdefault.jpg" alt="Attitude & Aggression on the Field">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">ACADEMY ATTITUDE</span>
+      <h2 class="v-title">Attitude & Aggression on the Field</h2>
+      <p class="v-desc">Focusing on the psychological edge required for competitive cricket. How body language, resilience, and tactical aggression influence match outcomes.</p>
+      <a href="https://www.youtube.com/watch?v=waZmKyal9Oo" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 3 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=PycqanlzFAA" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/PycqanlzFAA/hqdefault.jpg" alt="X-Factor In Cricket">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">TACTICAL INSIGHTS</span>
+      <h2 class="v-title">X-Factor In Cricket</h2>
+      <p class="v-desc">A deep dive into the constant evolution of the game. Discover the unique elements and game-changing skills that define modern cricket.</p>
+      <a href="https://www.youtube.com/watch?v=PycqanlzFAA" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 4 -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=DFsPU92Pxy0" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/DFsPU92Pxy0/hqdefault.jpg" alt="RCB's Winning Formula">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">MATCH ANALYSIS</span>
+      <h2 class="v-title">RCB's Winning Formula</h2>
+      <p class="v-desc">Analyzing the key strategic factors and collective team dynamics that lead to franchise success in high-pressure tournaments.</p>
+      <a href="https://www.youtube.com/watch?v=DFsPU92Pxy0" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 5 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=IqtVJuOwYkE" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/IqtVJuOwYkE/hqdefault.jpg" alt="Grit Defines Attitude">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">MENTAL CONDITIONING</span>
+      <h2 class="v-title">Grit Defines Attitude</h2>
+      <p class="v-desc">Exploring the mindset required to win tough situations. Discover why mental toughness is the ultimate differentiator at the highest level.</p>
+      <a href="https://www.youtube.com/watch?v=IqtVJuOwYkE" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 6 -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=zgvMQN0uZpM" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/zgvMQN0uZpM/hqdefault.jpg" alt="The Art of Captaincy">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">LEADERSHIP</span>
+      <h2 class="v-title">The Art of Captaincy</h2>
+      <p class="v-desc">Selfless leadership that wins championships. An analysis of how effective captains manage pressure, dictate play, and inspire their squad.</p>
+      <a href="https://www.youtube.com/watch?v=zgvMQN0uZpM" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 7 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=WPzWCgsYblc" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/WPzWCgsYblc/hqdefault.jpg" alt="RCB's Biggest Tactical Revolution">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">TACTICAL INSIGHTS</span>
+      <h2 class="v-title">Tactical Revolution</h2>
+      <p class="v-desc">Breaking down the bold tactical shifts and data-driven strategies that transformed a franchise's fortunes in the IPL.</p>
+      <a href="https://www.youtube.com/watch?v=WPzWCgsYblc" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 8 -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=51h53t5GDxk" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/51h53t5GDxk/hqdefault.jpg" alt="Dhoni's Team-Building Masterclass">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">STRATEGY</span>
+      <h2 class="v-title">Team-Building Masterclass</h2>
+      <p class="v-desc">Lessons in squad construction, role clarity, and unwavering trust from one of the greatest cricketing minds in history.</p>
+      <a href="https://www.youtube.com/watch?v=51h53t5GDxk" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 9 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=URYSqG5hWWk" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/URYSqG5hWWk/hqdefault.jpg" alt="MS Dhoni: The Face of IPL">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">LEADERSHIP</span>
+      <h2 class="v-title">The Face of the Franchise</h2>
+      <p class="v-desc">Examining the impact of a talismanic leader on a franchise's identity, brand value, and sustained on-field success.</p>
+      <a href="https://www.youtube.com/watch?v=URYSqG5hWWk" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Video 10 -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=TqIpuMhXLXk" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/TqIpuMhXLXk/hqdefault.jpg" alt="The Truth About Kids' Fitness">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">JUNIOR ATHLETICS</span>
+      <h2 class="v-title">Truth About Youth Fitness</h2>
+      <p class="v-desc">Addressing the common misconceptions in junior physical conditioning. How to properly build foundational strength and prevent early injuries.</p>
+      <a href="https://www.youtube.com/watch?v=TqIpuMhXLXk" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- Subscribe CTA Box -->
+  <div class="subscribe-cta-box" style="margin-top: 80px; padding: 60px 40px; background: var(--void-2); border: 1px solid var(--line); border-radius: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: rgba(226,56,10,0.1); filter: blur(60px); border-radius: 50%; pointer-events: none;"></div>
+    <div style="position: absolute; bottom: -50px; right: -50px; width: 200px; height: 200px; background: rgba(201,161,90,0.1); filter: blur(60px); border-radius: 50%; pointer-events: none;"></div>
+    
+    <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: var(--ember); margin-bottom: 24px; position: relative; z-index: 2;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    
+    <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 48px); color: var(--ink); margin-bottom: 16px; letter-spacing: 0.02em; position: relative; z-index: 2;">STAY AHEAD OF THE GAME.</h3>
+    <p style="font-family: 'Archivo', sans-serif; font-size: 16px; color: var(--ink-dim); max-width: 600px; line-height: 1.6; margin-bottom: 32px; position: relative; z-index: 2;">Don't miss our latest tactical breakdowns and high-performance masterclasses. Join the academy's digital pipeline and elevate your cricket intelligence.</p>
+    
+    <a href="https://www.youtube.com/@bowncersportzcricketacadem9911?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="align-self: center; padding: 24px 64px; font-size: 18px; display: inline-flex; gap: 12px; align-items: center; position: relative; z-index: 2; box-shadow: 0 12px 40px -10px rgba(226,56,10,0.8);">
+      ACCESS EXCLUSIVE CONTENT
+    </a>
+  </div>
+
+</section>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/919840568137?text=Hi%20Bowncer%20Sportz,%20I%20would%20like%20more%20information." target="_blank" class="fab-whatsapp" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+</a>
+
+<script>
+  // Scroll Reveal Observer
+  document.addEventListener('DOMContentLoaded', function() {
+    var blocks = document.querySelectorAll('.video-block, .subscribe-cta-box');
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      blocks.forEach(function(el) { obs.observe(el); });
+    } else {
+      blocks.forEach(function(el) { el.classList.add('is-visible'); });
+    }
+
+    // Mobile Menu
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
