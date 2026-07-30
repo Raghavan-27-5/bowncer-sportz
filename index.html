@@ -713,20 +713,27 @@
   .roster-header p { color: var(--ink-dim); font-size: 16px; line-height: 1.6; margin-top: 16px; max-width: 500px; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
   
   /* The Cinematic Mural Strip & Gold Marquee */
-  .roster-strip {
-    display: flex; gap: 0; padding: 0; overflow: hidden; position: relative;
+    .roster-strip {
+    display: flex; gap: 0; padding: 0; position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    margin-bottom: -40px; /* pull stats up over the fade */
+    margin-bottom: -40px;
+    cursor: grab;
   }
+  .roster-strip::-webkit-scrollbar { display: none; }
+  .roster-strip:active { cursor: grabbing; }
   
-  .roster-track {
+    .roster-track {
     display: flex; gap: 0; width: max-content;
-    animation: rosterScroll 25s linear infinite;
   }
   
-  .roster-strip:hover .roster-track {
-    animation-play-state: paused;
+  .roster-strip:hover   .roster-track {
+    display: flex; gap: 0; width: max-content;
   }
   
   @keyframes rosterScroll {
@@ -1118,20 +1125,27 @@
   .roster-header p { color: var(--ink-dim); font-size: 16px; line-height: 1.6; margin-top: 16px; max-width: 500px; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
   
   /* The Cinematic Mural Strip & Gold Marquee */
-  .roster-strip {
-    display: flex; gap: 0; padding: 0; overflow: hidden; position: relative;
+    .roster-strip {
+    display: flex; gap: 0; padding: 0; position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    margin-bottom: -40px; /* pull stats up over the fade */
+    margin-bottom: -40px;
+    cursor: grab;
   }
+  .roster-strip::-webkit-scrollbar { display: none; }
+  .roster-strip:active { cursor: grabbing; }
   
-  .roster-track {
+    .roster-track {
     display: flex; gap: 0; width: max-content;
-    animation: rosterScroll 25s linear infinite;
   }
   
-  .roster-strip:hover .roster-track {
-    animation-play-state: paused;
+  .roster-strip:hover   .roster-track {
+    display: flex; gap: 0; width: max-content;
   }
   
   @keyframes rosterScroll {
@@ -1551,6 +1565,41 @@
     });
   });
 </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rosterStrip = document.querySelector('.roster-strip');
+      if (!rosterStrip) return;
+      const rosterTrack = document.querySelector('.roster-track');
+      
+      let isScrolling = true;
+      let scrollSpeed = 1.5;
+      
+      rosterStrip.addEventListener('mouseenter', () => isScrolling = false);
+      rosterStrip.addEventListener('mouseleave', () => isScrolling = true);
+      rosterStrip.addEventListener('touchstart', () => isScrolling = false);
+      rosterStrip.addEventListener('touchend', () => isScrolling = true);
+      
+      rosterStrip.addEventListener('wheel', () => {
+        isScrolling = false;
+        clearTimeout(rosterStrip.resumeTimeout);
+        rosterStrip.resumeTimeout = setTimeout(() => isScrolling = true, 500);
+      }, {passive: true});
+
+      function autoScroll() {
+        if (isScrolling) {
+          rosterStrip.scrollLeft += scrollSpeed;
+          // Duplicate track detection for infinite scroll
+          if (rosterStrip.scrollLeft >= rosterTrack.scrollWidth / 2) {
+            rosterStrip.scrollLeft = 0;
+          }
+        }
+        requestAnimationFrame(autoScroll);
+      }
+      requestAnimationFrame(autoScroll);
+    });
+  </script>
 
 </body>
 </html>
