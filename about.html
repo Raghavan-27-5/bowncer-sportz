@@ -328,7 +328,10 @@
       <div class="architect-image">
         <!-- Placeholder for the RCB photo -->
         <!-- TODO: Swap this src with the real RCB jersey asset once provided -->
-        <img src="assets/thiyagarajan_rcb.webp" alt="S. Thiyagarajan in RCB Jersey" onerror="this.src='assets/thiyagarajan_hero_graded.webp';">
+        <picture>
+          <source srcset="assets/thiyagarajan_rcb_480w.webp 480w, assets/thiyagarajan_rcb_899w.webp 899w" sizes="(max-width: 600px) 480px, 899px" type="image/webp">
+          <img src="assets/thiyagarajan_rcb_899w.webp" alt="S. Thiyagarajan in RCB Jersey">
+        </picture>
       </div>
     </div>
   </section>
