@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inside the Ring | RCB | Bowncer Sportz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f4f1ea;
+      --ink-dim: rgba(244,241,234,0.5);
+      --void: #07080a;
+      --void-2: #0d0f12;
+      --ember: #e2380a;
+      --gold: #c9a15a;
+      --line: rgba(244,241,234,0.1);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--void);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+      z-index: 100; opacity: 0.4;
+    }
+    
+    /* Navigation */
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 40px; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff;
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+    .nav-logo img { width: 40px; height: 40px; border-radius: 50%; }
+    
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
+    
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 40px;
+      position: relative;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(80%) brightness(0.3);
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, var(--void) 100%);
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 12vw, 160px);
+      line-height: 0.85;
+      margin: 0 0 24px 0;
+      color: #fff;
+    }
+    .hero-subtitle {
+      font-size: 20px;
+      color: var(--ink-dim);
+      max-width: 600px;
+      line-height: 1.5;
+    }
+    
+    /* Editorial Gallery */
+    .gallery {
+      padding: 80px 40px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 40px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .g-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .g-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      filter: grayscale(40%);
+      transition: filter 0.5s ease;
+    }
+    .g-item:hover img {
+      filter: grayscale(0%);
+    }
+    .g-caption {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--ink-dim);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-left: 2px solid var(--gold);
+      padding-left: 12px;
+    }
+    
+    /* Layout variations */
+    .g-full { grid-column: 1 / -1; }
+    .g-left { grid-column: 1 / 8; }
+    .g-right { grid-column: 6 / -1; }
+    .g-center { grid-column: 3 / 11; }
+    .g-half-l { grid-column: 1 / 7; }
+    .g-half-r { grid-column: 7 / -1; }
+    .g-text-block {
+      grid-column: 1 / 6;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .g-text-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .g-text-body {
+      font-size: 16px;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .nav { padding: 20px; }
+      .hamburger { display: block; z-index: 1001; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+        background: var(--void-2); transform: translateX(100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { font-size: 24px; margin: 16px 0; }
+      
+      .hero { padding: 0 20px; }
+      .gallery { padding: 40px 20px; gap: 40px; display: flex; flex-direction: column; }
+      .g-item, .g-text-block { grid-column: 1 / -1; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.webp" alt="Bowncer Sportz Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="../about.html">About</a>
+      <a href="../programs.html">Programs</a>
+      <a href="../media.html">Media</a>
+      <a href="../locations.html">Locations</a>
+      <a href="../journey.html">The Journey</a>
+    </div>
+  </nav>
+
+  <!-- Proves the coach has authentic inside-the-ropes access at the highest franchise level (RCB). -->
+  <header class="hero">
+    <div class="hero-bg">
+      <img src="../assets/journey_ipl_2.webp" alt="RCB Dugout">
+    </div>
+    <div class="hero-eyebrow">Ex-IPL Player • Royal Challengers Bangalore</div>
+    <h1 class="hero-title">Inside<br>The Ring</h1>
+    <p class="hero-subtitle">The standards of elite franchise cricket, brought directly to the academy nets.</p>
+  </header>
+
+  <main class="gallery">
+    
+    <div class="g-text-block">
+      <h2 class="g-text-title">THE ARCHITECT:<br>BUILT FROM THE INSIDE</h2>
+      <p class="g-text-body">Experience playing and coaching within the Royal Challengers Bangalore (RCB) system sets the baseline for our academy. We train to the exact standards demanded by ICC and BCCI certified environments.</p>
+    </div>
+
+    <!-- Validates the claim of 'Built from the Inside' through direct on-ground presence in franchise colors. -->
+    <div class="g-item g-half-r">
+      <img src="../assets/journey_ipl_11.webp" alt="RCB Training" loading="lazy" decoding="async">
+      <div class="g-caption">Elite Franchise Standards</div>
+    </div>
+
+    <!-- Demonstrates direct proximity to elite coaching staff and international players. -->
+    <div class="g-item g-full" style="margin: 40px 0;">
+      <img src="../assets/journey_ipl_12.webp" alt="Franchise Squad" loading="lazy" decoding="async">
+      <div class="g-caption">Ex-IPL Player (RCB) • Royal Challengers Bangalore</div>
+    </div>
+
+    <!-- Proves active participation in franchise training camps and net sessions. -->
+    <div class="g-item g-half-l">
+      <img src="../assets/journey_ipl_7.webp" alt="Nets Session" loading="lazy" decoding="async">
+      <div class="g-caption">Net Practice & Match Simulation</div>
+    </div>
+
+    <!-- Proves involvement in player development at the highest tier (e.g. K.B. Arun Karthik). -->
+    <div class="g-item g-half-r" style="margin-top: 80px;">
+      <img src="../assets/journey_ipl_10.webp" alt="Player Development" loading="lazy" decoding="async">
+      <div class="g-caption">Developing IPL-grade talent (e.g. K.B. Arun Karthik)</div>
+    </div>
+
+    <!-- Reinforces the scale of the environment the coach comes from. -->
+    <div class="g-item g-center" style="margin: 40px 0;">
+      <img src="../assets/journey_ipl_14.webp" alt="Stadium Environment" loading="lazy" decoding="async">
+      <div class="g-caption">Match Readiness & Tactical Development</div>
+    </div>
+
+    <!-- Shows interaction with international caliber equipment and infrastructure. -->
+    <div class="g-item g-left">
+      <img src="../assets/journey_ipl_2.webp" alt="Infrastructure" loading="lazy" decoding="async">
+      <div class="g-caption">BCCI Certified Coach, Level 1</div>
+    </div>
+
+    <!-- Proves hands-on technical instruction at the franchise level. -->
+    <div class="g-item g-right" style="margin-top: 120px;">
+      <img src="../assets/journey_ipl_4.webp" alt="Technical Instruction" loading="lazy" decoding="async">
+      <div class="g-caption">ICC Certified Coach, Level 1</div>
+    </div>
+    
+  </main>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+  </script>
+</body>
+</html>
