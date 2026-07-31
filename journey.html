@@ -286,10 +286,21 @@
       .marker-label { font-size: 16px; }
       .marker-tagline { display: none; }
       
-      .pos-ipl { top: 10%; left: 50%; }
-      .pos-usa { top: 40%; left: 80%; }
-      .pos-domestic { top: 60%; left: 20%; }
-      .pos-academy { top: 90%; left: 50%; }
+      .pos-ipl { top: 10%; left: 50%; transform: translate(-50%, 0); }
+      .pos-ipl:hover { transform: translate(-50%, 0) scale(1.05); }
+      
+      .pos-usa { top: 50%; left: 90%; flex-direction: row-reverse; transform: translate(-100%, -50%); }
+      .pos-usa:hover { transform: translate(-100%, -50%) scale(1.05); }
+      .pos-usa .marker-card { margin-right: 12px; margin-bottom: 0; }
+      .pos-usa .marker-dot { margin-bottom: 0; transform: translateX(50%); }
+
+      .pos-domestic { top: 50%; left: 10%; flex-direction: row; transform: translate(0, -50%); }
+      .pos-domestic:hover { transform: translate(0, -50%) scale(1.05); }
+      .pos-domestic .marker-card { margin-left: 12px; margin-bottom: 0; }
+      .pos-domestic .marker-dot { margin-bottom: 0; transform: translateX(-50%); }
+
+      .pos-academy { top: 90%; left: 50%; transform: translate(-50%, -100%); }
+      .pos-academy:hover { transform: translate(-50%, -100%) scale(1.05); }
     }
   </style>
 </head>
