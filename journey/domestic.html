@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Where It Started | Domestic & Tournaments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f4f1ea;
+      --ink-dim: rgba(244,241,234,0.6);
+      --void: #07080a;
+      --void-2: #0d0f12;
+      --ember: #e2380a;
+      --gold: #c9a15a;
+      --line: rgba(244,241,234,0.1);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--void);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+      z-index: 100; opacity: 0.4;
+    }
+    
+    /* Navigation */
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 40px; position: relative; z-index: 1000;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff;
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+    .nav-logo img { width: 40px; height: 40px; border-radius: 50%; }
+    
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
+    
+    /* Page Header */
+    .page-header {
+      padding: 80px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .header-eyebrow {
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .header-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 12vw, 140px);
+      line-height: 0.85;
+      margin: 0 0 24px 0;
+      color: #fff;
+    }
+    .header-subtitle {
+      font-size: 20px;
+      color: var(--ink-dim);
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    /* Event Groups */
+    .event-group {
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto 80px auto;
+      border-top: 1px solid var(--line);
+    }
+    
+    .event-header {
+      margin-bottom: 40px;
+      padding-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .event-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 0.05em;
+    }
+    .event-meta {
+      font-size: 12px;
+      color: var(--ink-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Layout Patterns */
+    
+    /* Layout A: 1 large left, 2 stacked right */
+    .layout-a {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 20px;
+      min-height: 600px;
+    }
+    .layout-a .main { grid-row: 1 / -1; }
+    
+    /* Layout B: 3 columns even */
+    .layout-b {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      min-height: 400px;
+    }
+    
+    /* Layout C: 2 columns */
+    .layout-c {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      min-height: 400px;
+    }
+
+    /* Layout D: Asymmetric Masonry for 5 images */
+    .layout-d {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 250px);
+      gap: 20px;
+    }
+    .layout-d .box-1 { grid-column: 1 / 3; grid-row: 1 / 3; }
+    .layout-d .box-2 { grid-column: 3 / 4; grid-row: 1 / 2; }
+    .layout-d .box-3 { grid-column: 4 / 5; grid-row: 1 / 2; }
+    .layout-d .box-4 { grid-column: 3 / 5; grid-row: 2 / 3; }
+
+    .photo-card {
+      position: relative;
+      background: var(--void-2);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(40%);
+      transition: filter 0.4s ease, transform 0.6s ease;
+    }
+    .photo-card:hover img {
+      filter: grayscale(0%);
+      transform: scale(1.03);
+    }
+    
+    .caption-overlay {
+      position: absolute;
+      bottom: 0; left: 0; width: 100%;
+      padding: 40px 20px 20px 20px;
+      background: linear-gradient(to top, rgba(7,8,10,0.9), transparent);
+      font-size: 11px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .photo-card:hover .caption-overlay {
+      opacity: 1;
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .nav { padding: 20px; }
+      .hamburger { display: block; z-index: 1001; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+        background: var(--void-2); transform: translateX(100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { font-size: 24px; margin: 16px 0; }
+      
+      .page-header { padding: 40px 20px; }
+      .event-group { padding: 20px; margin-bottom: 40px; }
+      .event-header { flex-direction: column; gap: 8px; }
+      
+      .layout-a, .layout-b, .layout-c, .layout-d {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .photo-card { aspect-ratio: 4/3; }
+      .caption-overlay { opacity: 1; padding-top: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.webp" alt="Bowncer Sportz Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="../about.html">About</a>
+      <a href="../programs.html">Programs</a>
+      <a href="../media.html">Media</a>
+      <a href="../locations.html">Locations</a>
+      <a href="../journey.html">The Journey</a>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="header-eyebrow">Domestic & Tournaments</div>
+    <h1 class="header-title">Where It<br>Started</h1>
+    <p class="header-subtitle">Foundational exposure across varied formats — from corporate leagues to celebrity tournaments and the TNPL.</p>
+  </header>
+
+  <!-- EVENT 1: TNPL -->
+  <section class="event-group">
+    <div class="event-header">
+      <h2 class="event-title">TNPL</h2>
+      <div class="event-meta">Tamil Nadu Premier League</div>
+    </div>
+    <div class="layout-b">
+      <!-- what claim does this prove: Shows active participation in the TNPL format. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_tnpl_1.webp" loading="lazy" decoding="async" alt="TNPL Event"><div class="caption-overlay">TNPL Event Match</div></div>
+      <!-- what claim does this prove: Demonstrates involvement in TNPL team infrastructure. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_tnpl_2.webp" loading="lazy" decoding="async" alt="TNPL Setup"><div class="caption-overlay">TNPL Preparation</div></div>
+      <!-- what claim does this prove: Proves presence at TNPL events. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_tnpl_3.webp" loading="lazy" decoding="async" alt="TNPL Field"><div class="caption-overlay">TNPL Match Day</div></div>
+    </div>
+  </section>
+
+  <!-- EVENT 2: CELEBRITY CRICKET LEAGUE -->
+  <section class="event-group">
+    <div class="event-header">
+      <h2 class="event-title">CCL</h2>
+      <div class="event-meta">Celebrity Cricket League</div>
+    </div>
+    <div class="layout-a">
+      <!-- what claim does this prove: Shows involvement in the Celebrity Cricket League. -->
+      <div class="photo-card main"><img src="../assets/journey_domestic_ccl_1.webp" loading="lazy" decoding="async" alt="CCL Main"><div class="caption-overlay">CCL Group Event</div></div>
+      <!-- what claim does this prove: Demonstrates CCL match environment. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_ccl_2.webp" loading="lazy" decoding="async" alt="CCL Match"><div class="caption-overlay">CCL Match Environment</div></div>
+      <!-- what claim does this prove: Proves participation in CCL format. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_ccl_3.webp" loading="lazy" decoding="async" alt="CCL Field"><div class="caption-overlay">CCL Practice</div></div>
+    </div>
+  </section>
+
+  <!-- EVENT 3: CORPORATE & COLLEGE (Grouped for layout density) -->
+  <section class="event-group">
+    <div class="event-header">
+      <h2 class="event-title">CORPORATE & COLLEGE</h2>
+      <div class="event-meta">Booksellers League & Sanmar Inter-College</div>
+    </div>
+    <div class="layout-d">
+      <!-- what claim does this prove: Shows participation in the Booksellers League tournament. -->
+      <div class="photo-card box-1"><img src="../assets/journey_domestic_booksellers_1.webp" loading="lazy" decoding="async" alt="Booksellers League"><div class="caption-overlay">Booksellers League Team</div></div>
+      <!-- what claim does this prove: Demonstrates college-level tournament exposure (Sanmar). -->
+      <div class="photo-card box-2"><img src="../assets/journey_domestic_sanmar_1.webp" loading="lazy" decoding="async" alt="Sanmar Inter-College"><div class="caption-overlay">Sanmar Inter-College Tournament</div></div>
+      <!-- what claim does this prove: Shows match play at the Sanmar tournament. -->
+      <div class="photo-card box-3"><img src="../assets/journey_domestic_sanmar_2.webp" loading="lazy" decoding="async" alt="Sanmar Action"><div class="caption-overlay">Sanmar Tournament Action</div></div>
+      <!-- what claim does this prove: Proves presence at Booksellers League events. -->
+      <div class="photo-card box-4"><img src="../assets/journey_domestic_booksellers_2.webp" loading="lazy" decoding="async" alt="Booksellers Match"><div class="caption-overlay">Booksellers League Match</div></div>
+    </div>
+  </section>
+
+  <!-- EVENT 4: NADIGAR SANGAM 2016 -->
+  <section class="event-group">
+    <div class="event-header">
+      <h2 class="event-title">NADIGAR SANGAM</h2>
+      <div class="event-meta">2016 Tournament</div>
+    </div>
+    <div class="layout-b">
+      <!-- what claim does this prove: Shows involvement in the 2016 Nadigar Sangam tournament. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_nadigar_1.webp" loading="lazy" decoding="async" alt="Nadigar Sangam"><div class="caption-overlay">Nadigar Sangam 2016</div></div>
+      <!-- what claim does this prove: Demonstrates the event scale of Nadigar Sangam 2016. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_nadigar_2.webp" loading="lazy" decoding="async" alt="Nadigar Sangam Event"><div class="caption-overlay">Tournament Event</div></div>
+      <!-- what claim does this prove: Proves participation in the Nadigar Sangam 2016 format. -->
+      <div class="photo-card"><img src="../assets/journey_domestic_nadigar_3.webp" loading="lazy" decoding="async" alt="Nadigar Sangam Action"><div class="caption-overlay">Tournament Action</div></div>
+    </div>
+  </section>
+
+  <!-- EVENT 5: INVITATIONALS -->
+  <section class="event-group" style="border-bottom: 1px solid var(--line);">
+    <div class="event-header">
+      <h2 class="event-title">INVITATIONALS</h2>
+      <div class="event-meta">Advocates Tournament & Women's Day 2015-16</div>
+    </div>
+    <div class="layout-d">
+      <!-- what claim does this prove: Shows participation in the All India Advocates Tournament. -->
+      <div class="photo-card box-1"><img src="../assets/journey_domestic_advocates_1.webp" loading="lazy" decoding="async" alt="Advocates Tournament"><div class="caption-overlay">All India Advocates Tournament</div></div>
+      <!-- what claim does this prove: Demonstrates exposure to women's cricket tournaments. -->
+      <div class="photo-card box-2"><img src="../assets/journey_domestic_womens_1.webp" loading="lazy" decoding="async" alt="Women's Day 2015-16"><div class="caption-overlay">Women's Day Tournament 2015-16</div></div>
+      <!-- what claim does this prove: Proves presence at the Advocates tournament. -->
+      <div class="photo-card box-3"><img src="../assets/journey_domestic_advocates_2.webp" loading="lazy" decoding="async" alt="Advocates Action"><div class="caption-overlay">Advocates Tournament Action</div></div>
+      <!-- what claim does this prove: Shows involvement in women's cricket formats. -->
+      <div class="photo-card box-4"><img src="../assets/journey_domestic_womens_2.webp" loading="lazy" decoding="async" alt="Women's Day Action"><div class="caption-overlay">Women's Day Action</div></div>
+    </div>
+  </section>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+  </script>
+</body>
+</html>
