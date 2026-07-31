@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Academy Today | Bowncer Sportz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f4f1ea;
+      --ink-dim: rgba(244,241,234,0.6);
+      --void: #07080a;
+      --void-2: #0d0f12;
+      --ember: #e2380a;
+      --gold: #c9a15a;
+      --line: rgba(244,241,234,0.1);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--void);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+      z-index: 100; opacity: 0.4;
+    }
+    
+    /* Navigation */
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 40px; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff;
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+    .nav-logo img { width: 40px; height: 40px; border-radius: 50%; }
+    
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
+    
+    /* Hero Section */
+    .hero {
+      height: 70vh;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 40px;
+      position: relative;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+    }
+    /* what claim does this prove: Proves the scale and quality of the physical infrastructure available to students. Chosen for being a high-res (2560x1920) wide shot. */
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(60%) brightness(0.2);
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--void) 100%);
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 10vw, 120px);
+      line-height: 0.9;
+      margin: 0 0 16px 0;
+      color: #fff;
+    }
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--ink-dim);
+      max-width: 500px;
+      line-height: 1.5;
+    }
+
+    /* Section Styles */
+    .section {
+      padding: 80px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .section-header {
+      margin-bottom: 40px;
+    }
+    .section-eyebrow {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 0.05em;
+    }
+
+    /* Kana Gallery (Facility) */
+    .kana-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .kana-main {
+      grid-column: 1 / -1;
+      aspect-ratio: 21 / 9;
+      position: relative;
+    }
+    .kana-main img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 4px; filter: grayscale(30%);
+    }
+    .kana-sub {
+      aspect-ratio: 1;
+    }
+    .kana-sub img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 4px; filter: grayscale(30%);
+    }
+
+    /* Bengaluru (Training Dense Grid) */
+    .dense-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      grid-auto-flow: dense;
+    }
+    .dense-item {
+      position: relative;
+      aspect-ratio: 1;
+    }
+    /* Make some items span 2 rows/cols for a masonry feel without JS */
+    .dense-item:nth-child(2), .dense-item:nth-child(7) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .dense-item img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 2px;
+      filter: grayscale(40%);
+      transition: filter 0.3s;
+    }
+    .dense-item:hover img { filter: grayscale(0%); }
+
+    /* Inauguration (Compact Strip) */
+    .strip-container {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) var(--void-2);
+    }
+    .strip-item {
+      flex: 0 0 auto;
+      width: 180px;
+      height: 120px;
+    }
+    .strip-item img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 2px;
+      filter: grayscale(60%) sepia(20%);
+    }
+    
+    /* WhatsApp CTA */
+    .cta-banner {
+      margin-top: 60px;
+      padding: 40px;
+      background: rgba(201,161,90,0.05);
+      border: 1px solid rgba(201,161,90,0.2);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cta-text h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #fff;
+      margin: 0 0 8px 0;
+    }
+    .cta-text p {
+      margin: 0; color: var(--ink-dim); font-size: 14px;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: var(--gold);
+      color: var(--void);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .cta-btn:hover { background: #fff; }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .nav { padding: 20px; }
+      .hamburger { display: block; z-index: 1001; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+        background: var(--void-2); transform: translateX(100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { font-size: 24px; margin: 16px 0; }
+      
+      .hero { padding: 40px 20px; min-height: 400px; }
+      .section { padding: 60px 20px; }
+      
+      .kana-grid { grid-template-columns: 1fr; }
+      .kana-main { aspect-ratio: 16 / 9; }
+      
+      .dense-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .dense-item:nth-child(2), .dense-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+      
+      .cta-banner { flex-direction: column; text-align: center; gap: 24px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.webp" alt="Bowncer Sportz Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="../about.html">About</a>
+      <a href="../programs.html">Programs</a>
+      <a href="../media.html">Media</a>
+      <a href="../locations.html">Locations</a>
+      <a href="../journey.html">The Journey</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-bg">
+      <!-- what claim does this prove: Proves the scale and quality of the physical infrastructure available to students. Chosen for being a high-res (2560x1920) wide shot. -->
+      <img src="../assets/journey_academy_kana_8.webp" alt="The Academy Facility">
+    </div>
+    <h1 class="hero-title">The Academy<br>Today</h1>
+    <p class="hero-subtitle">Process. Progress. Perform. This is where elite coaching meets daily grind.</p>
+  </header>
+
+  <!-- THE FACILITY -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Infrastructure</div>
+      <h2 class="section-title">THE FACILITY</h2>
+    </div>
+    <div class="kana-grid">
+      <!-- what claim does this prove: Proves the academy has dedicated, high-quality netting and turf for professional-grade training. (High-res 2560x1624). -->
+      <div class="kana-main">
+        <img src="../assets/journey_academy_kana_7.webp" loading="lazy" decoding="async" alt="Nets and Turf">
+      </div>
+      <!-- what claim does this prove: Shows well-lit, enclosed indoor space allowing for year-round training regardless of weather. (High-res 2560x1920). -->
+      <div class="kana-main">
+        <img src="../assets/journey_academy_kana_9.webp" loading="lazy" decoding="async" alt="Indoor Nets">
+      </div>
+      <!-- what claim does this prove: Demonstrates the clean, modern aesthetic and proper equipment storage of the facility. (853x853 resolution). -->
+      <div class="kana-sub">
+        <img src="../assets/journey_academy_kana_4.webp" loading="lazy" decoding="async" alt="Equipment">
+      </div>
+      <!-- what claim does this prove: Shows specialized training equipment (bowling machines) available to students. (960x960 resolution). -->
+      <div class="kana-sub">
+        <img src="../assets/journey_academy_kana_5.webp" loading="lazy" decoding="async" alt="Bowling Machine">
+      </div>
+      <!-- what claim does this prove: Proves multiple lanes are available for simultaneous batch training. (960x960 resolution). -->
+      <div class="kana-sub">
+        <img src="../assets/journey_academy_kana_6.webp" loading="lazy" decoding="async" alt="Multiple Lanes">
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAINING INTENSITY -->
+  <section class="section" style="background: var(--void-2); padding-top: 80px; padding-bottom: 80px; max-width: 100%;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+      <div class="section-header">
+        <div class="section-eyebrow">The Environment</div>
+        <h2 class="section-title">TRAINING & MATCH SIMULATION</h2>
+        <p style="color: var(--ink-dim); max-width: 600px; margin-top: 12px; font-size: 14px;">Batting Fundamentals, Bowling Mechanics, Fielding Drills, and Match Simulation across TEST, ODI & T/20 Formats.</p>
+      </div>
+      
+      <div class="dense-grid">
+        <!-- what claim does this prove: Proves active, intense training sessions with high student participation. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_1.webp" loading="lazy" decoding="async" alt="Training Drill"></div>
+        <!-- what claim does this prove: Demonstrates one-on-one focus and technical correction by coaches. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_2.webp" loading="lazy" decoding="async" alt="Technical Instruction"></div>
+        <!-- what claim does this prove: Shows match-simulation scenarios teaching players tactical awareness. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_3.webp" loading="lazy" decoding="async" alt="Match Simulation"></div>
+        <!-- what claim does this prove: Highlights fielding drills, a core pillar of modern cricket coaching. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_4.webp" loading="lazy" decoding="async" alt="Fielding Drills"></div>
+        <!-- what claim does this prove: Demonstrates the fitness and mental conditioning aspect of the camp. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_5.webp" loading="lazy" decoding="async" alt="Fitness Training"></div>
+        <!-- what claim does this prove: Proves high engagement and discipline during group instruction. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_6.webp" loading="lazy" decoding="async" alt="Group Instruction"></div>
+        <!-- what claim does this prove: Shows active net practice against varied bowling styles. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_7.webp" loading="lazy" decoding="async" alt="Net Practice"></div>
+        <!-- what claim does this prove: Demonstrates batting fundamentals being tested in real-time. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_8.webp" loading="lazy" decoding="async" alt="Batting Fundamentals"></div>
+        <!-- what claim does this prove: Highlights bowling mechanics training and run-up checks. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_9.webp" loading="lazy" decoding="async" alt="Bowling Mechanics"></div>
+        <!-- what claim does this prove: Proves a strong, supportive peer group environment for young players. -->
+        <div class="dense-item"><img src="../assets/journey_academy_ben_10.webp" loading="lazy" decoding="async" alt="Peer Environment"></div>
+      </div>
+
+      <div class="cta-banner">
+        <div class="cta-text">
+          <h3>START YOUR JOURNEY</h3>
+          <p>Skill acquisition and technical work for all ages. Join the next batch.</p>
+        </div>
+        <a href="https://wa.me/919840568137" class="cta-btn" target="_blank">Message on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INAUGURATION -->
+  <section class="section" style="padding-top: 60px;">
+    <div class="section-header" style="margin-bottom: 24px;">
+      <div class="section-eyebrow">Foundation</div>
+      <h2 class="section-title" style="font-size: 32px;">HOW IT BEGAN</h2>
+    </div>
+    <div class="strip-container">
+      <!-- what claim does this prove: Proves institutional history and the official launch of the academy. Small strip format used due to low res. -->
+      <div class="strip-item"><img src="../assets/journey_academy_inaug_1.webp" loading="lazy" decoding="async" alt="Inauguration Event"></div>
+      <!-- what claim does this prove: Shows community backing and support during the academy's founding. -->
+      <div class="strip-item"><img src="../assets/journey_academy_inaug_2.webp" loading="lazy" decoding="async" alt="Inauguration Guests"></div>
+      <!-- what claim does this prove: Establishes a long-standing presence (founded 2017) adding trust. -->
+      <div class="strip-item"><img src="../assets/journey_academy_inaug_3.webp" loading="lazy" decoding="async" alt="Founding Moment"></div>
+      <!-- what claim does this prove: Shows the original facility setup on day one. -->
+      <div class="strip-item"><img src="../assets/journey_academy_inaug_4.webp" loading="lazy" decoding="async" alt="Facility Day One"></div>
+      <!-- what claim does this prove: Demonstrates early student enrollment and trust from day one. -->
+      <div class="strip-item"><img src="../assets/journey_academy_inaug_5.webp" loading="lazy" decoding="async" alt="First Batch"></div>
+      <!-- what claim does this prove: Validates the historical origin point of the academy's journey. -->
+      <div class="strip-item"><img src="../assets/journey_academy_inaug_6.webp" loading="lazy" decoding="async" alt="Ceremony"></div>
+    </div>
+  </section>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+  </script>
+</body>
+</html>
