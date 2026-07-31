@@ -316,14 +316,13 @@
   
   .hof-card {
     position: sticky;
-    height: 75vh;
-    min-height: 500px;
-    max-height: 800px;
+    aspect-ratio: 16 / 9;
+    width: 100%;
     border-radius: 16px;
     overflow: hidden;
-    background: #000;
+    background: var(--void);
     box-shadow: 0 -20px 50px rgba(0,0,0,0.8);
-    border: 1px solid rgba(201,161,90,0.15);
+    border: 1px solid rgba(201,161,90,0.3);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
@@ -335,28 +334,41 @@
   .hof-card-inner {
     width: 100%; height: 100%;
     position: relative;
-    background: radial-gradient(circle at center, #111 0%, #000 100%);
+  }
+  
+  /* Cinematic Vignette Overlay */
+  .hof-card-inner::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(7,8,10,0.8) 100%);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
   }
   
   .hof-card-inner img {
     width: 100%; height: 100%;
-    object-fit: contain;
-    object-position: center;
-    padding: 20px;
-    filter: grayscale(80%) sepia(10%) contrast(1.1);
-    transition: filter 0.8s ease, transform 0.8s ease;
+    object-fit: cover;
+    filter: contrast(1.05) saturate(1.1);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
   }
   
+  /* Precision framing for specific images */
+  .hof-card:nth-child(1) .hof-card-inner img { object-position: center 15%; } /* Preserve head */
+  .hof-card:nth-child(2) .hof-card-inner img { object-position: center center; } /* Wide group shot */
+  .hof-card:nth-child(3) .hof-card-inner img { object-position: center 10%; } /* Preserve head */
+  
+  .hof-card:hover .hof-card-inner::after {
+    opacity: 0.4;
+  }
   .hof-card:hover .hof-card-inner img {
-    filter: grayscale(0%) sepia(0%) contrast(1.1);
-    transform: scale(1.03);
+    transform: scale(1.02);
+    filter: contrast(1.1) saturate(1.15) brightness(1.05);
   }
   
   @media (max-width: 768px) {
-    .hof-card { height: 60vh; min-height: 400px; }
-    .hof-card:nth-child(1) { top: 100px; }
-    .hof-card:nth-child(2) { top: 120px; }
-    .hof-card:nth-child(3) { top: 140px; }
+    .hof-card { aspect-ratio: 1 / 1; }
+    .hof-card:nth-child(1) { top: 90px; }
+    .hof-card:nth-child(2) { top: 110px; }
+    .hof-card:nth-child(3) { top: 130px; }
   }
 
 </style>
