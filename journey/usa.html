@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Six Cities, One Standard | USA Tours</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f4f1ea;
+      --ink-dim: rgba(244,241,234,0.6);
+      --void: #07080a;
+      --void-2: #0d0f12;
+      --ember: #e2380a;
+      --gold: #c9a15a;
+      --line: rgba(244,241,234,0.1);
+    }
+    
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--void);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+      z-index: 100; opacity: 0.4;
+    }
+    
+    /* Navigation */
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 40px; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff;
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+    .nav-logo img { width: 40px; height: 40px; border-radius: 50%; }
+    
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
+    
+    /* Hero Hub Map */
+    .hero {
+      height: 100vh;
+      min-height: 800px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: radial-gradient(circle at center, var(--void-2) 0%, var(--void) 100%);
+    }
+    .hero-header {
+      padding: 100px 40px 0 40px;
+      text-align: center;
+      z-index: 10;
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 10vw, 120px);
+      line-height: 0.9;
+      margin: 0;
+      color: #fff;
+    }
+    
+    /* Mini Hub Map Canvas */
+    .map-container {
+      flex: 1;
+      position: relative;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      overflow: visible;
+    }
+    .map-svg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .map-path {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 2;
+      stroke-dasharray: 6 6;
+    }
+    
+    .waypoint {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      z-index: 20;
+      transition: transform 0.3s ease;
+    }
+    .waypoint:hover {
+      transform: translate(-50%, -55%);
+      z-index: 30;
+    }
+    .wp-dot {
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(201,161,90,0.5);
+      margin-bottom: 8px;
+      transition: all 0.3s;
+    }
+    .waypoint:hover .wp-dot { background: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+    .wp-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      color: var(--ink);
+      letter-spacing: 0.1em;
+      background: rgba(7,8,10,0.8);
+      padding: 4px 12px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    .waypoint:hover .wp-label { border-color: var(--gold); color: var(--gold); }
+    
+    /* Schematic Placement (Abstract USA layout) */
+    .wp-california { top: 40%; left: 15%; }
+    .wp-detroit { top: 30%; left: 60%; }
+    .wp-boston { top: 25%; left: 85%; }
+    .wp-charlotte { top: 60%; left: 75%; }
+    .wp-greensboro { top: 50%; left: 80%; }
+    .wp-north-carolina { top: 70%; left: 80%; } /* General NC area */
+    
+    /* City Sections */
+    .city-section {
+      padding: 80px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--line);
+    }
+    .city-header {
+      margin-bottom: 40px;
+    }
+    .city-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      color: #fff;
+      margin: 0;
+      line-height: 1;
+    }
+    .city-meta {
+      font-size: 14px;
+      color: var(--ink-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+    
+    /* Gallery Layouts based on image count */
+    .grid-large { /* 7-8 images */
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 250px;
+      gap: 16px;
+    }
+    .grid-large .feature { grid-column: span 2; grid-row: span 2; }
+    
+    .grid-med { /* 4-6 images */
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 300px;
+      gap: 16px;
+    }
+    .grid-med .feature { grid-column: span 2; grid-row: span 1; }
+    
+    .grid-small { /* 3 images (Boston) */
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 300px;
+      gap: 16px;
+    }
+    
+    .photo {
+      background: var(--void-2);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(40%);
+      transition: filter 0.4s;
+    }
+    .photo:hover img { filter: grayscale(0%); }
+    
+    /* Neutral Captions */
+    .photo-caption {
+      position: absolute; bottom: 0; left: 0; width: 100%;
+      padding: 30px 16px 16px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      font-size: 11px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.1em;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .photo:hover .photo-caption { opacity: 1; }
+    
+    /* Empty State Note */
+    .editor-note {
+      background: rgba(226,56,10,0.1);
+      border-left: 3px solid var(--ember);
+      padding: 16px;
+      margin-top: 24px;
+      font-size: 13px;
+      color: #fff;
+    }
+    .editor-note strong { color: var(--ember); }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .nav { padding: 20px; }
+      .hamburger { display: block; z-index: 1001; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+        background: var(--void-2); transform: translateX(100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { font-size: 24px; margin: 16px 0; }
+      
+      .hero { min-height: 600px; }
+      .map-container { display: none; } /* Hide complex map on mobile, just keep header */
+      
+      .city-section { padding: 60px 20px; }
+      .grid-large, .grid-med, .grid-small {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 250px;
+      }
+      .grid-large .feature, .grid-med .feature { grid-column: span 1; grid-row: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.webp" alt="Bowncer Sportz Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="../about.html">About</a>
+      <a href="../programs.html">Programs</a>
+      <a href="../media.html">Media</a>
+      <a href="../locations.html">Locations</a>
+      <a href="../journey.html">The Journey</a>
+    </div>
+  </nav>
+
+  <!-- Hub Map Hero -->
+  <header class="hero">
+    <div class="hero-header">
+      <div class="hero-eyebrow">Global Footprint</div>
+      <h1 class="hero-title">Six Cities, One Standard</h1>
+    </div>
+    
+    <div class="map-container">
+      <svg class="map-svg" viewBox="0 0 1000 600">
+        <!-- Abstract connecting lines between cities -->
+        <path class="map-path" d="M 150 240 Q 300 200 600 180 T 850 150" />
+        <path class="map-path" d="M 150 240 Q 400 350 750 360" />
+        <path class="map-path" d="M 600 180 L 750 360" />
+        <path class="map-path" d="M 750 360 L 800 300 L 850 150" />
+        <path class="map-path" d="M 750 360 L 800 420" />
+      </svg>
+      
+      <a href="#california" class="waypoint wp-california">
+        <div class="wp-dot"></div><div class="wp-label">California</div>
+      </a>
+      <a href="#detroit" class="waypoint wp-detroit">
+        <div class="wp-dot"></div><div class="wp-label">Detroit</div>
+      </a>
+      <a href="#charlotte" class="waypoint wp-charlotte">
+        <div class="wp-dot"></div><div class="wp-label">Charlotte</div>
+      </a>
+      <a href="#greensboro" class="waypoint wp-greensboro">
+        <div class="wp-dot"></div><div class="wp-label">Greensboro</div>
+      </a>
+      <a href="#north-carolina" class="waypoint wp-north-carolina">
+        <div class="wp-dot"></div><div class="wp-label">North Carolina</div>
+      </a>
+      <a href="#boston" class="waypoint wp-boston">
+        <div class="wp-dot"></div><div class="wp-label">Boston</div>
+      </a>
+    </div>
+  </header>
+
+  <div class="editor-note" style="max-width: 1400px; margin: 40px auto 0 auto;">
+    <strong>TODO (Narrative Gap):</strong> Per <code>CONTENT-FACTS.md</code>, we lack verified specific narratives for these six individual cities. Please provide the verified facts/results for each city if you'd like narrative copy added here. Currently displaying neutral, descriptive captions only.
+  </div>
+
+  <!-- CALIFORNIA (7 Images) -->
+  <section id="california" class="city-section">
+    <div class="city-header">
+      <h2 class="city-title">CALIFORNIA</h2>
+      <div class="city-meta">USA Tour Venue</div>
+    </div>
+    <div class="grid-large">
+      <!-- what claim does this prove: Proves global footprint/tour presence in California. -->
+      <div class="photo feature"><img src="../assets/journey_usa_california_1.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Event / Venue</div></div>
+      <div class="photo"><img src="../assets/journey_usa_california_2.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Coaching</div></div>
+      <div class="photo"><img src="../assets/journey_usa_california_3.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Match Play</div></div>
+      <div class="photo"><img src="../assets/journey_usa_california_4.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Field</div></div>
+      <div class="photo"><img src="../assets/journey_usa_california_5.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Environment</div></div>
+      <div class="photo feature"><img src="../assets/journey_usa_california_6.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Tournament</div></div>
+      <div class="photo"><img src="../assets/journey_usa_california_7.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Squad</div></div>
+    </div>
+  </section>
+
+  <!-- DETROIT (6 Images: 4 raw + 2 HOF) -->
+  <section id="detroit" class="city-section">
+    <div class="city-header">
+      <h2 class="city-title">DETROIT</h2>
+      <div class="city-meta">USA Tour Venue (MYCA)</div>
+    </div>
+    <div class="grid-med">
+      <!-- what claim does this prove: Proves global footprint and recognition in Detroit (MYCA). -->
+      <div class="photo feature"><img src="../assets/detroit_award_v3_1.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit / MYCA Recognition</div></div>
+      <div class="photo"><img src="../assets/journey_usa_detroit_1.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Environment</div></div>
+      <div class="photo"><img src="../assets/journey_usa_detroit_2.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Coaching</div></div>
+      <div class="photo feature"><img src="../assets/journey_usa_detroit_3.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Match Play</div></div>
+      <div class="photo"><img src="../assets/journey_usa_detroit_4.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Field</div></div>
+      <div class="photo"><img src="../assets/detroit_award_v3_2.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Plaque / Ceremony</div></div>
+    </div>
+  </section>
+
+  <!-- CHARLOTTE (8 Images) -->
+  <section id="charlotte" class="city-section">
+    <div class="city-header">
+      <h2 class="city-title">CHARLOTTE</h2>
+      <div class="city-meta">USA Tour Venue</div>
+    </div>
+    <div class="grid-large">
+      <!-- what claim does this prove: Proves global footprint/tour presence in Charlotte. -->
+      <div class="photo feature"><img src="../assets/journey_usa_charlotte_1.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Event / Venue</div></div>
+      <div class="photo"><img src="../assets/journey_usa_charlotte_2.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Coaching</div></div>
+      <div class="photo"><img src="../assets/journey_usa_charlotte_3.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Match Play</div></div>
+      <div class="photo"><img src="../assets/journey_usa_charlotte_4.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Squad</div></div>
+      <div class="photo"><img src="../assets/journey_usa_charlotte_5.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Environment</div></div>
+      <div class="photo"><img src="../assets/journey_usa_charlotte_6.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Nets</div></div>
+      <div class="photo feature"><img src="../assets/journey_usa_charlotte_7.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Tournament</div></div>
+      <div class="photo"><img src="../assets/journey_usa_charlotte_8.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Action</div></div>
+    </div>
+  </section>
+
+  <!-- GREENSBORO (7 Images) -->
+  <section id="greensboro" class="city-section">
+    <div class="city-header">
+      <h2 class="city-title">GREENSBORO</h2>
+      <div class="city-meta">USA Tour Venue</div>
+    </div>
+    <div class="grid-large">
+      <!-- what claim does this prove: Proves global footprint/tour presence in Greensboro. -->
+      <div class="photo feature"><img src="../assets/journey_usa_greensboro_1.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Event / Venue</div></div>
+      <div class="photo"><img src="../assets/journey_usa_greensboro_2.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Coaching</div></div>
+      <div class="photo"><img src="../assets/journey_usa_greensboro_3.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Match Play</div></div>
+      <div class="photo"><img src="../assets/journey_usa_greensboro_4.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Squad</div></div>
+      <div class="photo"><img src="../assets/journey_usa_greensboro_5.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Environment</div></div>
+      <div class="photo feature"><img src="../assets/journey_usa_greensboro_6.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Tournament</div></div>
+      <div class="photo"><img src="../assets/journey_usa_greensboro_7.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Action</div></div>
+    </div>
+  </section>
+
+  <!-- NORTH CAROLINA (7 Images) -->
+  <section id="north-carolina" class="city-section">
+    <div class="city-header">
+      <h2 class="city-title">NORTH CAROLINA</h2>
+      <div class="city-meta">USA Tour Venue</div>
+    </div>
+    <div class="grid-large">
+      <!-- what claim does this prove: Proves global footprint/tour presence in North Carolina. -->
+      <div class="photo feature"><img src="../assets/journey_usa_north_carolina_1.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Event / Venue</div></div>
+      <div class="photo"><img src="../assets/journey_usa_north_carolina_2.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Coaching</div></div>
+      <div class="photo"><img src="../assets/journey_usa_north_carolina_3.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Match Play</div></div>
+      <div class="photo"><img src="../assets/journey_usa_north_carolina_4.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Squad</div></div>
+      <div class="photo"><img src="../assets/journey_usa_north_carolina_5.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Environment</div></div>
+      <div class="photo feature"><img src="../assets/journey_usa_north_carolina_6.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Tournament</div></div>
+      <div class="photo"><img src="../assets/journey_usa_north_carolina_7.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Action</div></div>
+    </div>
+  </section>
+
+  <!-- BOSTON (3 Images) -->
+  <section id="boston" class="city-section" style="border-bottom: none;">
+    <div class="city-header">
+      <h2 class="city-title">BOSTON</h2>
+      <div class="city-meta">USA Tour Venue</div>
+    </div>
+    <div class="grid-small">
+      <!-- what claim does this prove: Proves global footprint/tour presence in Boston. -->
+      <div class="photo"><img src="../assets/journey_usa_boston_1.webp" loading="lazy" decoding="async" alt="Boston Event"><div class="photo-caption">Boston Venue</div></div>
+      <div class="photo"><img src="../assets/journey_usa_boston_2.webp" loading="lazy" decoding="async" alt="Boston Event"><div class="photo-caption">Boston Environment</div></div>
+      <div class="photo"><img src="../assets/journey_usa_boston_3.webp" loading="lazy" decoding="async" alt="Boston Event"><div class="photo-caption">Boston Action</div></div>
+    </div>
+  </section>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+  </script>
+</body>
+</html>
