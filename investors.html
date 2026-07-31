@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investors | Bowncer Sportz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f4f1ea;
+      --ink-dim: rgba(244,241,234,0.6);
+      --void: #07080a;
+      --void-2: #0d0f12;
+      --ember: #e2380a;
+      --gold: #c9a15a;
+      --line: rgba(244,241,234,0.1);
+    }
+    
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--void);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Subtle grain texture */
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+      z-index: 100; opacity: 0.3;
+    }
+
+    /* Global Nav */
+    .nav {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 24px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff; text-decoration: none;
+      letter-spacing: 0.05em; display: flex; align-items: center; gap: 12px;
+    }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 50%; }
+    
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--ink); text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; opacity: 0.6; transition: opacity 0.2s; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--gold); }
+    
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Typography Defaults */
+    h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; margin: 0; font-weight: 400; }
+    p { margin: 0 0 16px 0; line-height: 1.6; color: var(--ink-dim); }
+    
+    /* Eyebrows */
+    .eyebrow {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    /* --- SECTION 1: HOOK --- */
+    .hero {
+      padding: 200px 0 100px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-title {
+      font-size: clamp(60px, 8vw, 100px);
+      line-height: 0.9;
+      color: #fff;
+      margin-bottom: 40px;
+      max-width: 900px;
+    }
+    .hero-statement {
+      font-size: clamp(20px, 3vw, 28px);
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 800px;
+      font-weight: 400;
+      margin-bottom: 60px;
+    }
+    
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--ink-dim);
+    }
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+
+    /* --- SECTION 2: THE FOUNDER --- */
+    .founder-section {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .founder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .founder-image {
+      position: relative;
+    }
+    .founder-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      filter: grayscale(80%) contrast(1.1);
+    }
+    /* what claim does this prove: Proves the founder's elite coaching environment and IPL-level credibility. */
+    .founder-content h2 {
+      font-size: 48px;
+      margin-bottom: 32px;
+      color: #fff;
+    }
+    
+    .cred-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 40px 0;
+    }
+    .cred-list li {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cred-list li strong {
+      color: #fff;
+      font-size: 15px;
+    }
+    .cred-list li span {
+      color: var(--ink-dim);
+      font-size: 14px;
+    }
+    
+    .players-developed {
+      background: var(--void-2);
+      padding: 32px;
+      border-left: 2px solid var(--ember);
+    }
+    .players-developed h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+    .players-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .player-card {
+      font-size: 14px;
+    }
+    .player-card strong { color: #fff; display: block; margin-bottom: 2px; }
+    .player-card span { color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .aggregate-claim {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--ink-dim);
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+
+    /* --- SECTION 3: MARKET TRACTION & MACRO CONTEXT --- */
+    .market-section {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .market-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    
+    .traction-block h2 {
+      font-size: 48px;
+      color: #fff;
+      margin-bottom: 24px;
+      line-height: 1;
+    }
+    .traction-block .big-statement {
+      font-size: 24px;
+      color: var(--ember);
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 4px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .btn-link:hover { color: var(--gold); border-color: transparent; }
+
+    .macro-context {
+      background: var(--void-2);
+      padding: 40px;
+      border-radius: 4px;
+    }
+    .macro-context h3 {
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+
+    /* --- SECTION 4: LEGAL / ENTITY LEGITIMACY --- */
+    .legal-section {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .legal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      background: var(--void-2);
+      padding: 40px;
+      border-radius: 4px;
+    }
+    .legal-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .legal-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-dim);
+    }
+    .legal-item .value {
+      font-size: 15px;
+      color: #fff;
+      font-family: monospace;
+    }
+
+    /* --- SECTION 6: THE ASK --- */
+    .ask-section {
+      padding: 160px 0;
+      text-align: center;
+    }
+    .ask-title {
+      font-size: clamp(40px, 6vw, 64px);
+      color: #fff;
+      margin-bottom: 24px;
+      max-width: 800px;
+      margin-inline: auto;
+      line-height: 1.1;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #fff;
+      color: var(--void);
+      padding: 16px 32px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border-radius: 2px;
+      margin-top: 32px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .nav { padding: 20px; }
+      .hamburger { display: block; z-index: 1001; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+        background: var(--void-2); transform: translateX(100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { font-size: 24px; margin: 16px 0; }
+      
+      .hero { padding: 140px 0 60px 0; }
+      .founder-grid, .market-grid { grid-template-columns: 1fr; gap: 40px; }
+      .players-grid { grid-template-columns: 1fr; }
+      
+      .founder-image { order: -1; }
+      .legal-grid { grid-template-columns: 1fr; }
+      .ask-section { padding: 100px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.webp" alt="Bowncer Sportz Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="programs.html">Programs</a>
+      <a href="media.html">Media</a>
+      <a href="locations.html">Locations</a>
+      <a href="journey.html">The Journey</a>
+      <a href="investors.html" class="active">Investors</a>
+    </div>
+  </nav>
+
+  <!-- SECTION 1: HOOK -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">Founder-Operated.<br>Self-Funded to Date.</h1>
+      <p class="hero-statement">
+        Open to the right partner to scale the USA footprint.
+      </p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-label">Operator</span>
+          <span class="stat-value">Ex-IPL Player (RCB)</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Accreditation</span>
+          <span class="stat-value">ICC & BCCI Level 1</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: THE FOUNDER -->
+  <section class="founder-section">
+    <div class="container founder-grid">
+      <div class="founder-image">
+        <!-- what claim does this prove: Visually anchors the elite coaching credentials and IPL-level credibility with Thiyagarajan in an active, professional coaching environment. -->
+        <img src="assets/journey_ipl_2.webp" loading="lazy" decoding="async" alt="Thiyagarajan in RCB Dugout">
+      </div>
+      <div class="founder-content">
+        <span class="eyebrow">Verifiable Credibility</span>
+        <h2>S. Thiyagarajan</h2>
+        
+        <ul class="cred-list">
+          <li>
+            <strong>Certifications</strong>
+            <span>ICC Certified Coach, Level 1 &bull; BCCI Certified Coach, Level 1</span>
+          </li>
+          <li>
+            <strong>Franchises Coached At</strong>
+            <span>Royal Challengers Bangalore (RCB), Madurai Super Giant</span>
+          </li>
+        </ul>
+
+        <div class="players-developed">
+          <h3>Elite Pipeline Developed</h3>
+          <div class="players-grid">
+            <div class="player-card">
+              <strong>K.B. Arun Karthik</strong>
+              <span>IPL Player (RCB)</span>
+            </div>
+            <div class="player-card">
+              <strong>R. Karthikeyan</strong>
+              <span>IPL Player</span>
+            </div>
+            <div class="player-card">
+              <strong>Sanjay Stanley</strong>
+              <span>USA Captain</span>
+            </div>
+            <div class="player-card">
+              <strong>Shiva Vashist</strong>
+              <span>USA U-19 National Team Captain</span>
+            </div>
+          </div>
+          <div class="aggregate-claim">
+            More than 20 players represented for Nationals
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 & 5: MARKET TRACTION & MACRO CONTEXT -->
+  <section class="market-section">
+    <div class="container market-grid">
+      
+      <!-- Traction -->
+      <div class="traction-block">
+        <span class="eyebrow">Execution Proof</span>
+        <h2>U.S. Market Traction</h2>
+        <p class="big-statement">Not a hypothetical export plan — already operating in the U.S. market.</p>
+        <p>Bowncer Sportz has successfully executed training programs and established a live operational footprint across 6 major United States cities (including California, Charlotte, and Detroit).</p>
+        <a href="journey/usa.html" class="btn-link">View the USA Footprint &rarr;</a>
+      </div>
+
+      <!-- Macro Context -->
+      <div class="macro-context">
+        <span class="eyebrow">The Macro Environment</span>
+        <h3>Why Now</h3>
+        <p>The U.S. cricket market is experiencing unprecedented, institutional-backed growth.</p>
+        <p>Driven by the successful launch and ongoing expansion of Major League Cricket (MLC), alongside the rapid development and historic T20 World Cup performance of the USA Cricket National Team, the demand for elite, structured cricket academies in the U.S. has never been higher.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: LEGAL / ENTITY LEGITIMACY -->
+  <section class="legal-section">
+    <div class="container">
+      <span class="eyebrow">Entity Information</span>
+      <div class="legal-grid">
+        <div class="legal-item">
+          <span class="label">Legal Entity</span>
+          <span class="value">Bowncer Sportz Private Limited</span>
+        </div>
+        <div class="legal-item">
+          <span class="label">CIN</span>
+          <span class="value">U74999TN2017PTC119306</span>
+        </div>
+        <div class="legal-item">
+          <span class="label">GST</span>
+          <span class="value">33AAHCB5047L1ZL</span>
+        </div>
+        <div class="legal-item">
+          <span class="label">Status</span>
+          <span class="value" style="color: var(--gold);">Active</span>
+        </div>
+        <div class="legal-item">
+          <span class="label">Last AGM</span>
+          <span class="value">30 September 2024</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: THE ASK -->
+  <section class="ask-section">
+    <div class="container">
+      <h2 class="ask-title">We are actively evaluating partners to scale our proven U.S. footprint.</h2>
+      <p>Connect with Thiyagarajan to start the conversation.</p>
+      
+      <a href="https://wa.me/919840568137" target="_blank" rel="noopener noreferrer" class="btn-primary">Connect via WhatsApp</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy; <script>document.write(new Date().getFullYear())</script> Bowncer Sportz Private Limited. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+  </script>
+</body>
+</html>
