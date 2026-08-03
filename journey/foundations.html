@@ -751,27 +751,45 @@ padding: 24px 20px; position: sticky; top: 0; z-index: 1000;
     const stations = Array.from(document.querySelectorAll('.station'));
     const clampP = v => Math.max(0, Math.min(1, v));
 
-    let ticking = false;
-    function renderScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        const total = story.scrollHeight - window.innerHeight;
-        if (total <= 0) return;
-        const rect = story.getBoundingClientRect();
-        const p = clampP(Math.abs(rect.top) / total);
-        fill.style.height = (p * 100) + '%';
+    // Lerped chase loop: targets are recomputed on scroll/resize, then eased
+    // toward every frame so the rail glides instead of snapping.
+    const RAIL_EASE = 0.11;
+    const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let targetFill = 0, curFill = 0;
+    let targetCar = 0, curCar = 0;
+    let railRaf = null;
 
-        const mid = window.innerHeight * 0.6;
-        let active = stations.findIndex(s => s.getBoundingClientRect().top > mid);
-        if (active === -1) active = stations.length - 1;
-        active = Math.max(active - 1, 0);
-        const st = stations[active];
-        if (st) {
-          carriage.style.top = (st.offsetTop + Math.min(st.offsetHeight * 0.12, 40)) + 'px';
-        }
-      });
+    function computeTargets() {
+      const total = story.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      const rect = story.getBoundingClientRect();
+      targetFill = clampP(Math.abs(rect.top) / total);
+
+      const mid = window.innerHeight * 0.6;
+      let active = stations.findIndex(s => s.getBoundingClientRect().top > mid);
+      if (active === -1) active = stations.length - 1;
+      active = Math.max(active - 1, 0);
+      const st = stations[active];
+      targetCar = st ? (st.offsetTop + Math.min(st.offsetHeight * 0.12, 40)) : 0;
+
+      if (REDUCED_MOTION) {
+        fill.style.height = (targetFill * 100) + '%';
+        carriage.style.top = targetCar + 'px';
+        curFill = targetFill; curCar = targetCar;
+        return;
+      }
+      if (!railRaf) railRaf = requestAnimationFrame(railTick);
+    }
+
+    function railTick() {
+      railRaf = null;
+      curFill += (targetFill - curFill) * RAIL_EASE;
+      curCar += (targetCar - curCar) * RAIL_EASE;
+      fill.style.height = (curFill * 100) + '%';
+      carriage.style.top = curCar + 'px';
+      if (Math.abs(targetFill - curFill) > 0.0008 || Math.abs(targetCar - curCar) > 0.5) {
+        railRaf = requestAnimationFrame(railTick);
+      }
     }
 
     // ---- IntersectionObserver: light stations & reveal ----
@@ -785,10 +803,10 @@ padding: 24px 20px; position: sticky; top: 0; z-index: 1000;
     }, { threshold: 0.18, rootMargin: '-8% 0px -8% 0px' });
     stations.forEach(st => io.observe(st));
 
-    window.addEventListener('scroll', renderScroll, { passive: true });
-    window.addEventListener('resize', renderScroll, { passive: true });
-    window.addEventListener('load', () => setTimeout(renderScroll, 60));
-    renderScroll();
+    window.addEventListener('scroll', computeTargets, { passive: true });
+    window.addEventListener('resize', computeTargets, { passive: true });
+    window.addEventListener('load', () => setTimeout(computeTargets, 60));
+    computeTargets();
   </script>
 <style>
   .site-footer {

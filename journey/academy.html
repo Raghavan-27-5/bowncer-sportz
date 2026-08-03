@@ -126,6 +126,21 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
       margin: 0 0 16px 0;
     }
 
+
+    /* ===== Task 3: content-visibility on below-fold reels + smooth scroll ===== */
+    html {
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    /* Only reels past the first are off-screen at load — give them
+       content-visibility so browsers skip their layout until they're near.
+       The first reel keeps full layout (it is above the fold). */
+    .reel + .reel {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 640px;
+    }
     /* ===== Film Reel sections ===== */
     .reel {
       position: relative;
@@ -635,6 +650,7 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
     const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const IDLE_MS = 3200;
     const SPEED = 56; // px per second — slow, cinematic
+    const EASE = 0.085; // per-frame velocity lerp factor — smooth ramps
 
     function initReel(strip) {
       const stage = strip.closest('.reel-stage');
@@ -651,14 +667,15 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
       let rafId = null;
       let last = 0;
       let dragPointer = null;
+      let vel = 0;
+      let measured = false;
+      let retries = 0;
 
       function measure() {
-        // Remove clones and re-derive one full set's height
         strip.querySelectorAll('.frame--clone').forEach(c => c.remove());
         oneSetH = originals.reduce((sum, f) => sum + f.offsetHeight, 0) +
                   (originals.length - 1) * parseFloat(getComputedStyle(originals[0]).marginBottom);
         const viewH = strip.clientHeight;
-        // Duplicate until at least one full set fits beyond the viewport
         let copies = Math.max(2, Math.ceil((viewH * 1.5) / oneSetH) + 1);
         for (let i = 1; i < copies; i++) {
           originals.forEach(f => {
@@ -667,6 +684,7 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
             strip.appendChild(c);
           });
         }
+        measured = true;
       }
 
       function setStatus(manual) {
@@ -690,6 +708,7 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
           setStatus(false);
+          vel = 0; // ease back up from a standstill instead of jumping to full speed
           last = performance.now();
         }, IDLE_MS);
       }
@@ -698,7 +717,8 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
         if (auto && !userScrolling) {
           const dt = Math.min(0.05, (now - last) / 1000 || 0);
           last = now;
-          strip.scrollTop += SPEED * dt;
+          vel += (SPEED - vel) * Math.min(1, EASE * (dt * 60));
+          strip.scrollTop += vel * dt;
           if (strip.scrollTop >= oneSetH) strip.scrollTop -= oneSetH;
           updateCounter();
         }
@@ -738,6 +758,7 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
         const dy = e.clientY - lastY;
         lastY = e.clientY;
         last = performance.now();
+        vel = 0;
         strip.scrollTop -= dy;
         updateCounter();
       });
@@ -752,21 +773,48 @@ padding: 24px 40px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000
       // Native wheel/touch scroll on the strip is enough — overscroll-behavior
       // prevents the page from hijacking the gesture at the strip's limit.
 
-      measure();
-      updateCounter();
-      setStatus(false);
-      if (auto) {
-        last = performance.now();
-        rafId = requestAnimationFrame(tick);
+      // Lazy boot: below-fold reels use content-visibility:auto, so they have
+      // no layout until they approach the viewport. Measure + start the loop
+      // only when a reel gets near, retrying briefly until real sizes exist.
+      function boot() {
+        if (measured) return;
+        measure();
+        if (!oneSetH || strip.clientHeight === 0) {
+          if (retries++ < 60) requestAnimationFrame(boot);
+          return;
+        }
+        updateCounter();
+        setStatus(false);
+        if (auto) {
+          last = performance.now();
+          rafId = requestAnimationFrame(tick);
+        }
+      }
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              io.disconnect();
+              boot();
+            }
+          });
+        }, { rootMargin: '900px 0px' });
+        io.observe(stage);
+      } else {
+        boot();
       }
 
       window.addEventListener('resize', () => {
-        measure();
-        updateCounter();
+        if (measured) {
+          measure();
+          updateCounter();
+        }
       });
     }
 
     document.querySelectorAll('.reel-strip').forEach(initReel);
+
   </script>
 <style>
   .site-footer {

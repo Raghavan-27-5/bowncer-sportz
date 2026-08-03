@@ -82,6 +82,21 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
       line-height: 1.5;
     }
 
+
+    /* ===== Task 3: content-visibility on below-fold reels + smooth scroll ===== */
+    html {
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    /* Only reels past the first are off-screen at load — give them
+       content-visibility so browsers skip their layout until they're near.
+       The first reel keeps full layout (it is above the fold). */
+    .reel + .reel {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 640px;
+    }
     /* ===== Film Reel sections ===== */
     .reel {
       position: relative;
@@ -609,6 +624,7 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
     const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const IDLE_MS = 3200;
     const SPEED = 56; // px per second — slow, cinematic
+    const EASE = 0.085; // per-frame velocity lerp factor — smooth ramps
 
     function initReel(strip) {
       const stage = strip.closest('.reel-stage');
@@ -625,6 +641,9 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
       let rafId = null;
       let last = 0;
       let dragPointer = null;
+      let vel = 0;
+      let measured = false;
+      let retries = 0;
 
       function measure() {
         strip.querySelectorAll('.frame--clone').forEach(c => c.remove());
@@ -639,6 +658,7 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
             strip.appendChild(c);
           });
         }
+        measured = true;
       }
 
       function setStatus(manual) {
@@ -662,6 +682,7 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
           setStatus(false);
+          vel = 0; // ease back up from a standstill instead of jumping to full speed
           last = performance.now();
         }, IDLE_MS);
       }
@@ -670,25 +691,33 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
         if (auto && !userScrolling) {
           const dt = Math.min(0.05, (now - last) / 1000 || 0);
           last = now;
-          strip.scrollTop += SPEED * dt;
+          vel += (SPEED - vel) * Math.min(1, EASE * (dt * 60));
+          strip.scrollTop += vel * dt;
           if (strip.scrollTop >= oneSetH) strip.scrollTop -= oneSetH;
           updateCounter();
         }
         rafId = requestAnimationFrame(tick);
       }
 
+      // Scroll events now only refresh the HUD counter. Pause logic lives in
+      // the real input listeners above. A synthetic layout scroll can't pause us.
       strip.addEventListener('scroll', updateCounter, { passive: true });
 
+      // User input → pause autoplay. We listen to real input events here
+      // (wheel / touch / pointer), NOT to 'scroll': browsers fire synthetic
+      // scroll events during layout settle / anchor restoration which would
+      // be misread as user interaction.
       let lastUserInput = 0;
       function markUser() {
         lastUserInput = performance.now();
-        last = performance.now();
+        last = performance.now(); // reset dt so no speed burst after input
       }
       strip.addEventListener('wheel', () => { markUser(); pauseForUser(); }, { passive: true });
       strip.addEventListener('touchstart', () => { markUser(); pauseForUser(); }, { passive: true });
       strip.addEventListener('pointerdown', () => { if (!dragPointer) { markUser(); } pauseForUser(); }, { passive: true });
       strip.addEventListener('keydown', () => { markUser(); pauseForUser(); }, { passive: true });
 
+      // Drag-to-scrub (mouse)
       let dragging = false, lastY = 0;
       strip.addEventListener('pointerdown', e => {
         if (e.pointerType !== 'mouse') return;
@@ -703,6 +732,7 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
         const dy = e.clientY - lastY;
         lastY = e.clientY;
         last = performance.now();
+        vel = 0;
         strip.scrollTop -= dy;
         updateCounter();
       });
@@ -714,21 +744,51 @@ padding: 24px 40px; position: sticky; top: 0; z-index: 1000;
         })
       );
 
-      measure();
-      updateCounter();
-      setStatus(false);
-      if (auto) {
-        last = performance.now();
-        rafId = requestAnimationFrame(tick);
+      // Native wheel/touch scroll on the strip is enough — overscroll-behavior
+      // prevents the page from hijacking the gesture at the strip's limit.
+
+      // Lazy boot: below-fold reels use content-visibility:auto, so they have
+      // no layout until they approach the viewport. Measure + start the loop
+      // only when a reel gets near, retrying briefly until real sizes exist.
+      function boot() {
+        if (measured) return;
+        measure();
+        if (!oneSetH || strip.clientHeight === 0) {
+          if (retries++ < 60) requestAnimationFrame(boot);
+          return;
+        }
+        updateCounter();
+        setStatus(false);
+        if (auto) {
+          last = performance.now();
+          rafId = requestAnimationFrame(tick);
+        }
+      }
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              io.disconnect();
+              boot();
+            }
+          });
+        }, { rootMargin: '900px 0px' });
+        io.observe(stage);
+      } else {
+        boot();
       }
 
       window.addEventListener('resize', () => {
-        measure();
-        updateCounter();
+        if (measured) {
+          measure();
+          updateCounter();
+        }
       });
     }
 
     document.querySelectorAll('.reel-strip').forEach(initReel);
+
   </script>
 <style>
   .site-footer {
