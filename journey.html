@@ -16,27 +16,29 @@
       --gold: #c9a15a;
       --line: rgba(244,241,234,0.14);
     }
-    
+
     * { box-sizing: border-box; }
-    
+
     body {
       margin: 0; padding: 0;
       background-color: var(--void);
       color: var(--ink);
       font-family: 'Archivo', sans-serif;
       overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       position: relative;
     }
-    
+
     body::before {
       content: ''; position: fixed; inset: 0; pointer-events: none;
       background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
       z-index: 100; opacity: 0.4;
     }
-    
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* Navigation */
     .nav {
       display: flex; justify-content: space-between; align-items: center;
@@ -48,7 +50,7 @@
       text-decoration: none; letter-spacing: 0.1em;
     }
     .nav-logo img { width: 40px; height: 40px; border-radius: 50%; }
-    
+
     .nav-links { display: flex; gap: 32px; }
     .nav-links a {
       color: var(--ink); text-decoration: none; font-size: 13px;
@@ -56,10 +58,10 @@
       transition: color 0.3s;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-    
+
     .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
     .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
-    
+
     @media (max-width: 768px) {
       .nav { padding: 20px; }
       .hamburger { display: block; z-index: 1001; }
@@ -75,232 +77,281 @@
       .hamburger.active .bar:nth-child(2) { opacity: 0; }
       .hamburger.active .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
     }
-    
-    /* Layout */
-    .journey-hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-    }
-    
+
+    /* ============ PAGE HEADER ============ */
     .journey-header {
       text-align: center;
-      max-width: 700px;
-      margin-bottom: 40px;
+      max-width: 720px;
+      margin: 40px auto 24px auto;
+      padding: 0 24px;
       position: relative;
       z-index: 10;
       animation: fadeUp 1s cubic-bezier(.16,1,.3,1) forwards;
     }
-    
+    .header-eyebrow {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
     .journey-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(40px, 8vw, 80px);
-      line-height: 0.9;
-      margin: 0 0 16px 0;
+      font-size: clamp(44px, 9vw, 88px);
+      line-height: 0.88;
+      margin: 0 0 18px 0;
       color: #fff;
+      text-transform: uppercase;
     }
-    
     .journey-subtitle {
       font-size: 16px;
       color: var(--ink-dim);
       line-height: 1.6;
-    }
-    
-    /* The Ground (Map) */
-    .ground-container {
-      position: relative;
-      width: 90vw;
-      max-width: 1000px;
-      aspect-ratio: 2.2 / 1;
+      max-width: 560px;
       margin: 0 auto;
-      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.2s forwards;
-      opacity: 0;
-      transform: translateY(16px);
     }
-    
-    .ground-svg {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      inset: 0;
-      overflow: visible;
-    }
-    
-    .oval-path {
-      fill: radial-gradient(circle, rgba(13,15,18,1) 0%, rgba(7,8,10,1) 100%);
-      stroke: var(--line);
-      stroke-width: 1.5;
-      stroke-dasharray: 2500;
-      stroke-dashoffset: 2500;
-      animation: drawOval 2.5s cubic-bezier(.16,1,.3,1) 0.4s forwards;
-    }
-    
-    .radiant-line {
-      stroke: rgba(201,161,90,0.15);
-      stroke-width: 1;
-      stroke-dasharray: 4 6;
-    }
-    
-    @keyframes drawOval { to { stroke-dashoffset: 0; } }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Center Point */
-    .center-point {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex; flex-direction: column; align-items: center;
-      z-index: 5;
-    }
-    .center-logo {
-      width: 56px; height: 56px; border-radius: 50%;
-      border: 1px solid rgba(201,161,90,0.5);
-      box-shadow: 0 0 30px rgba(201,161,90,0.15);
-    }
-    .center-label {
-      font-family: monospace; font-size: 11px;
-      color: var(--gold); text-transform: uppercase;
-      letter-spacing: 0.1em; margin-top: 12px;
-      background: var(--void); padding: 2px 8px; border-radius: 4px;
-    }
-    
-    /* Markers */
-    .marker {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      z-index: 20;
-      transition: transform 0.35s cubic-bezier(.16,1,.3,1);
-    }
-    
-    .marker:hover {
-      transform: translate(-50%, -60%);
-      z-index: 30;
-    }
-    
-    .marker-dot {
-      width: 14px; height: 14px;
-      background: var(--ember);
-      border-radius: 50%;
-      border: 2px solid var(--void);
-      box-shadow: 0 0 10px rgba(226,56,10,0.5);
-      margin-bottom: 12px;
-      transition: all 0.3s;
-    }
-    .marker:hover .marker-dot {
-      background: var(--gold);
-      box-shadow: 0 0 15px rgba(201,161,90,0.6);
-      transform: scale(1.2);
-    }
-    
-    .marker-card {
-      background: rgba(13,15,18,0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px;
-      width: 180px;
-      text-align: center;
-      opacity: 0.8;
-      transition: all 0.35s cubic-bezier(.16,1,.3,1);
-      filter: grayscale(60%);
-    }
-    
-    .marker:hover .marker-card {
-      opacity: 1;
-      filter: grayscale(0%);
-      border-color: rgba(201,161,90,0.4);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    }
-    
-    .marker-img-wrap {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 12px;
+
+    /* ============ THE SPINE ============ */
+    /* A single left-aligned vertical rail, at every breakpoint. This intentionally
+       replaces the old radial "ground map" concept, which relied on absolute
+       positioning around an oval and could not re-stack sensibly on mobile.
+       A single rail is inherently mobile-native: it is just a stack of sections
+       that widens its internal grid on larger screens, never repositions nodes. */
+    .spine-wrap {
       position: relative;
+      max-width: 900px;
+      margin: 60px auto 0 auto;
+      padding: 0 24px 100px 24px;
     }
-    
-    .marker-img-wrap::after {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, transparent 30%, rgba(7,8,10,0.6) 100%);
-      pointer-events: none;
+
+    .spine-rail {
+      position: absolute;
+      left: 32px;
+      top: 6px;
+      bottom: 40px;
+      width: 2px;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        var(--line) 4%,
+        var(--line) 96%,
+        transparent 100%);
+      z-index: 1;
     }
-    
-    .marker-img-wrap img {
+
+    .chapter {
+      position: relative;
+      z-index: 2;
+      padding-left: 76px;
+      margin-bottom: 56px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .chapter:nth-child(1) { animation-delay: .05s; }
+    .chapter:nth-child(2) { animation-delay: .1s; }
+    .chapter:nth-child(3) { animation-delay: .15s; }
+    .chapter:nth-child(4) { animation-delay: .2s; }
+    .chapter:nth-child(5) { animation-delay: .25s; }
+    .chapter:nth-child(6) { animation-delay: .3s; }
+    .chapter:nth-child(7) { animation-delay: .35s; }
+
+    .chapter-node {
+      position: absolute;
+      left: 22px;
+      top: 6px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--void);
+      border: 2px solid var(--ember);
+      box-shadow: 0 0 0 4px var(--void), 0 0 14px rgba(226,56,10,0.4);
+    }
+    .chapter-node::after {
+      content: '';
+      position: absolute; inset: 6px;
+      border-radius: 50%;
+      background: var(--ember);
+    }
+    .chapter.is-gold .chapter-node { border-color: var(--gold); box-shadow: 0 0 0 4px var(--void), 0 0 14px rgba(201,161,90,0.4); }
+    .chapter.is-gold .chapter-node::after { background: var(--gold); }
+
+    .chapter-eyebrow {
+      font-size: 11px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 6px;
+    }
+    .chapter-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(30px, 5.5vw, 46px);
+      line-height: 0.95;
+      color: #fff;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+    }
+    .chapter-tag {
+      font-size: 12px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+
+    .chapter-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--void-2);
+      border: 1px solid var(--line);
+      transition: transform .4s cubic-bezier(.16,1,.3,1), border-color .4s, box-shadow .4s;
+    }
+    a.chapter-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201,161,90,0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .chapter-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+    .chapter-media img {
       width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.6s ease;
+      filter: grayscale(35%);
+      transition: transform 0.7s cubic-bezier(.16,1,.3,1), filter 0.5s ease;
     }
-    .marker:hover .marker-img-wrap img {
-      transform: scale(1.05);
+    a.chapter-card:hover .chapter-media img {
+      transform: scale(1.04);
+      filter: grayscale(0%);
     }
-    
-    .marker-label {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      color: #fff;
-      margin: 0;
-      letter-spacing: 0.05em;
+    .chapter-media::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(7,8,10,0.85) 0%, transparent 45%);
     }
-    
-    .marker-tagline {
+    .chapter-media-caption {
+      position: absolute;
+      left: 16px; bottom: 12px;
       font-size: 11px;
-      color: var(--ink-dim);
-      margin-top: 4px;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      z-index: 2;
     }
-    
-    /* Layout Positions (Desktop) */
-    .pos-ipl { top: 10%; left: 50%; }
-    .pos-usa { top: 50%; left: 90%; }
-    .pos-academy { top: 90%; left: 50%; }
-    .pos-domestic { top: 50%; left: 10%; }
-    
-    /* Slight adjustments to card origins so they don't cover the dot */
-    .pos-ipl .marker-card { transform: translateY(-10px); }
-    .pos-academy { flex-direction: column-reverse; }
-    .pos-academy .marker-card { transform: translateY(10px); margin-bottom: 12px; margin-top: 0; }
-    .pos-academy .marker-dot { margin-bottom: 0; }
-    .pos-academy:hover { transform: translate(-50%, -40%); }
-    
-    @media (max-width: 900px) {
-      .journey-hero { padding: 10px; }
-      .ground-container {
-        aspect-ratio: auto;
-        height: 600px;
-        width: 100%;
-        margin-top: 20px;
-      }
-      .marker-card { width: 140px; padding: 6px; }
-      .marker-label { font-size: 16px; }
-      .marker-tagline { display: none; }
-      
-      .pos-ipl { top: 10%; left: 50%; transform: translate(-50%, 0); }
-      .pos-ipl:hover { transform: translate(-50%, 0) scale(1.05); }
-      
-      .pos-usa { top: 50%; left: 90%; flex-direction: row-reverse; transform: translate(-100%, -50%); }
-      .pos-usa:hover { transform: translate(-100%, -50%) scale(1.05); }
-      .pos-usa .marker-card { margin-right: 12px; margin-bottom: 0; }
-      .pos-usa .marker-dot { margin-bottom: 0; transform: translateX(50%); }
 
-      .pos-domestic { top: 50%; left: 10%; flex-direction: row; transform: translate(0, -50%); }
-      .pos-domestic:hover { transform: translate(0, -50%) scale(1.05); }
-      .pos-domestic .marker-card { margin-left: 12px; margin-bottom: 0; }
-      .pos-domestic .marker-dot { margin-bottom: 0; transform: translateX(-50%); }
+    .chapter-body { padding: 20px; }
+    .chapter-copy {
+      font-size: 14.5px;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      margin: 0 0 14px 0;
+    }
+    .chapter-quote {
+      border-left: 2px solid var(--gold);
+      padding-left: 14px;
+      margin: 0 0 16px 0;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .chapter-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+    }
+    .chapter-cta svg { width: 14px; height: 14px; transition: transform .35s cubic-bezier(.16,1,.3,1); }
+    a.chapter-card:hover .chapter-cta svg { transform: translateX(4px); }
 
-      .pos-academy { top: 90%; left: 50%; transform: translate(-50%, -100%); }
-      .pos-academy:hover { transform: translate(-50%, -100%) scale(1.05); }
+    .chapter-stats { display: flex; gap: 20px; flex-wrap: wrap; margin: 0 0 16px 0; }
+    .stat { border-left: 2px solid var(--ember); padding-left: 10px; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #fff; line-height: 1; }
+    .stat-label { font-size: 10px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+    .chapter-photos { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2px; }
+    .chapter-photos .chapter-media { aspect-ratio: auto; height: 100%; min-height: 160px; }
+
+    /* USA emphasis chapter */
+    .usa-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .usa-grid .chapter-media { aspect-ratio: 1; }
+    .usa-grid .chapter-media:first-child { grid-column: 1 / 3; grid-row: 1 / 3; aspect-ratio: auto; }
+    .usa-states { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 16px 0; }
+    .usa-state-chip {
+      font-size: 11px;
+      padding: 5px 12px;
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Final CTA */
+    .journey-footer-cta {
+      max-width: 900px;
+      margin: 20px auto 0 auto;
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+    .journey-footer-cta h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #fff;
+      margin: 0 0 10px 0;
+      letter-spacing: 0.04em;
+    }
+    .journey-footer-cta p { color: var(--ink-dim); font-size: 14px; margin: 0 0 22px 0; }
+    .footer-cta-btn {
+      display: inline-block;
+      padding: 14px 30px;
+      background: var(--ember);
+      color: var(--ink);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 13px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+    }
+    .footer-cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(226,56,10,0.35);
+      background: var(--ember-glow);
+    }
+
+    /* ============ TABLET/DESKTOP refinement ============ */
+    /* Widen the card body's internal grid slightly and give the USA chapter
+       a taller three-photo mosaic — the rail position itself never moves,
+       so there is nothing to re-stack, only proportions to adjust. */
+    @media (min-width: 860px) {
+      .spine-wrap { padding-left: 24px; padding-right: 24px; }
+      .chapter { padding-left: 96px; }
+      .chapter-node { left: 22px; }
+      .chapter-body { padding: 28px 32px; }
+      .chapter-copy { font-size: 15.5px; max-width: 640px; }
+      .usa-grid .chapter-media { aspect-ratio: 4/3; }
+    }
+
+    @media (max-width: 480px) {
+      .chapter { padding-left: 56px; margin-bottom: 44px; }
+      .chapter-node { left: 12px; width: 18px; height: 18px; }
+      .chapter-node::after { inset: 5px; }
+      .spine-rail { left: 20px; }
+      .chapter-stats { gap: 14px; }
+      .usa-states { gap: 6px; }
+      .usa-state-chip { font-size: 10px; padding: 4px 10px; }
     }
   </style>
 </head>
@@ -316,90 +367,200 @@
       <span class="bar"></span><span class="bar"></span><span class="bar"></span>
     </button>
     <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="programs.html">Programs</a>
-    <a href="media.html">Media</a>
-    <a href="locations.html">Locations</a>
-    <a href="journey.html" class="active">The Journey</a>
-    <a href="investors.html">Investors</a>
-  </div>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="programs.html">Programs</a>
+      <a href="media.html">Media</a>
+      <a href="locations.html">Locations</a>
+      <a href="journey.html" class="active">The Journey</a>
+      <a href="investors.html">Investors</a>
+    </div>
   </nav>
 
-  <main class="journey-hero">
-    <header class="journey-header">
-      <h1 class="journey-title">The Journey</h1>
-      <p class="journey-subtitle">Every boundary starts somewhere. Trace the arc — from the academy nets to the IPL dugout to six cities across America.</p>
-    </header>
+  <header class="journey-header">
+    <div class="header-eyebrow">The Coach's Story</div>
+    <h1 class="journey-title">The Journey</h1>
+    <p class="journey-subtitle">From a district trial in Avadi to an RCB dugout, a TNPL crease, a film set, and cricket grounds across six American states — trace the arc that built the coach behind Bowncer Sportz.</p>
+  </header>
 
-    <div class="ground-container">
-      <svg class="ground-svg" viewBox="0 0 1000 500" preserveAspectRatio="none">
-        <ellipse class="oval-path" cx="500" cy="250" rx="400" ry="200" />
-        <line class="radiant-line" x1="500" y1="250" x2="500" y2="50" />
-        <line class="radiant-line" x1="500" y1="250" x2="900" y2="250" />
-        <line class="radiant-line" x1="500" y1="250" x2="500" y2="450" />
-        <line class="radiant-line" x1="500" y1="250" x2="100" y2="250" />
-      </svg>
-      
-      <div class="center-point">
-        <img src="assets/logo.webp" alt="Origin" class="center-logo">
-        <div class="center-label">Point of Origin</div>
+  <div class="spine-wrap">
+    <div class="spine-rail"></div>
+
+    <!-- CHAPTER 1: FOUNDATIONS -->
+    <div class="chapter">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter One</div>
+      <h2 class="chapter-title">Foundations</h2>
+      <div class="chapter-tag">Madurai to Chennai · Early Years</div>
+      <div class="chapter-card">
+        <div class="chapter-media">
+          <img src="assets/journey_marker_foundations.webp" alt="Early training years" loading="lazy" decoding="async">
+          <div class="chapter-media-caption">Where the grind began</div>
+        </div>
+        <div class="chapter-body">
+          <p class="chapter-copy">Long before RCB or the TNPL, cricket was a discipline learned the hard way — chasing selection trials alone, and switching divisions on purpose to master a format nobody had assured him would pay off.</p>
+          <blockquote class="chapter-quote">He told his family the school was taking him to trials. He told the school he was going home. Then he took a train alone to Avadi — and got selected.</blockquote>
+          <p class="chapter-copy">He never played First-Class or List A cricket. Instead, he dropped from the first division to the second, on purpose, to give one format — T20 — his complete focus, training on a strict routine most players wouldn't commit to.</p>
+        </div>
       </div>
-
-      <!-- IPL Marker -->
-      <a href="journey/ipl.html" class="marker pos-ipl">
-        <div class="marker-dot"></div>
-        <div class="marker-card">
-          <!-- what claim does this prove: Coach's exposure to elite franchise cricket (RCB). Chosen for DSLR quality and professional framing. -->
-          <div class="marker-img-wrap">
-            <img src="assets/journey_marker_ipl.webp" alt="IPL Franchise Cricket" loading="lazy" style="object-position: center 20%;">
-          </div>
-          <h3 class="marker-label">Inside the Ring</h3>
-          <div class="marker-tagline">Elite Franchise Cricket</div>
-        </div>
-      </a>
-
-      <!-- USA Marker -->
-      <a href="journey/usa.html" class="marker pos-usa">
-        <div class="marker-dot"></div>
-        <div class="marker-card">
-          <!-- what claim does this prove: Global footprint spanning 6 US cities. Chosen from detroit folder for strong lighting and clear subject focus. -->
-          <div class="marker-img-wrap">
-            <img src="assets/detroit_award_v3_1.webp" alt="USA Tours" loading="lazy" style="object-position: center 15%;">
-          </div>
-          <h3 class="marker-label">Six Cities, One Standard</h3>
-          <div class="marker-tagline">USA Coaching Tour</div>
-        </div>
-      </a>
-
-      <!-- Academy Marker -->
-      <a href="journey/academy.html" class="marker pos-academy">
-        <div class="marker-card">
-          <!-- what claim does this prove: The modern training environment and facility scale. Chosen for clear shot of the nets and active practice. -->
-          <div class="marker-img-wrap">
-            <img src="assets/journey_marker_academy.webp" alt="The Academy Today" loading="lazy" style="object-position: center;">
-          </div>
-          <h3 class="marker-label">The Academy Today</h3>
-          <div class="marker-tagline">Where It Happens</div>
-        </div>
-        <div class="marker-dot"></div>
-      </a>
-
-      <!-- Domestic Marker -->
-      <a href="journey/domestic.html" class="marker pos-domestic">
-        <div class="marker-dot"></div>
-        <div class="marker-card">
-          <!-- what claim does this prove: Foundational grind across varied formats (TNPL, college, corporate). Chosen for bright outdoor lighting. -->
-          <div class="marker-img-wrap">
-            <img src="assets/journey_marker_domestic.webp" alt="Domestic Cricket" loading="lazy" style="object-position: center;">
-          </div>
-          <h3 class="marker-label">Where It Started</h3>
-          <div class="marker-tagline">Domestic & Tournaments</div>
-        </div>
-      </a>
-
     </div>
-  </main>
+
+    <!-- CHAPTER 2: IPL / RCB -->
+    <div class="chapter is-gold">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter Two</div>
+      <h2 class="chapter-title">Inside the Ring</h2>
+      <div class="chapter-tag">IPL 2012 · Royal Challengers Bangalore</div>
+      <a href="journey/ipl.html" class="chapter-card">
+        <div class="chapter-media">
+          <img src="assets/journey_marker_ipl.webp" alt="RCB IPL 2012" loading="lazy" decoding="async" style="object-position:center 20%;">
+          <div class="chapter-media-caption">Royal Challengers Bangalore, 2012</div>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-stats">
+            <div class="stat"><div class="stat-num">5</div><div class="stat-label">Innings</div></div>
+            <div class="stat"><div class="stat-num">161</div><div class="stat-label">Runs</div></div>
+            <div class="stat"><div class="stat-num">~40</div><div class="stat-label">Average</div></div>
+          </div>
+          <p class="chapter-copy">An uncapped player's shot at the IPL — five innings in RCB colours that taught him what elite pressure and floodlit cricket actually demand. That standard is what he now brings to the academy nets.</p>
+          <span class="chapter-cta">See the gallery
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <!-- CHAPTER 3: TNPL & DOMESTIC -->
+    <div class="chapter">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter Three</div>
+      <h2 class="chapter-title">Where It Started</h2>
+      <div class="chapter-tag">TNPL · Madurai Super Giant &amp; the Domestic Circuit</div>
+      <a href="journey/domestic.html" class="chapter-card">
+        <div class="chapter-photos">
+          <div class="chapter-media">
+            <img src="assets/journey_domestic_tnpl_1.webp" alt="TNPL Madurai Super Giant" loading="lazy" decoding="async">
+          </div>
+          <div class="chapter-media">
+            <img src="assets/journey_marker_domestic.webp" alt="Domestic tournament cricket" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-stats">
+            <div class="stat"><div class="stat-num">91</div><div class="stat-label">TNPL Runs</div></div>
+            <div class="stat"><div class="stat-num">3</div><div class="stat-label">Wickets</div></div>
+            <div class="stat"><div class="stat-num">30.33</div><div class="stat-label">Batting Avg</div></div>
+          </div>
+          <p class="chapter-copy">Playing for Madurai Super Giant (now Siechem Madurai Panthers) in the TNPL, then carrying that game across college, corporate, and invitational tournaments — the circuit where the all-rounder's game, and the mentor's instinct, were built side by side.</p>
+          <span class="chapter-cta">See the full circuit
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <!-- CHAPTER 4: KAANA -->
+    <div class="chapter is-gold">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter Four</div>
+      <h2 class="chapter-title">On Set, Off Screen</h2>
+      <div class="chapter-tag">Kaana (2018) · Cricket Coach, Behind the Camera</div>
+      <a href="journey/kaana.html" class="chapter-card">
+        <div class="chapter-media">
+          <img src="assets/journey_marker_kaana.webp" alt="Kaana film cricket training" loading="lazy" decoding="async">
+          <div class="chapter-media-caption">Training the lead for the crease</div>
+        </div>
+        <div class="chapter-body">
+          <p class="chapter-copy">On screen, the cricket in <em>Kaana</em> (2018) is played by Sivakarthikeyan. Off screen, someone still had to get the female lead's batting technique camera-ready. That's where he came in — coaching the actress through the fundamentals so her cricket would hold up on film.</p>
+          <span class="chapter-cta">See the set
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <!-- CHAPTER 5: CCL -->
+    <div class="chapter">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter Five</div>
+      <h2 class="chapter-title">Coach to the Crown</h2>
+      <div class="chapter-tag">Celebrity Cricket League · Mentor, Winning Side</div>
+      <a href="journey/ccl.html" class="chapter-card">
+        <div class="chapter-media">
+          <img src="assets/journey_marker_ccl.webp" alt="Celebrity Cricket League winning team" loading="lazy" decoding="async">
+          <div class="chapter-media-caption">On the ground with the champions</div>
+        </div>
+        <div class="chapter-body">
+          <p class="chapter-copy">Not a player's spot this time — a coach's and mentor's. In the Celebrity Cricket League, the tournament that puts film stars on a cricket field, he worked the other side of the boundary: sharpening the technique of the side that went on to win.</p>
+          <span class="chapter-cta">See the win
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <!-- CHAPTER 6: USA — EMPHASIS CHAPTER -->
+    <div class="chapter is-gold">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter Six</div>
+      <h2 class="chapter-title">Six Cities, One Standard</h2>
+      <div class="chapter-tag">12+ Years Coaching Across the USA</div>
+      <a href="journey/usa.html" class="chapter-card">
+        <div class="usa-grid">
+          <div class="chapter-media">
+            <img src="assets/detroit_award_v3_1.webp" alt="Coaching in Detroit, USA" loading="lazy" decoding="async" style="object-position:center 15%;">
+          </div>
+          <div class="chapter-media">
+            <img src="assets/journey_usa_charlotte_1.webp" alt="Charlotte, USA cricket" loading="lazy" decoding="async">
+          </div>
+          <div class="chapter-media">
+            <img src="assets/journey_usa_california_1.webp" alt="California, USA cricket" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="chapter-body">
+          <div class="usa-states">
+            <span class="usa-state-chip">North Carolina</span>
+            <span class="usa-state-chip">California</span>
+            <span class="usa-state-chip">Texas</span>
+            <span class="usa-state-chip">New Jersey</span>
+            <span class="usa-state-chip">Michigan</span>
+            <span class="usa-state-chip">Massachusetts</span>
+          </div>
+          <p class="chapter-copy">A dozen years of American club and county cricket, across six states — and just as often, coaching the next generation courtside as playing himself. The same coaching eye that built the academy in Chennai, now stamped on cricket communities from Charlotte to the Bay Area.</p>
+          <span class="chapter-cta">See the tour
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <!-- CHAPTER 7: ACADEMY TODAY -->
+    <div class="chapter">
+      <div class="chapter-node"></div>
+      <div class="chapter-eyebrow">Chapter Seven</div>
+      <h2 class="chapter-title">Full Circle</h2>
+      <div class="chapter-tag">Bowncer Sportz Cricket Academy · Today</div>
+      <a href="journey/academy.html" class="chapter-card">
+        <div class="chapter-media">
+          <img src="assets/journey_marker_academy.webp" alt="The Academy Today" loading="lazy" decoding="async">
+          <div class="chapter-media-caption">Where it all comes together</div>
+        </div>
+        <div class="chapter-body">
+          <p class="chapter-copy">RCB nets. TNPL run-chases. A film set in Chennai. Cricket grounds in six American states. Every one of those rooms shaped the coaching philosophy now running through Bowncer Sportz — Process. Progress. Perform.</p>
+          <span class="chapter-cta">Step inside the academy
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="journey-footer-cta">
+    <h3>Ready to start your own journey?</h3>
+    <p>Junior Foundations, Skill Development, Match Readiness — coached by someone who's played every version of this game.</p>
+    <a href="https://wa.me/919840568137" class="footer-cta-btn" target="_blank">Message on WhatsApp</a>
+  </div>
 
   <script>
     const hamburger = document.querySelector('.hamburger');
