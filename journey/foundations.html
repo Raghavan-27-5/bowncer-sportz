@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundations | The Journey | Bowncer Sportz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f4f1ea;
+      --ink-dim: #b8b2a4;
+      --void: #07080a;
+      --void-2: #0d0f12;
+      --ember: #e2380a;
+      --ember-glow: #ff5622;
+      --gold: #c9a15a;
+      --line: rgba(244,241,234,0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--void);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+      z-index: 100; opacity: 0.4;
+    }
+
+    .flood {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      filter: blur(90px);
+    }
+    .flood-1 { width: 420px; height: 420px; top: -160px; right: -120px; background: radial-gradient(circle, rgba(226,56,10,0.16), transparent 70%); }
+    .flood-2 { width: 480px; height: 480px; bottom: -180px; left: -160px; background: radial-gradient(circle, rgba(201,161,90,0.10), transparent 70%); }
+    .flood-3 { width: 360px; height: 360px; bottom: 30%; right: -140px; background: radial-gradient(circle, rgba(255,86,34,0.08), transparent 70%); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Navigation ===== */
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 20px; position: relative; z-index: 1000;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--ink);
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+    .nav-logo img { width: 38px; height: 38px; border-radius: 50%; }
+
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--ink); text-decoration: none; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px 0; transition: all 0.3s; }
+
+    @media (max-width: 900px) {
+      .hamburger { display: block; z-index: 1001; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+        background: var(--void-2); transform: translateX(100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { font-size: 24px; margin: 16px 0; }
+      .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+      .hamburger.active .bar:nth-child(2) { opacity: 0; }
+      .hamburger.active .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      padding: 90px 20px 110px 20px;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 20vw, 150px);
+      line-height: 0.82;
+      margin: 0 0 24px 0;
+      color: var(--ink);
+      text-transform: uppercase;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.08s both;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      max-width: 480px;
+      margin: 0;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.16s both;
+    }
+    .hero-scroll {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 42px;
+      font-size: 11px; color: var(--ink-dim);
+      letter-spacing: 0.28em; text-transform: uppercase;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.24s both;
+    }
+    .hero-scroll .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 12px rgba(226,56,10,0.8); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .45; transform: scale(.7);} }
+
+    /* ===== The Story ===== */
+    .story {
+      position: relative;
+      margin: 0 auto;
+      max-width: 980px;
+      padding: 16px 20px 120px 78px;
+    }
+
+    /* Rail */
+    .rail {
+      position: absolute;
+      left: 22px; top: 24px; bottom: 120px;
+      width: 2px;
+      background: var(--line);
+    }
+    .rail-fill {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 0%;
+      background: linear-gradient(to bottom, var(--ember), var(--ember-glow));
+      box-shadow: 0 0 12px rgba(226,56,10,0.45);
+    }
+
+    /* The ball that travels the rail */
+    .carriage {
+      position: absolute;
+      left: 22px;
+      transform: translate(-50%, -50%);
+      width: 16px; height: 16px;
+      z-index: 3;
+      transition: top 0.6s cubic-bezier(.16,1,.3,1);
+    }
+    .carriage-ball {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: radial-gradient(circle at 32% 30%, rgba(244,241,234,0.65), var(--ember) 45%, rgba(122,20,2,0.9) 100%);
+      box-shadow: 0 0 16px rgba(226,56,10,0.55);
+      position: relative;
+    }
+    .carriage-ball::before, .carriage-ball::after {
+      content: ''; position: absolute; width: 200%; height: 26%;
+      border-top: 2px solid rgba(244,241,234,0.75);
+      border-bottom: 2px solid rgba(244,241,234,0.75);
+      border-right: 2px solid rgba(244,241,234,0.75);
+      border-radius: 50%;
+      top: 50%;
+    }
+    .carriage-ball::before { left: 0.5px; transform: translateY(-50%) rotate(0deg); }
+    .carriage-ball::after { left: 0.5px; transform: translateY(-50%); opacity: 0.4; }
+
+    /* A station node in the rail */
+    .station {
+      position: relative;
+      margin-bottom: 64px;
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .station .rail-dot {
+      position: absolute;
+      left: 22px; top: 8px; transform: translateX(-50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--void-2);
+      border: 2px solid var(--line);
+      transition: border-color .5s, box-shadow .5s, background .5s;
+      z-index: 2;
+    }
+    .station.is-lit .rail-dot {
+      border-color: var(--gold);
+      background: var(--gold);
+      box-shadow: 0 0 14px rgba(201,161,90,0.55);
+    }
+
+    /* Full-page background year that drifts past */
+    .station-year-bg {
+      position: absolute;
+      top: -34px; right: -10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(96px, 24vw, 200px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(244,241,234,0.07);
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .station-hdr {
+      display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .station-year {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(46px, 12vw, 88px);
+      line-height: 0.9;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .station-no {
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+    .station-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(26px, 7vw, 40px);
+      line-height: 1;
+      color: var(--ink);
+      margin: 6px 0 14px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .station-copy {
+      font-size: 15.5px;
+      color: var(--ink-dim);
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 0 0 10px 0;
+    }
+    .station-copy strong { color: var(--ink); font-weight: 600; }
+    .station-quote {
+      border-left: 2px solid var(--gold);
+      padding-left: 14px;
+      margin: 18px 0 22px 0;
+      font-size: 15px;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.6;
+      max-width: 500px;
+    }
+
+    /* stamps */
+    .stamp-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-top: 14px;
+    }
+    .stamp {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      color: var(--ink-dim);
+    }
+    .stamp .ck { color: var(--ember); font-weight: 800; }
+    .stamp.gold { border-color: rgba(201,161,90,0.45); color: var(--gold); }
+
+    /* Editorial illustration block per milestone */
+    .illustration {
+      margin: 30px 0 30px 0;
+      max-width: 480px;
+    }
+    .illustration svg {
+      width: 100%; height: auto;
+      display: block;
+    }
+
+    .cap {
+      font-size: 10px;
+      color: var(--ink-dim);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    /* SVG helper classes */
+    .sg-line { stroke: var(--line); fill: none; }
+    .sg-ink { stroke: var(--ink); }
+    .sg-ember { stroke: var(--ember); }
+    .sg-gold { stroke: var(--gold); }
+    .sg-fill-dim { fill: rgba(244,241,234,0.16); }
+    .sg-fill-void { fill: var(--void-2); }
+    .sg-fill-ember { fill: var(--ember); }
+    .sg-fill-gold { fill: var(--gold); }
+    text.sg-t { fill: var(--ink-dim); font-family: 'Archivo', sans-serif; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; }
+    text.sg-t-hi { fill: var(--ink); }
+
+    @media (min-width: 760px) {
+      .story { padding-left: 120px; }
+      .rail, .carriage, .station .rail-dot { left: 44px; }
+      .station-copy { font-size: 16.5px; }
+      .illustration { margin-left: 20px; }
+    }
+
+    /* ===== Next-chapter teaser ===== */
+    .turn {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px 20px 90px 78px;
+    }
+    @media (min-width: 760px) { .turn { padding-left: 120px; } }
+    .turn-inner {
+      border-top: 1px solid var(--line);
+      padding-top: 48px;
+    }
+    .turn-eyebrow {
+      font-size: 11px; color: var(--gold);
+      letter-spacing: 0.32em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .turn h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 0 0 18px 0;
+      text-transform: uppercase;
+    }
+    .turn p {
+      font-size: 15.5px; color: var(--ink-dim);
+      line-height: 1.7; max-width: 520px; margin: 0 0 26px 0;
+    }
+    .turn-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px;
+      background: var(--ember);
+      color: var(--ink);
+      font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      text-decoration: none; border-radius: 4px;
+      transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, background .35s;
+    }
+    .cta:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(226,56,10,0.35); background: var(--ember-glow); }
+    .cta svg { width: 15px; height: 15px; transition: transform .35s cubic-bezier(.16,1,.3,1); }
+    .cta:hover svg { transform: translateX(4px); }
+    .cta.ghost {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+    .cta.ghost:hover { box-shadow: none; border-color: var(--gold); color: var(--gold); background: transparent; }
+
+    .travel-line {
+      margin-top: 36px;
+      font-size: 11px; color: var(--ink-dim);
+      letter-spacing: 0.28em; text-transform: uppercase;
+    }
+
+    /* Reveal */
+    .station.is-lit {
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carriage { transition: none; }
+      .station.is-lit { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flood flood-1"></div>
+  <div class="flood flood-2"></div>
+  <div class="flood flood-3"></div>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.webp" alt="Bowncer Sportz Logo">
+      BOWNCER SPORTZ
+    </a>
+    <button class="hamburger" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../programs.html">Programs</a>
+      <a href="../media.html">Media</a>
+      <a href="../locations.html">Locations</a>
+      <a href="../journey.html" class="active">The Journey</a>
+      <a href="../investors.html">Investors</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-eyebrow">Chapter One · Origins</div>
+    <h1 class="hero-title">Foundations</h1>
+    <p class="hero-sub">Before the floodlights of the IPL, before the TNPL and six American cities, there was a school net, a rumor-worthy train ride, and a format nobody else was willing to defend alone.</p>
+    <div class="hero-scroll"><span class="dot"></span>Scroll — the story moves forward</div>
+  </header>
+
+  <div class="story" id="story">
+
+    <div class="rail"><div class="rail-fill" id="railFill"></div></div>
+    <div class="carriage" id="carriage"><div class="carriage-ball"></div></div>
+
+    <!-- STATION 1 · 1984 · Madurai -->
+    <section class="station" data-year="1984" data-label="Madurai, Tamil Nadu">
+      <div class="station-year-bg">1984</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">1984</span>
+        <span class="station-no">Station · 01 — Departure</span>
+      </div>
+      <h3 class="station-title">A boy arrives in a cricket city</h3>
+      <p class="station-copy">October 26, 1984 — <strong>Madurai, Tamil Nadu</strong>. A boy is born in a city where the game travels the streets before it ever reaches a stadium. Nobody files it as the start of anything yet. It just is.</p>
+      <p class="station-copy">Three decades later, the same city's earliest lessons — patience, repetition, ownership of a craft — still show up in how the academy runs its nets.</p>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 150">
+          <rect x="0" y="0" width="320" height="150" fill="var(--void-2)" opacity="0.0" />
+          <circle cx="160" cy="75" r="46" class="sg-line" stroke-width="1.5" />
+          <circle cx="160" cy="75" r="30" class="sg-line" stroke-width="1" />
+          <circle cx="160" cy="75" r="6" class="sg-fill-ember" />
+          <path d="M 160 75 m -52 0 a 52 52 0 0 1 104 0" class="sg-line" />
+          <text x="160" y="140" text-anchor="middle" class="sg-t">26 . 10 . 1984</text>
+        </svg>
+        <div class="cap">Monogram · A date set in the middle of a story</div>
+      </div>
+    </section>
+
+    <!-- STATION · 1990s · the off-side dormitory -->
+    <section class="station" data-year="The 90s" data-label="School nets">
+      <div class="station-year-bg">90s</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">'90s</span>
+        <span class="station-no">Station · 02</span>
+      </div>
+      <h3 class="station-title">Girls' dormitory, on the off-side</h3>
+      <p class="station-copy">At school cricket practice, the <strong>girls' dormitory</strong> sat on the <strong>off side</strong> of the ground. Hit a ball there and it carried toward the group — and drew screams from beyond the wall. The room, so the story goes, sharpened his off-side strokeplay from a mishap into a strength.</p>
+      <p class="station-copy">What an accidental coaching cue does to an aspiring bat: the target he was told to avoid became the one he practiced most.</p>
+      <blockquote class="station-quote">This is the thing about early ground — a coach never knows which wall will teach the fighter the shot.</blockquote>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 170">
+          <rect x="0" y="0" width="320" height="170" fill="var(--void-2)" rx="6" />
+          <!-- field boundary and pitch -->
+          <path d="M 40 120 Q 110 20 280 55" class="sg-line" stroke-width="1.4" />
+          <rect x="196" y="34" width="34" height="78" rx="2" fill="var(--void-2)" stroke="var(--line)" />
+          <line x1="213" y1="46" x2="213" y2="100" class="sg-line" />
+          <circle cx="213" cy="90" r="2.4" class="sg-fill-ember" />
+          <!-- off side arc + arrow to dorm -->
+          <path d="M 268 96 Q 296 78 290 46" class="sg-ember" stroke-width="2" stroke-dasharray="1 0" />
+          <line x1="213" y1="90" x2="286" y2="52" stroke="var(--ember)" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.8" />
+          <polygon points="286,52 282,58 292,57" class="sg-fill-ember" />
+          <!-- dormitory building -->
+          <rect x="268" y="20" width="34" height="20" rx="2" fill="var(--void-2)" stroke="var(--gold)" stroke-width="1.3" />
+          <rect x="276" y="26" width="7" height="6" fill="var(--gold)" opacity="0.55" />
+          <rect x="288" y="26" width="7" height="6" fill="var(--gold)" opacity="0.55" />
+          <text x="285" y="54" text-anchor="middle" class="sg-t">dormitory</text>
+          <text x="250" y="140" text-anchor="middle" class="sg-t">off  side</text>
+          <text x="140" y="112" text-anchor="middle" class="sg-t">nets</text>
+        </svg>
+        <div class="cap">Field logic — off-side driving the aim</div>
+      </div>
+    </section>
+
+    <!-- STATION · ~2000 · The train to Avadi -->
+    <section class="station" data-year="2000" data-label="District selections, Avadi">
+      <div class="station-year-bg">2000</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">2000</span>
+        <span class="station-no">Station · 03</span>
+      </div>
+      <h3 class="station-title">The train he told no one about</h3>
+      <p class="station-copy">To reach district selections in Avadi, he needed permission neither his school nor his family would grant — so he engineered it: his family was told the school was taking him; the school was told he was going home. Then a ticket appeared in his hand alone.</p>
+      <p class="station-copy">The train left. The selections happened. He got selected — a name out of many, with nothing to recommend him but the nerve of the journey itself.</p>
+      <blockquote class="station-quote">Everyone remembers the innings. Almost no one remembers the ticket.</blockquote>
+      <div class="stamp-row">
+        <span class="stamp"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--ember);display:inline-block;"></span>Selected</span>
+        <span class="stamp gold">Avadi</span>
+      </div>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 170">
+          <rect x="0" y="0" width="320" height="170" fill="var(--void-2)" class="sg-fill-void" />
+          <!-- ticket -->
+          <g stroke="var(--gold)" stroke-width="1.6" fill="none">
+            <path d="M 70 40 h 180 a 8 8 0 0 1 8 8 v 74 a 8 8 0 0 1 -8 8 h -180 a 8 8 0 0 1 -8 -8 v -74 a 8 8 0 0 1 8 -8 z" />
+            <path d="M 90 40 v 12 a 6 6 0 0 0 6 6 a 6 6 0 0 0 6 -6 v -12" />
+            <path d="M 204 40 v 12 a 6 6 0 0 0 6 6 a 6 6 0 0 0 6 -6 v -12" />
+          </g>
+          <line x1="118" y1="122" x2="222" y2="122" stroke="var(--line)" stroke-dasharray="5 4" />
+          <text x="160" y="72" text-anchor="middle" class="sg-t-hi" style="font-size:11px;letter-spacing:0.3em;">ONE WAY</text>
+          <text x="160" y="92" text-anchor="middle" class="sg-t" style="font-size:8px;">FAMILY → SCHOOL → SELECT</text>
+          <text x="160" y="110" text-anchor="middle" class="sg-t" style="font-size:10px;fill:var(--ember);">AVADI</text>
+          <line x1="66" y1="150" x2="250" y2="150" stroke="var(--ember)" stroke-width="1.4" opacity="0.75" />
+        </svg>
+        <div class="cap">A one-way ticket — with a secret compartment</div>
+      </div>
+    </section>
+
+    <!-- STATION · 2001 · Chennai -->
+    <section class="station" data-year="2001" data-label="Chennai">
+      <div class="station-year-bg">2001</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">2001</span>
+        <span class="station-no">Station · 04</span>
+      </div>
+      <h3 class="station-title">The city that tests</h3>
+      <p class="station-copy">His school refused to back him further, so he moved to <strong>Chennai</strong> — a city that grants a cricketer no free passes, only a very long queue.</p>
+      <div class="stamp-row">
+        <span class="stamp"><span class="dot" aria-hidden="true"></span>Chennai</span>
+        <span class="stamp gold">The change</span>
+      </div>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 150">
+          <path d="M 40 120 l 70 -50 l 30 20 l 60 -60 l 50 30 l 40 -10" class="sg-line" stroke-width="1.8" />
+          <circle cx="40" cy="120" r="3.5" class="sg-fill-ember" />
+          <circle cx="210" cy="30" r="4" class="sg-fill-gold" />
+          <text x="250" y="50" class="sg-t">Chennai</text>
+          <text x="140" y="140" class="sg-t">Madurai, or the long way around</text>
+        </svg>
+        <div class="cap">A move, rendered as a route</div>
+      </div>
+    </section>
+
+    <!-- STATION · Early career · The fielder -->
+    <section class="station" data-year="Early career" data-label="Zonal matches">
+      <div class="station-year-bg">FC</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">Early career</span>
+        <span class="station-no">Station · 05</span>
+      </div>
+      <h3 class="station-title">Runs first, then a game</h3>
+      <p class="station-copy">In his zonal cycle, selection didn't begin with batting averages. It began with <strong>running speed</strong> and how far he could hit a tennis ball — the two currencies an unfunded state could actually measure.</p>
+      <p class="station-copy">He started as a <strong>fielder</strong>. It was the long end of the craft, and it taught the craft anyway: ground fielding, quick feet, and the habit of running to every ball as if selection depended on the sprint.</p>
+      <div class="stamp-row">
+        <span class="stamp"><span class="dot" aria-hidden="true"></span>Fielder first</span>
+        <span class="stamp gold">Speed + distance</span>
+      </div>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 150">
+          <circle cx="160" cy="75" r="38" class="sg-line" stroke-width="1.6" fill="var(--void-2)" />
+          <path d="M 160 75 m -30 0 a 30 30 0 0 1 60 0 a 30 30 0 0 1 -60 0" class="sg-line" stroke-width="1" />
+          <path d="M 160 53 v 10 M 160 82 v -14 M 160 75 h -12 M 160 75 h 12" stroke="var(--ember)" stroke-width="2" opacity="0.9" />
+          <line x1="120" y1="120" x2="170" y2="120" stroke="var(--line)" stroke-dasharray="4 4" />
+          <line x1="120" y1="126" x2="150" y2="126" stroke="var(--line)" stroke-dasharray="4 4" />
+          <text x="160" y="145" text-anchor="middle" class="sg-t">SPEED · DISTANCE · FIELDER</text>
+        </svg>
+        <div class="cap">The fielder's currency</div>
+      </div>
+    </section>
+
+    <!-- STATION · 2006 · The voluntary drop -->
+    <section class="station" data-year="2006" data-label="The drop, chosen">
+      <div class="station-year-bg">2006</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">2006</span>
+        <span class="station-no">Station · 06</span>
+      </div>
+      <h3 class="station-title">A demotion, chosen on purpose</h3>
+      <p class="station-copy">He never played First-Class or List A cricket — and then he did the thing that read like a crime to a headline writer: he <strong>dropped himself from the first division to the second, by choice</strong>, to give his whole attention to a format that India was only beginning to sell.</p>
+      <p class="station-copy">The format: <strong>T20</strong>.</p>
+      <blockquote class="station-quote">Cricket's longest formats pay their taxes in months. T20 pays in decisions.</blockquote>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 170">
+          <rect x="0" y="0" width="320" height="170" fill="var(--void-2)" />
+          <rect x="40" y="30" width="90" height="34" rx="4" fill="var(--void-2)" stroke="var(--ink)" stroke-width="1.6" />
+          <text x="85" y="50" text-anchor="middle" class="sg-t-hi">FIRST DIVISION</text>
+          <line x1="85" y1="78" x2="85" y2="118" stroke="var(--ember)" stroke-width="2.4" />
+          <polygon points="85,118 80,108 90,108" fill="var(--ember)" />
+          <rect x="40" y="124" width="90" height="34" rx="4" fill="var(--void-2)" stroke="var(--ember)" stroke-width="1.6" />
+          <text x="85" y="144" text-anchor="middle" class="sg-t">SECOND · BY CHOICE</text>
+          <text x="300" y="70" text-anchor="middle" class="sg-t">voluntarily</text>
+        </svg>
+        <div class="cap">One rung down — the whole track ahead</div>
+      </div>
+    </section>
+
+    <!-- STATION · 2006–2011 · One format -->
+    <section class="station" data-year="2006–11" data-label="One year, one format">
+      <div class="station-year-bg">T20</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">2006–2011</span>
+        <span class="station-no">Station · 07 — The turn</span>
+      </div>
+      <h3 class="station-title">One full year. One format. No list.</h3>
+      <p class="station-copy">For an entire year he practiced <strong>only T20</strong> — a deliberate, all-in routine with a strict diet plan ordered around a single strand of improvement. No First-Class safety. No List A comfort. Just the shortest format, repeated to mastery.</p>
+      <p class="station-copy">That single-minded year is why the phone call, when it finally came, didn't sound like luck.</p>
+      <div class="stamp-row">
+        <span class="stamp"><span class="dot" aria-hidden="true"></span>365 days</span>
+        <span class="stamp">Strict diet</span>
+        <span class="stamp gold">T20 only</span>
+      </div>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 170">
+          <circle cx="160" cy="78" r="52" class="sg-line" stroke-width="1.6" />
+          <circle cx="160" cy="78" r="36" class="sg-line" stroke-width="1" />
+          <circle cx="160" cy="78" r="22" class="sg-line" stroke-width="1" stroke-dasharray="3 5" />
+          <text x="160" y="100" text-anchor="middle" style="font-family:'Archivo';font-size:20px;fill:var(--ember);">20</text>
+          <text x="160" y="150" text-anchor="middle" class="sg-t">ONE YEAR · ONE FORMAT</text>
+        </svg>
+        <div class="cap">A target formed by focus</div>
+      </div>
+    </section>
+
+    <!-- STATION · 2011 · The clubs -->
+    <section class="station" data-year="2011" data-label="Fine Star · SRMSC">
+      <div class="station-year-bg">2011</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">2011</span>
+        <span class="station-no">Station · 08</span>
+      </div>
+      <h3 class="station-title">Two clubs noticed the all-rounder</h3>
+      <p class="station-copy">For <strong>Fine Star</strong> he turned out in the TNCA Thiruvallur District Cricket Association First Division. For <strong>Sri Ramakrishna Mills Sports Club (SRMSC)</strong> — same season, rival range. Total of all-round performances that, between the two benches, began to be discussed beyond the district — at the level of IPL franchises.</p>
+      <div class="stamp-row">
+        <span class="stamp gold">Fine Star</span>
+        <span class="stamp">SRMSC</span>
+        <span class="stamp gold">All-rounder</span>
+      </div>
+      <div class="illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 170">
+          <rect x="20" y="40" width="128" height="88" rx="6" fill="var(--void-2)" stroke="var(--gold)" stroke-width="1.4" />
+          <circle cx="84" cy="74" r="20" class="sg-ink" stroke-width="1.2" />
+          <path d="M 74 84 h 20 M 84 72 v 22 M 77 78 q 7 -5 14 0" class="sg-gold" stroke-width="1.4" fill="none" />
+          <text x="84" y="112" text-anchor="middle" class="sg-t-hi">FINE STAR</text>
+          <text x="84" y="122" text-anchor="middle" class="sg-t" style="font-size:8px;">TN · 1st DIV</text>
+          <rect x="172" y="40" width="128" height="88" rx="6" fill="var(--void-2)" stroke="var(--ember)" stroke-width="1.4" />
+          <path d="M 236 62 q 10 12 0 24 q -12 -12 0 -24 z" class="sg-line" stroke-width="1.4" />
+          <circle cx="236" cy="86" r="5" class="sg-ember" stroke-width="1.2" fill="none" />
+          <text x="236" y="112" text-anchor="middle" class="sg-t-hi">SRMSC</text>
+          <text x="236" y="122" text-anchor="middle" class="sg-t" style="font-size:8px;">ALL-ROUND</text>
+        </svg>
+        <div class="cap">Two benches, one name trending upward</div>
+      </div>
+    </section>
+
+    <!-- STATION · Bridge -->
+    <section class="station" data-year="Meanwhile" data-label="The trial call">
+      <div class="station-year-bg">?</div>
+      <div class="rail-dot"></div>
+      <div class="station-hdr">
+        <span class="station-year">The call</span>
+        <span class="station-no">Station · 09</span>
+      </div>
+      <h3 class="station-title">And then — a phone call</h3>
+      <p class="station-copy">After the year of one format and the season of those two clubs, the circuit that had been reading his numbers reached out: a <strong>trial call from Royal Challengers Bangalore</strong>. The foundations were laid. What comes next is the ring.</p>
+
+      <a href="ipl.html" class="cta" style="margin-top:22px;">Read the ring — RCB
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </section>
+  </div>
+
+  <div class="turn">
+    <div class="turn-inner">
+      <div class="turn-eyebrow">Next · Chapter Two</div>
+      <h2>Inside the ring</h2>
+      <p>The trial is over. The ring — Bangalore, IPL colours, five innings, 161 runs — is where the foundations pay out in public. The standards built between Madurai and Chennai meet the highest floor of franchise cricket.</p>
+      <div class="turn-actions">
+        <a href="ipl.html" class="cta">Enter the ring
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="usa.html" class="cta ghost">Six cities, one standard</a>
+      </div>
+      <div class="travel-line">— Back to <a href="../journey.html" style="color:var(--gold);text-decoration:none;">The Journey</a></div>
+    </div>
+  </div>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+    }
+
+    // ---- Scroll-driven rail: fill + rolling ball ----
+    const story = document.getElementById('story');
+    const fill = document.getElementById('railFill');
+    const carriage = document.getElementById('carriage');
+    const stations = Array.from(document.querySelectorAll('.station'));
+    const clampP = v => Math.max(0, Math.min(1, v));
+
+    let ticking = false;
+    function renderScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const total = story.scrollHeight - window.innerHeight;
+        if (total <= 0) return;
+        const rect = story.getBoundingClientRect();
+        const p = clampP(Math.abs(rect.top) / total);
+        fill.style.height = (p * 100) + '%';
+
+        const mid = window.innerHeight * 0.6;
+        let active = stations.findIndex(s => s.getBoundingClientRect().top > mid);
+        if (active === -1) active = stations.length - 1;
+        active = Math.max(active - 1, 0);
+        const st = stations[active];
+        if (st) {
+          carriage.style.top = (st.offsetTop + Math.min(st.offsetHeight * 0.12, 40)) + 'px';
+        }
+      });
+    }
+
+    // ---- IntersectionObserver: light stations & reveal ----
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-lit');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '-8% 0px -8% 0px' });
+    stations.forEach(st => io.observe(st));
+
+    window.addEventListener('scroll', renderScroll, { passive: true });
+    window.addEventListener('resize', renderScroll, { passive: true });
+    window.addEventListener('load', () => setTimeout(renderScroll, 60));
+    renderScroll();
+  </script>
+</body>
+</html>
