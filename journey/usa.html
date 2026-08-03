@@ -12,12 +12,13 @@
       --void: #07080a;
       --void-2: #0d0f12;
       --ember: #e2380a;
+      --ember-glow: #ff5622;
       --gold: #c9a15a;
       --line: rgba(244,241,234,0.1);
     }
-    
-    * { box-sizing: border-box; scroll-behavior: smooth; }
-    
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0; padding: 0;
       background-color: var(--void);
@@ -25,218 +26,49 @@
       font-family: 'Archivo', sans-serif;
       overflow-x: hidden;
     }
-    
+
     body::before {
       content: ''; position: fixed; inset: 0; pointer-events: none;
       background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
       z-index: 100; opacity: 0.4;
     }
-    
-    /* Navigation */
+
+    .flood {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      filter: blur(90px);
+    }
+    .flood-1 { width: 420px; height: 420px; top: -160px; right: -120px; background: radial-gradient(circle, rgba(226,56,10,0.16), transparent 70%); }
+    .flood-2 { width: 480px; height: 480px; bottom: -180px; left: -160px; background: radial-gradient(circle, rgba(201,161,90,0.10), transparent 70%); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Navigation ===== */
     .nav {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 24px 40px; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 24px 20px; position: relative; z-index: 1000;
     }
     .nav-logo {
       display: flex; align-items: center; gap: 12px;
-      font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff;
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--ink);
       text-decoration: none; letter-spacing: 0.1em;
     }
-    .nav-logo img { width: 40px; height: 40px; border-radius: 50%; }
-    
-    .nav-links { display: flex; gap: 32px; }
+    .nav-logo img { width: 38px; height: 38px; border-radius: 50%; }
+
+    .nav-links { display: flex; gap: 24px; }
     .nav-links a {
-      color: #fff; text-decoration: none; font-size: 13px;
-      text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+      color: var(--ink); text-decoration: none; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;
       transition: color 0.3s;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-    
-    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
-    .bar { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; }
-    
-    /* Hero Hub Map */
-    .hero {
-      height: 100vh;
-      min-height: 800px;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      background: radial-gradient(circle at center, var(--void-2) 0%, var(--void) 100%);
-    }
-    .hero-header {
-      padding: 100px 40px 0 40px;
-      text-align: center;
-      z-index: 10;
-    }
-    .hero-eyebrow {
-      font-size: 14px;
-      color: var(--gold);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .hero-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(60px, 10vw, 120px);
-      line-height: 0.9;
-      margin: 0;
-      color: #fff;
-    }
-    
-    /* Mini Hub Map Canvas */
-    .map-container {
-      flex: 1;
-      position: relative;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      overflow: visible;
-    }
-    .map-svg {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%; height: 100%;
-      pointer-events: none;
-    }
-    .map-path {
-      fill: none;
-      stroke: var(--line);
-      stroke-width: 2;
-      stroke-dasharray: 6 6;
-    }
-    
-    .waypoint {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      z-index: 20;
-      transition: transform 0.3s ease;
-    }
-    .waypoint:hover {
-      transform: translate(-50%, -55%);
-      z-index: 30;
-    }
-    .wp-dot {
-      width: 12px; height: 12px;
-      background: var(--gold);
-      border-radius: 50%;
-      box-shadow: 0 0 15px rgba(201,161,90,0.5);
-      margin-bottom: 8px;
-      transition: all 0.3s;
-    }
-    .waypoint:hover .wp-dot { background: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.8); }
-    .wp-label {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      color: var(--ink);
-      letter-spacing: 0.1em;
-      background: rgba(7,8,10,0.8);
-      padding: 4px 12px;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      transition: border-color 0.3s;
-    }
-    .waypoint:hover .wp-label { border-color: var(--gold); color: var(--gold); }
-    
-    /* Schematic Placement (Abstract USA layout) */
-    .wp-california { top: 40%; left: 15%; }
-    .wp-detroit { top: 30%; left: 60%; }
-    .wp-boston { top: 25%; left: 85%; }
-    .wp-charlotte { top: 60%; left: 75%; }
-    .wp-greensboro { top: 50%; left: 80%; }
-    .wp-north-carolina { top: 70%; left: 80%; } /* General NC area */
-    
-    /* City Sections */
-    .city-section {
-      padding: 80px 40px;
-      max-width: 1400px;
-      margin: 0 auto;
-      border-bottom: 1px solid var(--line);
-    }
-    .city-header {
-      margin-bottom: 40px;
-    }
-    .city-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 64px;
-      color: #fff;
-      margin: 0;
-      line-height: 1;
-    }
-    .city-meta {
-      font-size: 14px;
-      color: var(--ink-dim);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-top: 12px;
-    }
-    
-    /* Gallery Layouts based on image count */
-    .grid-large { /* 7-8 images */
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: 250px;
-      gap: 16px;
-    }
-    .grid-large .feature { grid-column: span 2; grid-row: span 2; }
-    
-    .grid-med { /* 4-6 images */
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 300px;
-      gap: 16px;
-    }
-    .grid-med .feature { grid-column: span 2; grid-row: span 1; }
-    
-    .grid-small { /* 3 images (Boston) */
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 300px;
-      gap: 16px;
-    }
-    
-    .photo {
-      background: var(--void-2);
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-    }
-    .photo img {
-      width: 100%; height: 100%; object-fit: contain;
-      filter: grayscale(40%);
-      transition: filter 0.4s;
-    }
-    .photo:hover img { filter: grayscale(0%); }
-    
-    /* Neutral Captions */
-    .photo-caption {
-      position: absolute; bottom: 0; left: 0; width: 100%;
-      padding: 30px 16px 16px 16px;
-      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-      font-size: 11px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.1em;
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .photo:hover .photo-caption { opacity: 1; }
-    
-    /* Empty State Note */
-    .editor-note {
-      background: rgba(226,56,10,0.1);
-      border-left: 3px solid var(--ember);
-      padding: 16px;
-      margin-top: 24px;
-      font-size: 13px;
-      color: #fff;
-    }
-    .editor-note strong { color: var(--ember); }
 
-    /* Mobile */
+    .hamburger { display: none; cursor: pointer; border: none; background: transparent; padding: 8px; }
+    .bar { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px 0; transition: all 0.3s; }
+
     @media (max-width: 900px) {
-      .nav { padding: 20px; }
       .hamburger { display: block; z-index: 1001; }
       .nav-links {
         position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
@@ -246,20 +78,327 @@
       }
       .nav-links.active { transform: translateX(0); }
       .nav-links a { font-size: 24px; margin: 16px 0; }
-      
-      .hero { min-height: 600px; }
-      .map-container { display: none; } /* Hide complex map on mobile, just keep header */
-      
-      .city-section { padding: 60px 20px; }
-      .grid-large, .grid-med, .grid-small {
-        grid-template-columns: 1fr;
-        grid-auto-rows: 250px;
-      }
-      .grid-large .feature, .grid-med .feature { grid-column: span 1; grid-row: span 1; }
+      .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+      .hamburger.active .bar:nth-child(2) { opacity: 0; }
+      .hamburger.active .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+    }
+
+    /* ===== Hero — no map. A film leader instead. ===== */
+    .hero {
+      position: relative;
+      padding: 110px 20px 60px 20px;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 15vw, 130px);
+      line-height: 0.84;
+      margin: 0 0 22px 0;
+      color: var(--ink);
+      text-transform: uppercase;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.08s both;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      max-width: 500px;
+      margin: 0;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.16s both;
+    }
+
+    /* Film leader ticker — pure CSS marquee */
+    .leader {
+      margin-top: 48px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .leader::before, .leader::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; width: 90px; z-index: 2; pointer-events: none;
+    }
+    .leader::before { left: 0; background: linear-gradient(to right, var(--void), transparent); }
+    .leader::after { right: 0; background: linear-gradient(to left, var(--void), transparent); }
+    .leader-track {
+      display: flex;
+      width: max-content;
+      animation: leaderScroll 36s linear infinite;
+      will-change: transform;
+    }
+    .leader-track:hover { animation-play-state: paused; }
+    .leader-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(20px, 4.5vw, 34px);
+      letter-spacing: 0.14em;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-right: 34px;
+    }
+    .leader-item b { color: var(--ink); font-weight: 400; }
+    .leader-item i { color: var(--ember); font-style: normal; padding-right: 34px; }
+    @keyframes leaderScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ===== Editor note (narrative gap flag) ===== */
+    .editor-note {
+      max-width: 1100px;
+      margin: 40px auto 0 auto;
+      background: rgba(226,56,10,0.1);
+      border-left: 3px solid var(--ember);
+      padding: 16px 20px;
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .editor-note strong { color: var(--ember); }
+
+    /* ===== Film Reel sections ===== */
+    .reel {
+      position: relative;
+      max-width: 1100px;
+      margin: 90px auto 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Ghost roll number */
+    .reel::before {
+      content: attr(data-roll);
+      position: absolute;
+      top: -60px; right: 8px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(90px, 20vw, 180px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(244,241,234,0.06);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .reel-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 18px;
+      margin-bottom: 26px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .slate-no {
+      font-size: 11px;
+      color: var(--ember);
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+    .reel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .reel-meta {
+      font-size: 11px;
+      color: var(--ink-dim);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    /* ---- The stage: a viewport with film-gate fades ---- */
+    .reel-stage {
+      position: relative;
+      height: min(70vh, 640px);
+      min-height: 420px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) both;
+    }
+    .reel-stage::before, .reel-stage::after {
+      content: '';
+      position: absolute; left: 0; right: 0;
+      height: clamp(60px, 12vh, 110px);
+      z-index: 6; pointer-events: none;
+    }
+    .reel-stage::before { top: 0; background: linear-gradient(to bottom, var(--void) 20%, transparent); }
+    .reel-stage::after { bottom: 0; background: linear-gradient(to top, var(--void) 20%, transparent); }
+
+    /* Sprocket perforations — pure CSS repeating gradient */
+    .sprockets {
+      position: absolute; top: 0; bottom: 0; width: 22px; z-index: 7;
+      pointer-events: none;
+    }
+    .sprockets-l { left: 0; border-right: 1px solid var(--line); }
+    .sprockets-r { right: 0; border-left: 1px solid var(--line); }
+    .sprockets::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(to bottom,
+          rgba(244,241,234,0.16) 0 14px,
+          transparent 14px 34px);
+      background-blend-mode: overlay;
+    }
+    .sprockets::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(7,8,10,0.95), rgba(7,8,10,0.25) 60%, transparent);
+    }
+
+    /* ---- The strip: scrollable film column ---- */
+    .reel-strip {
+      height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior: contain;
+      cursor: grab;
+      padding: 14vh 34px;
+    }
+    .reel-strip::-webkit-scrollbar { display: none; }
+    .reel-strip.is-dragging { cursor: grabbing; }
+
+    .frame {
+      margin: 0 auto 26px auto;
+      width: min(76vw, 400px);
+      background: var(--void-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .frame-img {
+      height: clamp(220px, 34vh, 400px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(226,56,10,0.06), transparent 70%),
+        var(--void);
+    }
+    .frame-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(45%) contrast(1.04);
+      transition: filter 0.5s ease;
+    }
+    .frame:hover .frame-img img { filter: grayscale(0%) contrast(1); }
+
+    .frame-cap {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      font-size: 10px;
+      color: var(--ink-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(7,8,10,0.4);
+    }
+    .frame-cap .no { color: var(--ember); }
+
+    /* HUD chips on the stage */
+    .reel-hud {
+      position: absolute;
+      z-index: 8;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(7,8,10,0.72);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 7px 13px;
+      backdrop-filter: blur(4px);
+    }
+    .reel-status {
+      left: 34px; bottom: 20px;
+    }
+    .reel-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ember);
+      box-shadow: 0 0 10px rgba(226,56,10,0.9);
+      animation: pulse 2s infinite;
+    }
+    .reel-status.is-manual .dot { background: var(--gold); box-shadow: 0 0 10px rgba(201,161,90,0.9); animation: none; }
+    .reel-counter {
+      right: 34px; bottom: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .4; transform: scale(.7);} }
+
+    /* ===== Footer CTA ===== */
+    .reel-outro {
+      max-width: 1100px;
+      margin: 110px auto 0 auto;
+      padding: 60px 16px 90px 16px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+    .reel-outro h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 0 0 16px 0;
+      text-transform: uppercase;
+    }
+    .reel-outro p {
+      font-size: 15px; color: var(--ink-dim);
+      line-height: 1.7; max-width: 520px; margin: 0 auto 28px auto;
+    }
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px;
+      background: var(--ember);
+      color: var(--ink);
+      font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      text-decoration: none; border-radius: 4px;
+      transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, background .35s;
+    }
+    .cta:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(226,56,10,0.35); background: var(--ember-glow); }
+    .cta svg { width: 15px; height: 15px; transition: transform .35s cubic-bezier(.16,1,.3,1); }
+    .cta:hover svg { transform: translateX(4px); }
+
+    @media (min-width: 760px) {
+      .reel-stage { height: min(76vh, 680px); }
+      .reel-strip { padding: 10vh 44px; }
+      .frame { margin-bottom: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .leader-track { animation: none; }
+      .reel-status .dot { animation: none; }
     }
   </style>
 </head>
 <body>
+
+  <div class="flood flood-1"></div>
+  <div class="flood flood-2"></div>
 
   <nav class="nav">
     <a href="../index.html" class="nav-logo">
@@ -270,162 +409,301 @@
       <span class="bar"></span><span class="bar"></span><span class="bar"></span>
     </button>
     <div class="nav-links">
-    <a href="../index.html">Home</a>
-    <a href="../about.html">About</a>
-    <a href="../programs.html">Programs</a>
-    <a href="../media.html">Media</a>
-    <a href="../locations.html">Locations</a>
-    <a href="../journey.html" class="active">The Journey</a>
-    <a href="../investors.html">Investors</a>
-  </div>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../programs.html">Programs</a>
+      <a href="../media.html">Media</a>
+      <a href="../locations.html">Locations</a>
+      <a href="../journey.html" class="active">The Journey</a>
+      <a href="../investors.html">Investors</a>
+    </div>
   </nav>
 
-  <!-- Hub Map Hero -->
+  <!-- No map. The arc is told as six reels — a film, not a diagram. -->
   <header class="hero">
-    <div class="hero-header">
-      <div class="hero-eyebrow">Global Footprint · 12+ Years</div>
-      <h1 class="hero-title">Six Cities, One Standard</h1>
-      <p style="color: var(--ink-dim); max-width: 520px; margin-top: 16px; font-size: 15px; line-height: 1.6;">More than a decade of club and county cricket across six US states — and just as often on the coaching side, working with young players courtside as much as playing himself.</p>
-    </div>
-    
-    <div class="map-container">
-      <svg class="map-svg" viewBox="0 0 1000 600">
-        <!-- Abstract connecting lines between cities -->
-        <path class="map-path" d="M 150 240 Q 300 200 600 180 T 850 150" />
-        <path class="map-path" d="M 150 240 Q 400 350 750 360" />
-        <path class="map-path" d="M 600 180 L 750 360" />
-        <path class="map-path" d="M 750 360 L 800 300 L 850 150" />
-        <path class="map-path" d="M 750 360 L 800 420" />
-      </svg>
-      
-      <a href="#california" class="waypoint wp-california">
-        <div class="wp-dot"></div><div class="wp-label">California</div>
-      </a>
-      <a href="#detroit" class="waypoint wp-detroit">
-        <div class="wp-dot"></div><div class="wp-label">Detroit</div>
-      </a>
-      <a href="#charlotte" class="waypoint wp-charlotte">
-        <div class="wp-dot"></div><div class="wp-label">Charlotte</div>
-      </a>
-      <a href="#greensboro" class="waypoint wp-greensboro">
-        <div class="wp-dot"></div><div class="wp-label">Greensboro</div>
-      </a>
-      <a href="#north-carolina" class="waypoint wp-north-carolina">
-        <div class="wp-dot"></div><div class="wp-label">North Carolina</div>
-      </a>
-      <a href="#boston" class="waypoint wp-boston">
-        <div class="wp-dot"></div><div class="wp-label">Boston</div>
-      </a>
+    <div class="hero-eyebrow">Global Footprint · 12+ Years</div>
+    <h1 class="hero-title">Six Cities,<br>One Standard</h1>
+    <p class="hero-sub">More than a decade of club and county cricket across six US states — and just as often on the coaching side, working with young players courtside as much as playing himself. The frames below are the record of that run.</p>
+
+    <div class="leader" aria-hidden="true">
+      <div class="leader-track" id="leaderTrack">
+        <span class="leader-item">California <i>✦</i> Detroit <i>✦</i> Charlotte <i>✦</i> Greensboro <i>✦</i> North Carolina <i>✦</i> Boston <i>✦</i></span>
+        <span class="leader-item">California <i>✦</i> Detroit <i>✦</i> Charlotte <i>✦</i> Greensboro <i>✦</i> North Carolina <i>✦</i> Boston <i>✦</i></span>
+      </div>
     </div>
   </header>
 
-  <div class="editor-note" style="max-width: 1400px; margin: 40px auto 0 auto;">
+  <div class="editor-note">
     <strong>TODO (Narrative Gap):</strong> Per <code>CONTENT-FACTS.md</code>, we lack verified specific narratives for these six individual cities. Please provide the verified facts/results for each city if you'd like narrative copy added here. Currently displaying neutral, descriptive captions only.
   </div>
 
-  <!-- CALIFORNIA (7 Images) -->
-  <section id="california" class="city-section">
-    <div class="city-header">
-      <h2 class="city-title">CALIFORNIA</h2>
-      <div class="city-meta">USA Tour Venue</div>
+  <!-- CALIFORNIA · 7 frames -->
+  <section class="reel" id="california" data-roll="01">
+    <div class="reel-head">
+      <span class="slate-no">Roll 01</span>
+      <h2 class="reel-title">California</h2>
+      <span class="reel-meta">7 frames · USA Tour Venue</span>
     </div>
-    <div class="grid-large">
-      <!-- what claim does this prove: Proves global footprint/tour presence in California. -->
-      <div class="photo feature"><img src="../assets/journey_usa_california_1.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Event / Venue</div></div>
-      <div class="photo"><img src="../assets/journey_usa_california_2.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Coaching</div></div>
-      <div class="photo"><img src="../assets/journey_usa_california_3.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Match Play</div></div>
-      <div class="photo"><img src="../assets/journey_usa_california_4.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Field</div></div>
-      <div class="photo"><img src="../assets/journey_usa_california_5.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Environment</div></div>
-      <div class="photo feature"><img src="../assets/journey_usa_california_6.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Tournament</div></div>
-      <div class="photo"><img src="../assets/journey_usa_california_7.webp" loading="lazy" decoding="async" alt="California Event"><div class="photo-caption">California Squad</div></div>
-    </div>
-  </section>
-
-  <!-- DETROIT (6 Images: 4 raw + 2 HOF) -->
-  <section id="detroit" class="city-section">
-    <div class="city-header">
-      <h2 class="city-title">DETROIT</h2>
-      <div class="city-meta">USA Tour Venue (MYCA)</div>
-    </div>
-    <div class="grid-med">
-      <!-- what claim does this prove: Proves global footprint and recognition in Detroit (MYCA). -->
-      <div class="photo feature"><img src="../assets/detroit_award_v3_1.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit / MYCA Recognition</div></div>
-      <div class="photo"><img src="../assets/journey_usa_detroit_1.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Environment</div></div>
-      <div class="photo"><img src="../assets/journey_usa_detroit_2.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Coaching</div></div>
-      <div class="photo feature"><img src="../assets/journey_usa_detroit_3.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Match Play</div></div>
-      <div class="photo"><img src="../assets/journey_usa_detroit_4.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Field</div></div>
-      <div class="photo"><img src="../assets/detroit_award_v3_2.webp" loading="lazy" decoding="async" alt="Detroit Event"><div class="photo-caption">Detroit Plaque / Ceremony</div></div>
-    </div>
-  </section>
-
-  <!-- CHARLOTTE (8 Images) -->
-  <section id="charlotte" class="city-section">
-    <div class="city-header">
-      <h2 class="city-title">CHARLOTTE</h2>
-      <div class="city-meta">USA Tour Venue</div>
-    </div>
-    <div class="grid-large">
-      <!-- what claim does this prove: Proves global footprint/tour presence in Charlotte. -->
-      <div class="photo feature"><img src="../assets/journey_usa_charlotte_1.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Event / Venue</div></div>
-      <div class="photo"><img src="../assets/journey_usa_charlotte_2.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Coaching</div></div>
-      <div class="photo"><img src="../assets/journey_usa_charlotte_3.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Match Play</div></div>
-      <div class="photo"><img src="../assets/journey_usa_charlotte_4.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Squad</div></div>
-      <div class="photo"><img src="../assets/journey_usa_charlotte_5.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Environment</div></div>
-      <div class="photo"><img src="../assets/journey_usa_charlotte_6.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Nets</div></div>
-      <div class="photo feature"><img src="../assets/journey_usa_charlotte_7.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Tournament</div></div>
-      <div class="photo"><img src="../assets/journey_usa_charlotte_8.webp" loading="lazy" decoding="async" alt="Charlotte Event"><div class="photo-caption">Charlotte Action</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="7">
+        <!-- what claim does this prove: Proves global footprint/tour presence in California. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_1.webp" decoding="async" alt="California Event / Venue"></div>
+          <figcaption class="frame-cap"><span>California</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_2.webp" decoding="async" alt="California Coaching"></div>
+          <figcaption class="frame-cap"><span>California Coaching</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_3.webp" decoding="async" alt="California Match Play"></div>
+          <figcaption class="frame-cap"><span>Match Play</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_4.webp" decoding="async" alt="California Field"></div>
+          <figcaption class="frame-cap"><span>Field</span><span class="no">F.04</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_5.webp" decoding="async" alt="California Environment"></div>
+          <figcaption class="frame-cap"><span>Environment</span><span class="no">F.05</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_6.webp" decoding="async" alt="California Tournament"></div>
+          <figcaption class="frame-cap"><span>Tournament</span><span class="no">F.06</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_california_7.webp" decoding="async" alt="California Squad"></div>
+          <figcaption class="frame-cap"><span>Squad</span><span class="no">F.07</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 07</div>
     </div>
   </section>
 
-  <!-- GREENSBORO (7 Images) -->
-  <section id="greensboro" class="city-section">
-    <div class="city-header">
-      <h2 class="city-title">GREENSBORO</h2>
-      <div class="city-meta">USA Tour Venue</div>
+  <!-- DETROIT · 6 frames -->
+  <section class="reel" id="detroit" data-roll="02">
+    <div class="reel-head">
+      <span class="slate-no">Roll 02</span>
+      <h2 class="reel-title">Detroit</h2>
+      <span class="reel-meta">6 frames · USA Tour Venue (MYCA)</span>
     </div>
-    <div class="grid-large">
-      <!-- what claim does this prove: Proves global footprint/tour presence in Greensboro. -->
-      <div class="photo feature"><img src="../assets/journey_usa_greensboro_1.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Event / Venue</div></div>
-      <div class="photo"><img src="../assets/journey_usa_greensboro_2.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Coaching</div></div>
-      <div class="photo"><img src="../assets/journey_usa_greensboro_3.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Match Play</div></div>
-      <div class="photo"><img src="../assets/journey_usa_greensboro_4.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Squad</div></div>
-      <div class="photo"><img src="../assets/journey_usa_greensboro_5.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Environment</div></div>
-      <div class="photo feature"><img src="../assets/journey_usa_greensboro_6.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Tournament</div></div>
-      <div class="photo"><img src="../assets/journey_usa_greensboro_7.webp" loading="lazy" decoding="async" alt="Greensboro Event"><div class="photo-caption">Greensboro Action</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="6">
+        <!-- what claim does this prove: Proves global footprint and recognition in Detroit (MYCA). -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/detroit_award_v3_1.webp" decoding="async" alt="Detroit / MYCA Recognition"></div>
+          <figcaption class="frame-cap"><span>MYCA Recognition</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_detroit_1.webp" decoding="async" alt="Detroit Environment"></div>
+          <figcaption class="frame-cap"><span>Environment</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_detroit_2.webp" decoding="async" alt="Detroit Coaching"></div>
+          <figcaption class="frame-cap"><span>Coaching</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_detroit_3.webp" decoding="async" alt="Detroit Match Play"></div>
+          <figcaption class="frame-cap"><span>Match Play</span><span class="no">F.04</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_detroit_4.webp" decoding="async" alt="Detroit Field"></div>
+          <figcaption class="frame-cap"><span>Field</span><span class="no">F.05</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/detroit_award_v3_2.webp" decoding="async" alt="Detroit Plaque / Ceremony"></div>
+          <figcaption class="frame-cap"><span>Plaque / Ceremony</span><span class="no">F.06</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 06</div>
     </div>
   </section>
 
-  <!-- NORTH CAROLINA (7 Images) -->
-  <section id="north-carolina" class="city-section">
-    <div class="city-header">
-      <h2 class="city-title">NORTH CAROLINA</h2>
-      <div class="city-meta">USA Tour Venue</div>
+  <!-- CHARLOTTE · 8 frames -->
+  <section class="reel" id="charlotte" data-roll="03">
+    <div class="reel-head">
+      <span class="slate-no">Roll 03</span>
+      <h2 class="reel-title">Charlotte</h2>
+      <span class="reel-meta">8 frames · USA Tour Venue</span>
     </div>
-    <div class="grid-large">
-      <!-- what claim does this prove: Proves global footprint/tour presence in North Carolina. -->
-      <div class="photo feature"><img src="../assets/journey_usa_north_carolina_1.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Event / Venue</div></div>
-      <div class="photo"><img src="../assets/journey_usa_north_carolina_2.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Coaching</div></div>
-      <div class="photo"><img src="../assets/journey_usa_north_carolina_3.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Match Play</div></div>
-      <div class="photo"><img src="../assets/journey_usa_north_carolina_4.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Squad</div></div>
-      <div class="photo"><img src="../assets/journey_usa_north_carolina_5.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Environment</div></div>
-      <div class="photo feature"><img src="../assets/journey_usa_north_carolina_6.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Tournament</div></div>
-      <div class="photo"><img src="../assets/journey_usa_north_carolina_7.webp" loading="lazy" decoding="async" alt="NC Event"><div class="photo-caption">NC Action</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="8">
+        <!-- what claim does this prove: Proves global footprint/tour presence in Charlotte. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_1.webp" decoding="async" alt="Charlotte Event / Venue"></div>
+          <figcaption class="frame-cap"><span>Event / Venue</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_2.webp" decoding="async" alt="Charlotte Coaching"></div>
+          <figcaption class="frame-cap"><span>Coaching</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_3.webp" decoding="async" alt="Charlotte Match Play"></div>
+          <figcaption class="frame-cap"><span>Match Play</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_4.webp" decoding="async" alt="Charlotte Squad"></div>
+          <figcaption class="frame-cap"><span>Squad</span><span class="no">F.04</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_5.webp" decoding="async" alt="Charlotte Environment"></div>
+          <figcaption class="frame-cap"><span>Environment</span><span class="no">F.05</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_6.webp" decoding="async" alt="Charlotte Nets"></div>
+          <figcaption class="frame-cap"><span>Nets</span><span class="no">F.06</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_7.webp" decoding="async" alt="Charlotte Tournament"></div>
+          <figcaption class="frame-cap"><span>Tournament</span><span class="no">F.07</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_charlotte_8.webp" decoding="async" alt="Charlotte Action"></div>
+          <figcaption class="frame-cap"><span>Action</span><span class="no">F.08</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 08</div>
     </div>
   </section>
 
-  <!-- BOSTON (3 Images) -->
-  <section id="boston" class="city-section" style="border-bottom: none;">
-    <div class="city-header">
-      <h2 class="city-title">BOSTON</h2>
-      <div class="city-meta">USA Tour Venue</div>
+  <!-- GREENSBORO · 7 frames -->
+  <section class="reel" id="greensboro" data-roll="04">
+    <div class="reel-head">
+      <span class="slate-no">Roll 04</span>
+      <h2 class="reel-title">Greensboro</h2>
+      <span class="reel-meta">7 frames · USA Tour Venue</span>
     </div>
-    <div class="grid-small">
-      <!-- what claim does this prove: Proves global footprint/tour presence in Boston. -->
-      <div class="photo"><img src="../assets/journey_usa_boston_1.webp" loading="lazy" decoding="async" alt="Boston Event"><div class="photo-caption">Boston Venue</div></div>
-      <div class="photo"><img src="../assets/journey_usa_boston_2.webp" loading="lazy" decoding="async" alt="Boston Event"><div class="photo-caption">Boston Environment</div></div>
-      <div class="photo"><img src="../assets/journey_usa_boston_3.webp" loading="lazy" decoding="async" alt="Boston Event"><div class="photo-caption">Boston Action</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="7">
+        <!-- what claim does this prove: Proves global footprint/tour presence in Greensboro. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_1.webp" decoding="async" alt="Greensboro Event / Venue"></div>
+          <figcaption class="frame-cap"><span>Event / Venue</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_2.webp" decoding="async" alt="Greensboro Coaching"></div>
+          <figcaption class="frame-cap"><span>Coaching</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_3.webp" decoding="async" alt="Greensboro Match Play"></div>
+          <figcaption class="frame-cap"><span>Match Play</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_4.webp" decoding="async" alt="Greensboro Squad"></div>
+          <figcaption class="frame-cap"><span>Squad</span><span class="no">F.04</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_5.webp" decoding="async" alt="Greensboro Environment"></div>
+          <figcaption class="frame-cap"><span>Environment</span><span class="no">F.05</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_6.webp" decoding="async" alt="Greensboro Tournament"></div>
+          <figcaption class="frame-cap"><span>Tournament</span><span class="no">F.06</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_greensboro_7.webp" decoding="async" alt="Greensboro Action"></div>
+          <figcaption class="frame-cap"><span>Action</span><span class="no">F.07</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 07</div>
     </div>
   </section>
+
+  <!-- NORTH CAROLINA · 7 frames -->
+  <section class="reel" id="north-carolina" data-roll="05">
+    <div class="reel-head">
+      <span class="slate-no">Roll 05</span>
+      <h2 class="reel-title">North Carolina</h2>
+      <span class="reel-meta">7 frames · USA Tour Venue</span>
+    </div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="7">
+        <!-- what claim does this prove: Proves global footprint/tour presence in North Carolina. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_1.webp" decoding="async" alt="NC Event / Venue"></div>
+          <figcaption class="frame-cap"><span>Event / Venue</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_2.webp" decoding="async" alt="NC Coaching"></div>
+          <figcaption class="frame-cap"><span>Coaching</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_3.webp" decoding="async" alt="NC Match Play"></div>
+          <figcaption class="frame-cap"><span>Match Play</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_4.webp" decoding="async" alt="NC Squad"></div>
+          <figcaption class="frame-cap"><span>Squad</span><span class="no">F.04</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_5.webp" decoding="async" alt="NC Environment"></div>
+          <figcaption class="frame-cap"><span>Environment</span><span class="no">F.05</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_6.webp" decoding="async" alt="NC Tournament"></div>
+          <figcaption class="frame-cap"><span>Tournament</span><span class="no">F.06</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_north_carolina_7.webp" decoding="async" alt="NC Action"></div>
+          <figcaption class="frame-cap"><span>Action</span><span class="no">F.07</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 07</div>
+    </div>
+  </section>
+
+  <!-- BOSTON · 3 frames -->
+  <section class="reel" id="boston" data-roll="06">
+    <div class="reel-head">
+      <span class="slate-no">Roll 06</span>
+      <h2 class="reel-title">Boston</h2>
+      <span class="reel-meta">3 frames · USA Tour Venue</span>
+    </div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="3">
+        <!-- what claim does this prove: Proves global footprint/tour presence in Boston. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_boston_1.webp" decoding="async" alt="Boston Venue"></div>
+          <figcaption class="frame-cap"><span>Venue</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_boston_2.webp" decoding="async" alt="Boston Environment"></div>
+          <figcaption class="frame-cap"><span>Environment</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_usa_boston_3.webp" decoding="async" alt="Boston Action"></div>
+          <figcaption class="frame-cap"><span>Action</span><span class="no">F.03</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 03</div>
+    </div>
+  </section>
+
+  <div class="reel-outro">
+    <h2>Every reel, one standard</h2>
+    <p>Six states. One standard of coaching. The same eye that built the academy in Chennai, now stamped on cricket communities from Charlotte to the Bay Area.</p>
+    <a href="../journey.html" class="cta">Back to the journey
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
 
   <script>
     const hamburger = document.querySelector('.hamburger');
@@ -437,6 +715,149 @@
         document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
       });
     }
+
+    /* ============================================================
+       FILM REEL ENGINE
+       - Buttery auto-scroll driven by requestAnimationFrame
+       - Seamless infinite loop via content duplication + wrap
+       - Any user interaction (wheel / touch / drag / keys) pauses
+         autoplay; it resumes after a short idle period.
+       ============================================================ */
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const IDLE_MS = 3200;
+    const SPEED = 56; // px per second — slow, cinematic
+
+    function initReel(strip) {
+      const stage = strip.closest('.reel-stage');
+      const status = stage.querySelector('.reel-status');
+      const statusTxt = status.querySelector('.reel-status-txt');
+      const counter = stage.querySelector('.reel-counter');
+      const frameCount = parseInt(strip.dataset.frames, 10) || 1;
+      const originals = Array.from(strip.children);
+
+      let oneSetH = 0;
+      let auto = !REDUCED;
+      let userScrolling = false;
+      let idleTimer = null;
+      let rafId = null;
+      let last = 0;
+      let dragPointer = null;
+
+      function measure() {
+        // Remove clones and re-derive one full set's height
+        strip.querySelectorAll('.frame--clone').forEach(c => c.remove());
+        oneSetH = originals.reduce((sum, f) => sum + f.offsetHeight, 0) +
+                  (originals.length - 1) * parseFloat(getComputedStyle(originals[0]).marginBottom);
+        const viewH = strip.clientHeight;
+        // Duplicate until at least one full set fits beyond the viewport
+        let copies = Math.max(2, Math.ceil((viewH * 1.5) / oneSetH) + 1);
+        for (let i = 1; i < copies; i++) {
+          originals.forEach(f => {
+            const c = f.cloneNode(true);
+            c.classList.add('frame--clone');
+            strip.appendChild(c);
+          });
+        }
+      }
+
+      function setStatus(manual) {
+        userScrolling = manual;
+        status.classList.toggle('is-manual', manual);
+        if (REDUCED) {
+          statusTxt.textContent = 'Manual — reduced motion';
+        } else {
+          statusTxt.textContent = manual ? 'You are scrolling' : 'Autoplay';
+        }
+      }
+
+      function updateCounter() {
+        const pos = strip.scrollTop % oneSetH;
+        const idx = Math.min(frameCount, Math.max(1, Math.floor(pos / (oneSetH / frameCount)) + 1));
+        counter.textContent = `FRAME ${String(idx).padStart(2, '0')} / ${String(frameCount).padStart(2, '0')}`;
+      }
+
+      function pauseForUser() {
+        setStatus(true);
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          setStatus(false);
+          last = performance.now();
+        }, IDLE_MS);
+      }
+
+      function tick(now) {
+        if (auto && !userScrolling) {
+          const dt = Math.min(0.05, (now - last) / 1000 || 0);
+          last = now;
+          strip.scrollTop += SPEED * dt;
+          if (strip.scrollTop >= oneSetH) strip.scrollTop -= oneSetH;
+          updateCounter();
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      // Scroll events now only refresh the HUD counter. Pause logic lives in
+      // the real input listeners above. A synthetic layout scroll can't pause us.
+      strip.addEventListener('scroll', updateCounter, { passive: true });
+
+      // User input → pause autoplay. We listen to real input events here
+      // (wheel / touch / pointer), NOT to 'scroll': browsers fire synthetic
+      // scroll events during layout settle / anchor restoration which would
+      // be misread as user interaction.
+      let lastUserInput = 0;
+      function markUser() {
+        lastUserInput = performance.now();
+        last = performance.now(); // reset dt so no speed burst after input
+      }
+      strip.addEventListener('wheel', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('touchstart', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('pointerdown', () => { if (!dragPointer) { markUser(); } pauseForUser(); }, { passive: true });
+      strip.addEventListener('keydown', () => { markUser(); pauseForUser(); }, { passive: true });
+
+      // Drag-to-scrub (mouse)
+      let dragging = false, lastY = 0;
+      strip.addEventListener('pointerdown', e => {
+        if (e.pointerType !== 'mouse') return;
+        dragPointer = e.pointerId;
+        dragging = true;
+        lastY = e.clientY;
+        strip.classList.add('is-dragging');
+        try { strip.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      strip.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dy = e.clientY - lastY;
+        lastY = e.clientY;
+        last = performance.now();
+        strip.scrollTop -= dy;
+        updateCounter();
+      });
+      ['pointerup', 'pointercancel'].forEach(ev =>
+        strip.addEventListener(ev, () => {
+          dragging = false;
+          dragPointer = null;
+          strip.classList.remove('is-dragging');
+        })
+      );
+
+      // Native wheel/touch scroll on the strip is enough — overscroll-behavior
+      // prevents the page from hijacking the gesture at the strip's limit.
+
+      measure();
+      updateCounter();
+      setStatus(false);
+      if (auto) {
+        last = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      window.addEventListener('resize', () => {
+        measure();
+        updateCounter();
+      });
+    }
+
+    document.querySelectorAll('.reel-strip').forEach(initReel);
   </script>
 </body>
 </html>
