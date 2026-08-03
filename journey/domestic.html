@@ -82,86 +82,222 @@
       line-height: 1.5;
     }
 
-    /* Event Groups */
-    .event-group {
-      padding: 40px;
-      max-width: 1400px;
-      margin: 0 auto 80px auto;
-      border-top: 1px solid var(--line);
+    /* ===== Film Reel sections ===== */
+    .reel {
+      position: relative;
+      max-width: 1100px;
+      margin: 90px auto 0 auto;
+      padding: 0 16px;
     }
-    
-    .event-header {
-      margin-bottom: 40px;
-      padding-top: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-    .event-title {
+
+    /* Ghost roll number */
+    .reel::before {
+      content: attr(data-roll);
+      position: absolute;
+      top: -60px; right: 8px;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px;
-      color: #fff;
-      margin: 0;
-      letter-spacing: 0.05em;
+      font-size: clamp(90px, 20vw, 180px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(244,241,234,0.06);
+      pointer-events: none;
+      user-select: none;
     }
-    .event-meta {
-      font-size: 12px;
+
+    .reel-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 18px;
+      margin-bottom: 26px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .slate-no {
+      font-size: 11px;
+      color: var(--ember);
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+    .reel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .reel-meta {
+      font-size: 11px;
       color: var(--ink-dim);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
     }
 
-    /* Layout Patterns */
-    
-    /* Layout A: 1 large left, 2 stacked right */
-    .layout-a {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 20px;
-      min-height: 600px;
+    /* ---- The stage: a viewport with film-gate fades ---- */
+    .reel-stage {
+      position: relative;
+      height: min(70vh, 640px);
+      min-height: 420px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) both;
     }
-    .layout-a .main { grid-row: 1 / -1; }
-    
-    /* Layout B: 3 columns even */
-    .layout-b {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      min-height: 400px;
+    .reel-stage::before, .reel-stage::after {
+      content: '';
+      position: absolute; left: 0; right: 0;
+      height: clamp(60px, 12vh, 110px);
+      z-index: 6; pointer-events: none;
     }
-    
-    /* Layout C: 2 columns */
+    .reel-stage::before { top: 0; background: linear-gradient(to bottom, var(--void) 20%, transparent); }
+    .reel-stage::after { bottom: 0; background: linear-gradient(to top, var(--void) 20%, transparent); }
+
+    /* Sprocket perforations — pure CSS repeating gradient */
+    .sprockets {
+      position: absolute; top: 0; bottom: 0; width: 22px; z-index: 7;
+      pointer-events: none;
+    }
+    .sprockets-l { left: 0; border-right: 1px solid var(--line); }
+    .sprockets-r { right: 0; border-left: 1px solid var(--line); }
+    .sprockets::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(to bottom,
+          rgba(244,241,234,0.16) 0 14px,
+          transparent 14px 34px);
+      background-blend-mode: overlay;
+    }
+    .sprockets::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(7,8,10,0.95), rgba(7,8,10,0.25) 60%, transparent);
+    }
+
+    /* ---- The strip: scrollable film column ---- */
+    .reel-strip {
+      height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior: contain;
+      cursor: grab;
+      padding: 14vh 34px;
+    }
+    .reel-strip::-webkit-scrollbar { display: none; }
+    .reel-strip.is-dragging { cursor: grabbing; }
+
+    .frame {
+      margin: 0 auto 26px auto;
+      width: min(76vw, 420px);
+      background: var(--void-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .frame-img {
+      height: clamp(220px, 34vh, 400px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(226,56,10,0.06), transparent 70%),
+        var(--void);
+    }
+    .frame-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(45%) contrast(1.04);
+      transition: filter 0.5s ease;
+    }
+    .frame:hover .frame-img img { filter: grayscale(0%) contrast(1); }
+
+    .frame-cap {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      font-size: 10px;
+      color: var(--ink-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(7,8,10,0.4);
+    }
+    .frame-cap .no { color: var(--ember); }
+
+    /* HUD chips on the stage */
+    .reel-hud {
+      position: absolute;
+      z-index: 8;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(7,8,10,0.72);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 7px 13px;
+      backdrop-filter: blur(4px);
+    }
+    .reel-status {
+      left: 34px; bottom: 20px;
+    }
+    .reel-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ember);
+      box-shadow: 0 0 10px rgba(226,56,10,0.9);
+      animation: pulse 2s infinite;
+    }
+    .reel-status.is-manual .dot { background: var(--gold); box-shadow: 0 0 10px rgba(201,161,90,0.9); animation: none; }
+    .reel-counter {
+      right: 34px; bottom: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .4; transform: scale(.7);} }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 760px) {
+      .reel-stage { height: min(76vh, 680px); }
+      .reel-strip { padding: 10vh 44px; }
+      .frame { margin-bottom: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reel-status .dot { animation: none; }
+    }
+
+    /* Cross-link cards (off-the-pitch) */
     .layout-c {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       min-height: 400px;
     }
-
-    /* Layout D: Asymmetric Masonry for 5 images */
-    .layout-d {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, 250px);
-      gap: 20px;
-    }
-    .layout-d .box-1 { grid-column: 1 / 3; grid-row: 1 / 3; }
-    .layout-d .box-2 { grid-column: 3 / 4; grid-row: 1 / 2; }
-    .layout-d .box-3 { grid-column: 4 / 5; grid-row: 1 / 2; }
-    .layout-d .box-4 { grid-column: 3 / 5; grid-row: 2 / 3; }
-
     .photo-card {
       position: relative;
       background: var(--void-2);
       border-radius: 4px;
       overflow: hidden;
       display: flex;
+      min-width: 0;
     }
     .photo-card img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       filter: grayscale(40%);
       transition: filter 0.4s ease, transform 0.6s ease;
     }
@@ -169,7 +305,6 @@
       filter: grayscale(0%);
       transform: scale(1.03);
     }
-    
     .caption-overlay {
       position: absolute;
       bottom: 0; left: 0; width: 100%;
@@ -182,9 +317,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    .photo-card:hover .caption-overlay {
-      opacity: 1;
-    }
+    .photo-card:hover .caption-overlay { opacity: 1; }
 
     /* Mobile */
     @media (max-width: 900px) {
@@ -199,17 +332,17 @@
       .nav-links.active { transform: translateX(0); }
       .nav-links a { font-size: 24px; margin: 16px 0; }
       
-      .page-header { padding: 40px 20px; }
-      .event-group { padding: 20px; margin-bottom: 40px; }
-      .event-header { flex-direction: column; gap: 8px; }
-      
-      .layout-a, .layout-b, .layout-c, .layout-d {
+      .layout-c {
         display: flex;
         flex-direction: column;
         gap: 12px;
+        min-height: 0;
       }
       .photo-card { aspect-ratio: 4/3; }
       .caption-overlay { opacity: 1; padding-top: 60px; }
+      
+      .page-header { padding: 40px 20px; }
+      .reel, .reel-lead { padding: 0 16px; }
     }
   </style>
 </head>
@@ -241,18 +374,34 @@
   </header>
 
   <!-- EVENT 1: TNPL -->
-  <section class="event-group">
-    <div class="event-header">
-      <h2 class="event-title">TNPL</h2>
-      <div class="event-meta">Madurai Super Giant · 91 Runs · 3 Wickets · Avg 30.33</div>
+  <section class="reel" id="tnpl" data-roll="01">
+    <div class="reel-head">
+      <span class="slate-no">Roll 01</span>
+      <h2 class="reel-title">TNPL</h2>
+      <span class="reel-meta">Madurai Super Giant · 91 Runs · 3 Wickets · Avg 30.33</span>
     </div>
-    <div class="layout-b">
-      <!-- what claim does this prove: Shows active participation in the TNPL format. -->
-      <div class="photo-card"><img src="../assets/journey_domestic_tnpl_1.webp" loading="lazy" decoding="async" alt="TNPL Event"><div class="caption-overlay">TNPL Event Match</div></div>
-      <!-- what claim does this prove: Demonstrates involvement in TNPL team infrastructure. -->
-      <div class="photo-card"><img src="../assets/journey_domestic_tnpl_2.webp" loading="lazy" decoding="async" alt="TNPL Setup"><div class="caption-overlay">TNPL Preparation</div></div>
-      <!-- what claim does this prove: Proves presence at TNPL events. -->
-      <div class="photo-card"><img src="../assets/journey_domestic_tnpl_3.webp" loading="lazy" decoding="async" alt="TNPL Field"><div class="caption-overlay">TNPL Match Day</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="3">
+        <!-- what claim does this prove: Shows active participation in the TNPL format. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_tnpl_1.webp" decoding="async" alt="TNPL Event"></div>
+          <figcaption class="frame-cap"><span>TNPL Event Match</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Demonstrates involvement in TNPL team infrastructure. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_tnpl_2.webp" decoding="async" alt="TNPL Setup"></div>
+          <figcaption class="frame-cap"><span>TNPL Preparation</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Proves presence at TNPL events. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_tnpl_3.webp" decoding="async" alt="TNPL Field"></div>
+          <figcaption class="frame-cap"><span>TNPL Match Day</span><span class="no">F.03</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 03</div>
     </div>
   </section>
 
@@ -262,54 +411,108 @@
        own dedicated page for accurate framing. See journey/ccl.html. -->
 
   <!-- EVENT 3: CORPORATE & COLLEGE (Grouped for layout density) -->
-  <section class="event-group">
-    <div class="event-header">
-      <h2 class="event-title">CORPORATE & COLLEGE</h2>
-      <div class="event-meta">Booksellers League & Sanmar Inter-College</div>
+  <section class="reel" id="corporate-college" data-roll="02">
+    <div class="reel-head">
+      <span class="slate-no">Roll 02</span>
+      <h2 class="reel-title">Corporate &amp; College</h2>
+      <span class="reel-meta">Booksellers League &amp; Sanmar Inter-College</span>
     </div>
-    <div class="layout-d">
-      <!-- what claim does this prove: Shows participation in the Booksellers League tournament. -->
-      <div class="photo-card box-1"><img src="../assets/journey_domestic_booksellers_1.webp" loading="lazy" decoding="async" alt="Booksellers League"><div class="caption-overlay">Booksellers League Team</div></div>
-      <!-- what claim does this prove: Demonstrates college-level tournament exposure (Sanmar). -->
-      <div class="photo-card box-2"><img src="../assets/journey_domestic_sanmar_1.webp" loading="lazy" decoding="async" alt="Sanmar Inter-College"><div class="caption-overlay">Sanmar Inter-College Tournament</div></div>
-      <!-- what claim does this prove: Shows match play at the Sanmar tournament. -->
-      <div class="photo-card box-3"><img src="../assets/journey_domestic_sanmar_2.webp" loading="lazy" decoding="async" alt="Sanmar Action"><div class="caption-overlay">Sanmar Tournament Action</div></div>
-      <!-- what claim does this prove: Proves presence at Booksellers League events. -->
-      <div class="photo-card box-4"><img src="../assets/journey_domestic_booksellers_2.webp" loading="lazy" decoding="async" alt="Booksellers Match"><div class="caption-overlay">Booksellers League Match</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="4">
+        <!-- what claim does this prove: Shows participation in the Booksellers League tournament. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_booksellers_1.webp" decoding="async" alt="Booksellers League"></div>
+          <figcaption class="frame-cap"><span>Booksellers League Team</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Demonstrates college-level tournament exposure (Sanmar). -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_sanmar_1.webp" decoding="async" alt="Sanmar Inter-College"></div>
+          <figcaption class="frame-cap"><span>Sanmar Inter-College Tournament</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Shows match play at the Sanmar tournament. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_sanmar_2.webp" decoding="async" alt="Sanmar Action"></div>
+          <figcaption class="frame-cap"><span>Sanmar Tournament Action</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Proves presence at Booksellers League events. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_booksellers_2.webp" decoding="async" alt="Booksellers Match"></div>
+          <figcaption class="frame-cap"><span>Booksellers League Match</span><span class="no">F.04</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 04</div>
     </div>
   </section>
 
   <!-- EVENT 4: NADIGAR SANGAM 2016 -->
-  <section class="event-group">
-    <div class="event-header">
-      <h2 class="event-title">NADIGAR SANGAM</h2>
-      <div class="event-meta">2016 Tournament</div>
+  <section class="reel" id="nadigar-sangam" data-roll="03">
+    <div class="reel-head">
+      <span class="slate-no">Roll 03</span>
+      <h2 class="reel-title">Nadigar Sangam</h2>
+      <span class="reel-meta">2016 Tournament</span>
     </div>
-    <div class="layout-b">
-      <!-- what claim does this prove: Shows involvement in the 2016 Nadigar Sangam tournament. -->
-      <div class="photo-card"><img src="../assets/journey_domestic_nadigar_1.webp" loading="lazy" decoding="async" alt="Nadigar Sangam"><div class="caption-overlay">Nadigar Sangam 2016</div></div>
-      <!-- what claim does this prove: Demonstrates the event scale of Nadigar Sangam 2016. -->
-      <div class="photo-card"><img src="../assets/journey_domestic_nadigar_2.webp" loading="lazy" decoding="async" alt="Nadigar Sangam Event"><div class="caption-overlay">Tournament Event</div></div>
-      <!-- what claim does this prove: Proves participation in the Nadigar Sangam 2016 format. -->
-      <div class="photo-card"><img src="../assets/journey_domestic_nadigar_3.webp" loading="lazy" decoding="async" alt="Nadigar Sangam Action"><div class="caption-overlay">Tournament Action</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="3">
+        <!-- what claim does this prove: Shows involvement in the 2016 Nadigar Sangam tournament. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_nadigar_1.webp" decoding="async" alt="Nadigar Sangam"></div>
+          <figcaption class="frame-cap"><span>Nadigar Sangam 2016</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Demonstrates the event scale of Nadigar Sangam 2016. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_nadigar_2.webp" decoding="async" alt="Nadigar Sangam Event"></div>
+          <figcaption class="frame-cap"><span>Tournament Event</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Proves participation in the Nadigar Sangam 2016 format. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_nadigar_3.webp" decoding="async" alt="Nadigar Sangam Action"></div>
+          <figcaption class="frame-cap"><span>Tournament Action</span><span class="no">F.03</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 03</div>
     </div>
   </section>
 
   <!-- EVENT 5: INVITATIONALS -->
-  <section class="event-group" style="border-bottom: 1px solid var(--line);">
-    <div class="event-header">
-      <h2 class="event-title">INVITATIONALS</h2>
-      <div class="event-meta">Advocates Tournament & Women's Day 2015-16</div>
+  <section class="reel" id="invitationals" data-roll="04" style="padding-bottom: 90px; border-bottom: 1px solid var(--line); margin-bottom: 0;">
+    <div class="reel-head">
+      <span class="slate-no">Roll 04</span>
+      <h2 class="reel-title">Invitationals</h2>
+      <span class="reel-meta">Advocates Tournament &amp; Women's Day 2015-16</span>
     </div>
-    <div class="layout-d">
-      <!-- what claim does this prove: Shows participation in the All India Advocates Tournament. -->
-      <div class="photo-card box-1"><img src="../assets/journey_domestic_advocates_1.webp" loading="lazy" decoding="async" alt="Advocates Tournament"><div class="caption-overlay">All India Advocates Tournament</div></div>
-      <!-- what claim does this prove: Demonstrates exposure to women's cricket tournaments. -->
-      <div class="photo-card box-2"><img src="../assets/journey_domestic_womens_1.webp" loading="lazy" decoding="async" alt="Women's Day 2015-16"><div class="caption-overlay">Women's Day Tournament 2015-16</div></div>
-      <!-- what claim does this prove: Proves presence at the Advocates tournament. -->
-      <div class="photo-card box-3"><img src="../assets/journey_domestic_advocates_2.webp" loading="lazy" decoding="async" alt="Advocates Action"><div class="caption-overlay">Advocates Tournament Action</div></div>
-      <!-- what claim does this prove: Shows involvement in women's cricket formats. -->
-      <div class="photo-card box-4"><img src="../assets/journey_domestic_womens_2.webp" loading="lazy" decoding="async" alt="Women's Day Action"><div class="caption-overlay">Women's Day Action</div></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="4">
+        <!-- what claim does this prove: Shows participation in the All India Advocates Tournament. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_advocates_1.webp" decoding="async" alt="Advocates Tournament"></div>
+          <figcaption class="frame-cap"><span>All India Advocates Tournament</span><span class="no">F.01</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Demonstrates exposure to women's cricket tournaments. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_womens_1.webp" decoding="async" alt="Women's Day 2015-16"></div>
+          <figcaption class="frame-cap"><span>Women's Day Tournament 2015-16</span><span class="no">F.02</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Proves presence at the Advocates tournament. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_advocates_2.webp" decoding="async" alt="Advocates Action"></div>
+          <figcaption class="frame-cap"><span>Advocates Tournament Action</span><span class="no">F.03</span></figcaption>
+        </figure>
+        <!-- what claim does this prove: Shows involvement in women's cricket formats. -->
+        <figure class="frame">
+          <div class="frame-img"><img src="../assets/journey_domestic_womens_2.webp" decoding="async" alt="Women's Day Action"></div>
+          <figcaption class="frame-cap"><span>Women's Day Action</span><span class="no">F.04</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 04</div>
     </div>
   </section>
 
@@ -341,6 +544,137 @@
         document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
       });
     }
+
+    /* ============================================================
+       FILM REEL ENGINE
+       - Buttery auto-scroll driven by requestAnimationFrame
+       - Seamless infinite loop via content duplication + wrap
+       - Any user interaction (wheel / touch / drag / keys) pauses
+         autoplay; it resumes after a short idle period.
+       ============================================================ */
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const IDLE_MS = 3200;
+    const SPEED = 56; // px per second — slow, cinematic
+
+    function initReel(strip) {
+      const stage = strip.closest('.reel-stage');
+      const status = stage.querySelector('.reel-status');
+      const statusTxt = status.querySelector('.reel-status-txt');
+      const counter = stage.querySelector('.reel-counter');
+      const frameCount = parseInt(strip.dataset.frames, 10) || 1;
+      const originals = Array.from(strip.children);
+
+      let oneSetH = 0;
+      let auto = !REDUCED;
+      let userScrolling = false;
+      let idleTimer = null;
+      let rafId = null;
+      let last = 0;
+      let dragPointer = null;
+
+      function measure() {
+        strip.querySelectorAll('.frame--clone').forEach(c => c.remove());
+        oneSetH = originals.reduce((sum, f) => sum + f.offsetHeight, 0) +
+                  (originals.length - 1) * parseFloat(getComputedStyle(originals[0]).marginBottom);
+        const viewH = strip.clientHeight;
+        let copies = Math.max(2, Math.ceil((viewH * 1.5) / oneSetH) + 1);
+        for (let i = 1; i < copies; i++) {
+          originals.forEach(f => {
+            const c = f.cloneNode(true);
+            c.classList.add('frame--clone');
+            strip.appendChild(c);
+          });
+        }
+      }
+
+      function setStatus(manual) {
+        userScrolling = manual;
+        status.classList.toggle('is-manual', manual);
+        if (REDUCED) {
+          statusTxt.textContent = 'Manual — reduced motion';
+        } else {
+          statusTxt.textContent = manual ? 'You are scrolling' : 'Autoplay';
+        }
+      }
+
+      function updateCounter() {
+        const pos = strip.scrollTop % oneSetH;
+        const idx = Math.min(frameCount, Math.max(1, Math.floor(pos / (oneSetH / frameCount)) + 1));
+        counter.textContent = `FRAME ${String(idx).padStart(2, '0')} / ${String(frameCount).padStart(2, '0')}`;
+      }
+
+      function pauseForUser() {
+        setStatus(true);
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          setStatus(false);
+          last = performance.now();
+        }, IDLE_MS);
+      }
+
+      function tick(now) {
+        if (auto && !userScrolling) {
+          const dt = Math.min(0.05, (now - last) / 1000 || 0);
+          last = now;
+          strip.scrollTop += SPEED * dt;
+          if (strip.scrollTop >= oneSetH) strip.scrollTop -= oneSetH;
+          updateCounter();
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      strip.addEventListener('scroll', updateCounter, { passive: true });
+
+      let lastUserInput = 0;
+      function markUser() {
+        lastUserInput = performance.now();
+        last = performance.now();
+      }
+      strip.addEventListener('wheel', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('touchstart', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('pointerdown', () => { if (!dragPointer) { markUser(); } pauseForUser(); }, { passive: true });
+      strip.addEventListener('keydown', () => { markUser(); pauseForUser(); }, { passive: true });
+
+      let dragging = false, lastY = 0;
+      strip.addEventListener('pointerdown', e => {
+        if (e.pointerType !== 'mouse') return;
+        dragPointer = e.pointerId;
+        dragging = true;
+        lastY = e.clientY;
+        strip.classList.add('is-dragging');
+        try { strip.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      strip.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dy = e.clientY - lastY;
+        lastY = e.clientY;
+        last = performance.now();
+        strip.scrollTop -= dy;
+        updateCounter();
+      });
+      ['pointerup', 'pointercancel'].forEach(ev =>
+        strip.addEventListener(ev, () => {
+          dragging = false;
+          dragPointer = null;
+          strip.classList.remove('is-dragging');
+        })
+      );
+
+      measure();
+      updateCounter();
+      setStatus(false);
+      if (auto) {
+        last = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      window.addEventListener('resize', () => {
+        measure();
+        updateCounter();
+      });
+    }
+
+    document.querySelectorAll('.reel-strip').forEach(initReel);
   </script>
 <style>
   .site-footer {

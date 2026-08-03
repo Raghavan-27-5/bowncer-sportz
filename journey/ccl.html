@@ -94,40 +94,11 @@
       line-height: 1.55;
     }
 
-    /* Editorial Gallery */
-    .gallery {
-      padding: 80px 40px;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 40px;
-      max-width: 1600px;
-      margin: 0 auto;
+    .reel-lead {
+      max-width: 1100px;
+      margin: 90px auto 40px auto;
+      padding: 0 16px;
     }
-    .g-item { position: relative; display: flex; flex-direction: column; }
-    .g-item img {
-      width: 100%; height: auto; border-radius: 4px;
-      filter: grayscale(35%);
-      transition: filter 0.5s ease;
-    }
-    .g-item:hover img { filter: grayscale(0%); }
-    .g-caption {
-      margin-top: 16px; font-size: 12px; color: var(--ink-dim);
-      letter-spacing: 0.05em; text-transform: uppercase;
-      border-left: 2px solid var(--gold); padding-left: 12px;
-    }
-
-    .g-full { grid-column: 1 / -1; }
-    .g-left { grid-column: 1 / 8; }
-    .g-right { grid-column: 6 / -1; }
-    .g-center { grid-column: 3 / 11; }
-    .g-half-l { grid-column: 1 / 7; }
-    .g-half-r { grid-column: 7 / -1; }
-    .g-third { grid-column: span 4; }
-    .g-text-block { grid-column: 1 / 6; display: flex; flex-direction: column; justify-content: center; }
-    .g-text-title { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--gold); line-height: 1; margin-bottom: 24px; }
-    .g-text-body { font-size: 16px; color: var(--ink); line-height: 1.65; }
-    .g-text-body + .g-text-body { margin-top: 16px; }
-
     .role-tag {
       display: inline-block;
       font-size: 11px;
@@ -140,17 +111,228 @@
       margin-bottom: 20px;
       font-weight: 700;
     }
-
+    .reel-lead-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--gold);
+      margin: 12px 0 24px 0;
+      text-transform: uppercase;
+    }
+    .reel-lead-body {
+      font-size: 16px;
+      color: var(--ink-dim);
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 0 16px 0;
+    }
     .fact-note {
-      grid-column: 1 / -1;
+      max-width: 1100px;
+      margin: 80px auto 0 auto;
+      padding: 24px 16px 0 16px;
       border-top: 1px solid var(--line);
-      padding-top: 24px;
-      margin-top: 20px;
       font-size: 13px;
       color: var(--ink-dim);
       line-height: 1.6;
     }
     .fact-note strong { color: var(--ink); }
+
+    /* ===== Film Reel sections ===== */
+    .reel {
+      position: relative;
+      max-width: 1100px;
+      margin: 90px auto 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Ghost roll number */
+    .reel::before {
+      content: attr(data-roll);
+      position: absolute;
+      top: -60px; right: 8px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(90px, 20vw, 180px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(244,241,234,0.06);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .reel-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 18px;
+      margin-bottom: 26px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .slate-no {
+      font-size: 11px;
+      color: var(--ember);
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+    .reel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .reel-meta {
+      font-size: 11px;
+      color: var(--ink-dim);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    /* ---- The stage: a viewport with film-gate fades ---- */
+    .reel-stage {
+      position: relative;
+      height: min(70vh, 640px);
+      min-height: 420px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) both;
+    }
+    .reel-stage::before, .reel-stage::after {
+      content: '';
+      position: absolute; left: 0; right: 0;
+      height: clamp(60px, 12vh, 110px);
+      z-index: 6; pointer-events: none;
+    }
+    .reel-stage::before { top: 0; background: linear-gradient(to bottom, var(--void) 20%, transparent); }
+    .reel-stage::after { bottom: 0; background: linear-gradient(to top, var(--void) 20%, transparent); }
+
+    /* Sprocket perforations — pure CSS repeating gradient */
+    .sprockets {
+      position: absolute; top: 0; bottom: 0; width: 22px; z-index: 7;
+      pointer-events: none;
+    }
+    .sprockets-l { left: 0; border-right: 1px solid var(--line); }
+    .sprockets-r { right: 0; border-left: 1px solid var(--line); }
+    .sprockets::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(to bottom,
+          rgba(244,241,234,0.16) 0 14px,
+          transparent 14px 34px);
+      background-blend-mode: overlay;
+    }
+    .sprockets::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(7,8,10,0.95), rgba(7,8,10,0.25) 60%, transparent);
+    }
+
+    /* ---- The strip: scrollable film column ---- */
+    .reel-strip {
+      height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior: contain;
+      cursor: grab;
+      padding: 14vh 34px;
+    }
+    .reel-strip::-webkit-scrollbar { display: none; }
+    .reel-strip.is-dragging { cursor: grabbing; }
+
+    .frame {
+      margin: 0 auto 26px auto;
+      width: min(76vw, 420px);
+      background: var(--void-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .frame-img {
+      height: clamp(220px, 34vh, 400px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(226,56,10,0.06), transparent 70%),
+        var(--void);
+    }
+    .frame-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(45%) contrast(1.04);
+      transition: filter 0.5s ease;
+    }
+    .frame:hover .frame-img img { filter: grayscale(0%) contrast(1); }
+
+    .frame-cap {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      font-size: 10px;
+      color: var(--ink-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(7,8,10,0.4);
+    }
+    .frame-cap .no { color: var(--ember); }
+
+    /* HUD chips on the stage */
+    .reel-hud {
+      position: absolute;
+      z-index: 8;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(7,8,10,0.72);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 7px 13px;
+      backdrop-filter: blur(4px);
+    }
+    .reel-status {
+      left: 34px; bottom: 20px;
+    }
+    .reel-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ember);
+      box-shadow: 0 0 10px rgba(226,56,10,0.9);
+      animation: pulse 2s infinite;
+    }
+    .reel-status.is-manual .dot { background: var(--gold); box-shadow: 0 0 10px rgba(201,161,90,0.9); animation: none; }
+    .reel-counter {
+      right: 34px; bottom: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .4; transform: scale(.7);} }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 760px) {
+      .reel-stage { height: min(76vh, 680px); }
+      .reel-strip { padding: 10vh 44px; }
+      .frame { margin-bottom: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reel-status .dot { animation: none; }
+    }
 
     /* Mobile */
     @media (max-width: 900px) {
@@ -166,8 +348,7 @@
       .nav-links a { font-size: 24px; margin: 16px 0; }
 
       .hero { padding: 0 20px; min-height: 70vh; }
-      .gallery { padding: 40px 20px; gap: 24px; display: flex; flex-direction: column; }
-      .g-item, .g-text-block { grid-column: 1 / -1; width: 100%; }
+      .reel, .reel-lead, .fact-note { padding: 0 16px; }
     }
   </style>
 </head>
@@ -201,45 +382,62 @@
     <p class="hero-subtitle">CCL puts film stars on a cricket field. He wasn't one of them — he was the one sharpening their game from the other side of the boundary.</p>
   </header>
 
-  <main class="gallery">
-
-    <div class="g-text-block">
+  <main>
+    <div class="reel-lead">
       <span class="role-tag">Coach &amp; Mentor — Not a Player</span>
-      <h2 class="g-text-title">THE ROLE<br>BEHIND THE WIN</h2>
-      <p class="g-text-body">The Celebrity Cricket League is built for actors, not professionals — a tournament where film stars play the game rather than watch it. Getting a squad of actors match-ready still takes a real coach.</p>
-      <p class="g-text-body">That's the seat he took: mentor and coach to the side that went on to win the tournament, working technique and match sense into a team that the cameras usually only see celebrating.</p>
+      <h2 class="reel-lead-title">The Role<br>Behind The Win</h2>
+      <p class="reel-lead-body">The Celebrity Cricket League is built for actors, not professionals — a tournament where film stars play the game rather than watch it. Getting a squad of actors match-ready still takes a real coach.</p>
+      <p class="reel-lead-body">That's the seat he took: mentor and coach to the side that went on to win the tournament, working technique and match sense into a team that the cameras usually only see celebrating.</p>
     </div>
 
-    <div class="g-item g-half-r">
-      <img src="../assets/journey_ccl_1.webp" alt="CCL winning team celebration" loading="lazy" decoding="async">
-      <div class="g-caption">Champions — Team Celebration</div>
-    </div>
+    <section class="reel" id="ccl" data-roll="01">
+      <div class="reel-head">
+        <span class="slate-no">Roll 01</span>
+        <h2 class="reel-title">Coach To The Crown</h2>
+        <span class="reel-meta">6 frames · Celebrity Cricket League</span>
+      </div>
+      <div class="reel-stage">
+        <div class="sprockets sprockets-l"></div>
+        <div class="sprockets sprockets-r"></div>
+        <div class="reel-strip" data-frames="6">
 
-    <div class="g-item g-full" style="margin: 20px 0;">
-      <img src="../assets/journey_ccl_2.webp" alt="Full squad on the ground" loading="lazy" decoding="async">
-      <div class="g-caption">The Winning Squad, On the Ground</div>
-    </div>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_ccl_1.webp" decoding="async" alt="CCL winning team celebration"></div>
+            <figcaption class="frame-cap"><span>Champions — Team Celebration</span><span class="no">F.01</span></figcaption>
+          </figure>
 
-    <div class="g-item g-third">
-      <img src="../assets/journey_ccl_3.webp" alt="Match day" loading="lazy" decoding="async">
-      <div class="g-caption">Match Day</div>
-    </div>
-    <div class="g-item g-third">
-      <img src="../assets/journey_ccl_4.webp" alt="On the field" loading="lazy" decoding="async">
-      <div class="g-caption">On the Field</div>
-    </div>
-    <div class="g-item g-third">
-      <img src="../assets/journey_ccl_5.webp" alt="Team moment" loading="lazy" decoding="async">
-      <div class="g-caption">Team Moment</div>
-    </div>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_ccl_2.webp" decoding="async" alt="Full squad on the ground"></div>
+            <figcaption class="frame-cap"><span>The Winning Squad, On the Ground</span><span class="no">F.02</span></figcaption>
+          </figure>
 
-    <div class="g-item g-center" style="margin-top: 20px;">
-      <img src="../assets/journey_ccl_7.webp" alt="Stadium atmosphere" loading="lazy" decoding="async">
-      <div class="g-caption">Stadium Atmosphere, Finals Day</div>
-    </div>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_ccl_3.webp" decoding="async" alt="Match day"></div>
+            <figcaption class="frame-cap"><span>Match Day</span><span class="no">F.03</span></figcaption>
+          </figure>
+
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_ccl_4.webp" decoding="async" alt="On the field"></div>
+            <figcaption class="frame-cap"><span>On the Field</span><span class="no">F.04</span></figcaption>
+          </figure>
+
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_ccl_5.webp" decoding="async" alt="Team moment"></div>
+            <figcaption class="frame-cap"><span>Team Moment</span><span class="no">F.05</span></figcaption>
+          </figure>
+
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_ccl_7.webp" decoding="async" alt="Stadium atmosphere"></div>
+            <figcaption class="frame-cap"><span>Stadium Atmosphere, Finals Day</span><span class="no">F.06</span></figcaption>
+          </figure>
+
+        </div>
+        <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+        <div class="reel-hud reel-counter">FRAME 01 / 06</div>
+      </div>
+    </section>
 
     <p class="fact-note"><strong>A note on this page:</strong> CCL (Celebrity Cricket League) is a tournament for film actors, not professional cricketers. His involvement was as coach and mentor to the winning team — not as a player on the field.</p>
-
   </main>
 
   <script>
@@ -252,6 +450,149 @@
         document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
       });
     }
+
+    /* ============================================================
+       FILM REEL ENGINE
+       - Buttery auto-scroll driven by requestAnimationFrame
+       - Seamless infinite loop via content duplication + wrap
+       - Any user interaction (wheel / touch / drag / keys) pauses
+         autoplay; it resumes after a short idle period.
+       ============================================================ */
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const IDLE_MS = 3200;
+    const SPEED = 56; // px per second — slow, cinematic
+
+    function initReel(strip) {
+      const stage = strip.closest('.reel-stage');
+      const status = stage.querySelector('.reel-status');
+      const statusTxt = status.querySelector('.reel-status-txt');
+      const counter = stage.querySelector('.reel-counter');
+      const frameCount = parseInt(strip.dataset.frames, 10) || 1;
+      const originals = Array.from(strip.children);
+
+      let oneSetH = 0;
+      let auto = !REDUCED;
+      let userScrolling = false;
+      let idleTimer = null;
+      let rafId = null;
+      let last = 0;
+      let dragPointer = null;
+
+      function measure() {
+        // Remove clones and re-derive one full set's height
+        strip.querySelectorAll('.frame--clone').forEach(c => c.remove());
+        oneSetH = originals.reduce((sum, f) => sum + f.offsetHeight, 0) +
+                  (originals.length - 1) * parseFloat(getComputedStyle(originals[0]).marginBottom);
+        const viewH = strip.clientHeight;
+        // Duplicate until at least one full set fits beyond the viewport
+        let copies = Math.max(2, Math.ceil((viewH * 1.5) / oneSetH) + 1);
+        for (let i = 1; i < copies; i++) {
+          originals.forEach(f => {
+            const c = f.cloneNode(true);
+            c.classList.add('frame--clone');
+            strip.appendChild(c);
+          });
+        }
+      }
+
+      function setStatus(manual) {
+        userScrolling = manual;
+        status.classList.toggle('is-manual', manual);
+        if (REDUCED) {
+          statusTxt.textContent = 'Manual — reduced motion';
+        } else {
+          statusTxt.textContent = manual ? 'You are scrolling' : 'Autoplay';
+        }
+      }
+
+      function updateCounter() {
+        const pos = strip.scrollTop % oneSetH;
+        const idx = Math.min(frameCount, Math.max(1, Math.floor(pos / (oneSetH / frameCount)) + 1));
+        counter.textContent = `FRAME ${String(idx).padStart(2, '0')} / ${String(frameCount).padStart(2, '0')}`;
+      }
+
+      function pauseForUser() {
+        setStatus(true);
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          setStatus(false);
+          last = performance.now();
+        }, IDLE_MS);
+      }
+
+      function tick(now) {
+        if (auto && !userScrolling) {
+          const dt = Math.min(0.05, (now - last) / 1000 || 0);
+          last = now;
+          strip.scrollTop += SPEED * dt;
+          if (strip.scrollTop >= oneSetH) strip.scrollTop -= oneSetH;
+          updateCounter();
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      // Scroll events now only refresh the HUD counter. Pause logic lives in
+      // the real input listeners above. A synthetic layout scroll can't pause us.
+      strip.addEventListener('scroll', updateCounter, { passive: true });
+
+      // User input → pause autoplay. We listen to real input events here
+      // (wheel / touch / pointer), NOT to 'scroll': browsers fire synthetic
+      // scroll events during layout settle / anchor restoration which would
+      // be misread as user interaction.
+      let lastUserInput = 0;
+      function markUser() {
+        lastUserInput = performance.now();
+        last = performance.now(); // reset dt so no speed burst after input
+      }
+      strip.addEventListener('wheel', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('touchstart', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('pointerdown', () => { if (!dragPointer) { markUser(); } pauseForUser(); }, { passive: true });
+      strip.addEventListener('keydown', () => { markUser(); pauseForUser(); }, { passive: true });
+
+      // Drag-to-scrub (mouse)
+      let dragging = false, lastY = 0;
+      strip.addEventListener('pointerdown', e => {
+        if (e.pointerType !== 'mouse') return;
+        dragPointer = e.pointerId;
+        dragging = true;
+        lastY = e.clientY;
+        strip.classList.add('is-dragging');
+        try { strip.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      strip.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dy = e.clientY - lastY;
+        lastY = e.clientY;
+        last = performance.now();
+        strip.scrollTop -= dy;
+        updateCounter();
+      });
+      ['pointerup', 'pointercancel'].forEach(ev =>
+        strip.addEventListener(ev, () => {
+          dragging = false;
+          dragPointer = null;
+          strip.classList.remove('is-dragging');
+        })
+      );
+
+      // Native wheel/touch scroll on the strip is enough — overscroll-behavior
+      // prevents the page from hijacking the gesture at the strip's limit.
+
+      measure();
+      updateCounter();
+      setStatus(false);
+      if (auto) {
+        last = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      window.addEventListener('resize', () => {
+        measure();
+        updateCounter();
+      });
+    }
+
+    document.querySelectorAll('.reel-strip').forEach(initReel);
   </script>
 <style>
   .site-footer {

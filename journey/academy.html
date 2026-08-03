@@ -97,87 +97,232 @@
       max-width: 1400px;
       margin: 0 auto;
     }
-    .section-header {
-      margin-bottom: 40px;
+
+    /* ===== Film Reel ===== */
+    .reel-lead {
+      max-width: 1100px;
+      margin: 90px auto 40px auto;
+      padding: 0 16px;
     }
-    .section-eyebrow {
-      font-size: 12px;
+    .reel-lead .slate-no {
+      font-size: 11px;
+      color: var(--ember);
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+    .reel-lead-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
       color: var(--gold);
+      margin: 12px 0 24px 0;
+      text-transform: uppercase;
+    }
+    .reel-lead-body {
+      font-size: 16px;
+      color: var(--ink-dim);
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 0 16px 0;
+    }
+
+    /* ===== Film Reel sections ===== */
+    .reel {
+      position: relative;
+      max-width: 1100px;
+      margin: 90px auto 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Ghost roll number */
+    .reel::before {
+      content: attr(data-roll);
+      position: absolute;
+      top: -60px; right: 8px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(90px, 20vw, 180px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(244,241,234,0.06);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .reel-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 18px;
+      margin-bottom: 26px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .slate-no {
+      font-size: 11px;
+      color: var(--ember);
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+    .reel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 9vw, 72px);
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .reel-meta {
+      font-size: 11px;
+      color: var(--ink-dim);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    /* ---- The stage: a viewport with film-gate fades ---- */
+    .reel-stage {
+      position: relative;
+      height: min(70vh, 640px);
+      min-height: 420px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) both;
+    }
+    .reel-stage::before, .reel-stage::after {
+      content: '';
+      position: absolute; left: 0; right: 0;
+      height: clamp(60px, 12vh, 110px);
+      z-index: 6; pointer-events: none;
+    }
+    .reel-stage::before { top: 0; background: linear-gradient(to bottom, var(--void) 20%, transparent); }
+    .reel-stage::after { bottom: 0; background: linear-gradient(to top, var(--void) 20%, transparent); }
+
+    /* Sprocket perforations — pure CSS repeating gradient */
+    .sprockets {
+      position: absolute; top: 0; bottom: 0; width: 22px; z-index: 7;
+      pointer-events: none;
+    }
+    .sprockets-l { left: 0; border-right: 1px solid var(--line); }
+    .sprockets-r { right: 0; border-left: 1px solid var(--line); }
+    .sprockets::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(to bottom,
+          rgba(244,241,234,0.16) 0 14px,
+          transparent 14px 34px);
+      background-blend-mode: overlay;
+    }
+    .sprockets::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(7,8,10,0.95), rgba(7,8,10,0.25) 60%, transparent);
+    }
+
+    /* ---- The strip: scrollable film column ---- */
+    .reel-strip {
+      height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior: contain;
+      cursor: grab;
+      padding: 14vh 34px;
+    }
+    .reel-strip::-webkit-scrollbar { display: none; }
+    .reel-strip.is-dragging { cursor: grabbing; }
+
+    .frame {
+      margin: 0 auto 26px auto;
+      width: min(76vw, 400px);
+      background: var(--void-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .frame-img {
+      height: clamp(220px, 34vh, 400px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(226,56,10,0.06), transparent 70%),
+        var(--void);
+    }
+    .frame-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(45%) contrast(1.04);
+      transition: filter 0.5s ease;
+    }
+    .frame:hover .frame-img img { filter: grayscale(0%) contrast(1); }
+
+    .frame-cap {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      font-size: 10px;
+      color: var(--ink-dim);
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      background: rgba(7,8,10,0.4);
     }
-    .section-title {
+    .frame-cap .no { color: var(--ember); }
+
+    /* HUD chips on the stage */
+    .reel-hud {
+      position: absolute;
+      z-index: 8;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(7,8,10,0.72);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 7px 13px;
+      backdrop-filter: blur(4px);
+    }
+    .reel-status {
+      left: 34px; bottom: 20px;
+    }
+    .reel-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ember);
+      box-shadow: 0 0 10px rgba(226,56,10,0.9);
+      animation: pulse 2s infinite;
+    }
+    .reel-status.is-manual .dot { background: var(--gold); box-shadow: 0 0 10px rgba(201,161,90,0.9); animation: none; }
+    .reel-counter {
+      right: 34px; bottom: 20px;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px;
-      color: #fff;
-      margin: 0;
-      letter-spacing: 0.05em;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .4; transform: scale(.7);} }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Kana Gallery (Facility) */
-    .kana-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    .kana-main {
-      grid-column: 1 / -1;
-      aspect-ratio: 21 / 9;
-      position: relative;
-    }
-    .kana-main img {
-      width: 100%; height: 100%; object-fit: contain; border-radius: 4px; filter: grayscale(30%);
-    }
-    .kana-sub {
-      aspect-ratio: 1;
-    }
-    .kana-sub img {
-      width: 100%; height: 100%; object-fit: contain; border-radius: 4px; filter: grayscale(30%);
+    @media (min-width: 760px) {
+      .reel-stage { height: min(76vh, 680px); }
+      .reel-strip { padding: 10vh 44px; }
+      .frame { margin-bottom: 40px; }
     }
 
-    /* Bengaluru (Training Dense Grid) */
-    .dense-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      grid-auto-flow: dense;
+    @media (prefers-reduced-motion: reduce) {
+      .reel-status .dot { animation: none; }
     }
-    .dense-item {
-      position: relative;
-      aspect-ratio: 1;
-    }
-    /* Make some items span 2 rows/cols for a masonry feel without JS */
-    .dense-item:nth-child(2), .dense-item:nth-child(7) {
-      grid-column: span 2;
-      grid-row: span 2;
-    }
-    .dense-item img {
-      width: 100%; height: 100%; object-fit: contain; border-radius: 2px;
-      filter: grayscale(40%);
-      transition: filter 0.3s;
-    }
-    .dense-item:hover img { filter: grayscale(0%); }
 
-    /* Inauguration (Compact Strip) */
-    .strip-container {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 20px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--gold) var(--void-2);
-    }
-    .strip-item {
-      flex: 0 0 auto;
-      width: 180px;
-      height: 120px;
-    }
-    .strip-item img {
-      width: 100%; height: 100%; object-fit: contain; border-radius: 2px;
-      filter: grayscale(60%) sepia(20%);
-    }
-    
     /* WhatsApp CTA */
     .cta-banner {
       margin-top: 60px;
@@ -228,11 +373,7 @@
       .hero { padding: 40px 20px; min-height: 400px; }
       .section { padding: 60px 20px; }
       
-      .kana-grid { grid-template-columns: 1fr; }
-      .kana-main { aspect-ratio: 16 / 9; }
       
-      .dense-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      .dense-item:nth-child(2), .dense-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
       
       .cta-banner { flex-direction: column; text-align: center; gap: 24px; padding: 24px; }
     }
@@ -268,102 +409,157 @@
     <p class="hero-subtitle">Process. Progress. Perform. This is where elite coaching meets daily grind.</p>
   </header>
 
-  <!-- THE FACILITY -->
-  <section class="section">
-    <div class="section-header">
-      <div class="section-eyebrow">Coaching in Action</div>
-      <h2 class="section-title">BUILDING THE NEXT GENERATION</h2>
-      <p style="color: var(--ink-dim); max-width: 600px; margin-top: 12px; font-size: 14px;">From training camps to daily academy sessions, hands-on coaching with young players is the constant across every stop of the journey.</p>
+  <div class="reel-lead">
+    <span class="slate-no">The Academy · Chennai</span>
+    <h2 class="reel-lead-title">BUILDING<br>THE NEXT GENERATION</h2>
+    <p class="reel-lead-body">From training camps to daily academy sessions, hands-on coaching with young players is the constant across every stop of the journey.</p>
+  </div>
+  <section class="reel" id="coaching" data-roll="01">
+    <div class="reel-head">
+      <span class="slate-no">Roll 01</span>
+      <h2 class="reel-title">Coaching In Action</h2>
+      <span class="reel-meta">6 frames · Academy Sessions</span>
     </div>
-    <div class="kana-grid">
-      <!-- what claim does this prove: Shows a full squad of young players in academy kit, proving real enrollment scale. -->
-      <div class="kana-main">
-        <img src="../assets/journey_academy_bengaluru_1.webp" loading="lazy" decoding="async" alt="Training Camp Squad">
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="6">
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_bengaluru_1.webp" decoding="async" alt="Training Camp Squad"></div>
+            <figcaption class="frame-cap"><span>Training Camp Squad</span><span class="no">F.01</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_bengaluru_2.webp" decoding="async" alt="The Academy in Session"></div>
+            <figcaption class="frame-cap"><span>The Academy in Session</span><span class="no">F.02</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_bengaluru_3.webp" decoding="async" alt="One-on-One Coaching"></div>
+            <figcaption class="frame-cap"><span>One-on-One Coaching</span><span class="no">F.03</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_bengaluru_4.webp" decoding="async" alt="Group Drills"></div>
+            <figcaption class="frame-cap"><span>Group Drills</span><span class="no">F.04</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_bengaluru_5.webp" decoding="async" alt="Trainee Morale"></div>
+            <figcaption class="frame-cap"><span>Trainee Morale</span><span class="no">F.05</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_bengaluru_6.webp" decoding="async" alt="Hands-on Instruction"></div>
+            <figcaption class="frame-cap"><span>Hands-on Instruction</span><span class="no">F.06</span></figcaption>
+          </figure>
       </div>
-      <!-- what claim does this prove: Demonstrates one-on-one coaching attention with junior players. -->
-      <div class="kana-main">
-        <img src="../assets/journey_academy_bengaluru_3.webp" loading="lazy" decoding="async" alt="One-on-One Coaching">
-      </div>
-      <!-- what claim does this prove: Shows group drilling and structured session format. -->
-      <div class="kana-sub">
-        <img src="../assets/journey_academy_bengaluru_4.webp" loading="lazy" decoding="async" alt="Group Drills">
-      </div>
-      <!-- what claim does this prove: Proves engagement and morale among young trainees. -->
-      <div class="kana-sub">
-        <img src="../assets/journey_academy_bengaluru_5.webp" loading="lazy" decoding="async" alt="Trainee Morale">
-      </div>
-      <!-- what claim does this prove: Shows the coach directly involved in hands-on instruction. -->
-      <div class="kana-sub">
-        <img src="../assets/journey_academy_bengaluru_6.webp" loading="lazy" decoding="async" alt="Hands-on Instruction">
-      </div>
-    </div>
-  </section>
-
-  <!-- TRAINING INTENSITY -->
-  <section class="section" style="background: var(--void-2); padding-top: 80px; padding-bottom: 80px; max-width: 100%;">
-    <div style="max-width: 1400px; margin: 0 auto;">
-      <div class="section-header">
-        <div class="section-eyebrow">The Environment</div>
-        <h2 class="section-title">TRAINING & MATCH SIMULATION</h2>
-        <p style="color: var(--ink-dim); max-width: 600px; margin-top: 12px; font-size: 14px;">Batting Fundamentals, Bowling Mechanics, Fielding Drills, and Match Simulation across TEST, ODI & T/20 Formats.</p>
-      </div>
-      
-      <div class="dense-grid">
-        <!-- what claim does this prove: Proves active, intense training sessions with high student participation. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_1.webp" loading="lazy" decoding="async" alt="Training Drill"></div>
-        <!-- what claim does this prove: Demonstrates one-on-one focus and technical correction by coaches. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_2.webp" loading="lazy" decoding="async" alt="Technical Instruction"></div>
-        <!-- what claim does this prove: Shows match-simulation scenarios teaching players tactical awareness. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_3.webp" loading="lazy" decoding="async" alt="Match Simulation"></div>
-        <!-- what claim does this prove: Highlights fielding drills, a core pillar of modern cricket coaching. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_4.webp" loading="lazy" decoding="async" alt="Fielding Drills"></div>
-        <!-- what claim does this prove: Demonstrates the fitness and mental conditioning aspect of the camp. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_5.webp" loading="lazy" decoding="async" alt="Fitness Training"></div>
-        <!-- what claim does this prove: Proves high engagement and discipline during group instruction. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_6.webp" loading="lazy" decoding="async" alt="Group Instruction"></div>
-        <!-- what claim does this prove: Shows active net practice against varied bowling styles. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_7.webp" loading="lazy" decoding="async" alt="Net Practice"></div>
-        <!-- what claim does this prove: Demonstrates batting fundamentals being tested in real-time. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_8.webp" loading="lazy" decoding="async" alt="Batting Fundamentals"></div>
-        <!-- what claim does this prove: Highlights bowling mechanics training and run-up checks. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_9.webp" loading="lazy" decoding="async" alt="Bowling Mechanics"></div>
-        <!-- what claim does this prove: Proves a strong, supportive peer group environment for young players. -->
-        <div class="dense-item"><img src="../assets/journey_academy_ben_10.webp" loading="lazy" decoding="async" alt="Peer Environment"></div>
-      </div>
-
-      <div class="cta-banner">
-        <div class="cta-text">
-          <h3>START YOUR JOURNEY</h3>
-          <p>Skill acquisition and technical work for all ages. Join the next batch.</p>
-        </div>
-        <a href="https://wa.me/919840568137" class="cta-btn" target="_blank">Message on WhatsApp</a>
-        <a href="mailto:iplcoachthiyagarajan@gmail.com" class="cta-btn" style="margin-left: 16px; background: transparent; border: 1px solid var(--gold); color: var(--gold);">Email Us</a>
-      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 06</div>
     </div>
   </section>
 
-  <!-- INAUGURATION -->
-  <section class="section" style="padding-top: 60px;">
-    <div class="section-header" style="margin-bottom: 24px;">
-      <div class="section-eyebrow">Foundation</div>
-      <h2 class="section-title" style="font-size: 32px;">HOW IT BEGAN</h2>
+  <section class="reel" id="simulation" data-roll="02">
+    <div class="reel-head">
+      <span class="slate-no">Roll 02</span>
+      <h2 class="reel-title">Training & Match Simulation</h2>
+      <span class="reel-meta">10 frames · TEST · ODI · T/20</span>
     </div>
-    <div class="strip-container">
-      <!-- what claim does this prove: Proves institutional history and the official launch of the academy. Small strip format used due to low res. -->
-      <div class="strip-item"><img src="../assets/journey_academy_inaug_1.webp" loading="lazy" decoding="async" alt="Inauguration Event"></div>
-      <!-- what claim does this prove: Shows community backing and support during the academy's founding. -->
-      <div class="strip-item"><img src="../assets/journey_academy_inaug_2.webp" loading="lazy" decoding="async" alt="Inauguration Guests"></div>
-      <!-- what claim does this prove: Establishes a long-standing presence (founded 2017) adding trust. -->
-      <div class="strip-item"><img src="../assets/journey_academy_inaug_3.webp" loading="lazy" decoding="async" alt="Founding Moment"></div>
-      <!-- what claim does this prove: Shows the original facility setup on day one. -->
-      <div class="strip-item"><img src="../assets/journey_academy_inaug_4.webp" loading="lazy" decoding="async" alt="Facility Day One"></div>
-      <!-- what claim does this prove: Demonstrates early student enrollment and trust from day one. -->
-      <div class="strip-item"><img src="../assets/journey_academy_inaug_5.webp" loading="lazy" decoding="async" alt="First Batch"></div>
-      <!-- what claim does this prove: Validates the historical origin point of the academy's journey. -->
-      <div class="strip-item"><img src="../assets/journey_academy_inaug_6.webp" loading="lazy" decoding="async" alt="Ceremony"></div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="10">
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_1.webp" decoding="async" alt="Training Drill"></div>
+            <figcaption class="frame-cap"><span>Training Drill</span><span class="no">F.01</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_2.webp" decoding="async" alt="Technical Instruction"></div>
+            <figcaption class="frame-cap"><span>Technical Instruction</span><span class="no">F.02</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_3.webp" decoding="async" alt="Match Simulation"></div>
+            <figcaption class="frame-cap"><span>Match Simulation</span><span class="no">F.03</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_4.webp" decoding="async" alt="Fielding Drills"></div>
+            <figcaption class="frame-cap"><span>Fielding Drills</span><span class="no">F.04</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_5.webp" decoding="async" alt="Fitness Training"></div>
+            <figcaption class="frame-cap"><span>Fitness Training</span><span class="no">F.05</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_6.webp" decoding="async" alt="Group Instruction"></div>
+            <figcaption class="frame-cap"><span>Group Instruction</span><span class="no">F.06</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_7.webp" decoding="async" alt="Net Practice"></div>
+            <figcaption class="frame-cap"><span>Net Practice</span><span class="no">F.07</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_8.webp" decoding="async" alt="Batting Fundamentals"></div>
+            <figcaption class="frame-cap"><span>Batting Fundamentals</span><span class="no">F.08</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_9.webp" decoding="async" alt="Bowling Mechanics"></div>
+            <figcaption class="frame-cap"><span>Bowling Mechanics</span><span class="no">F.09</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_ben_10.webp" decoding="async" alt="Peer Environment"></div>
+            <figcaption class="frame-cap"><span>Peer Environment</span><span class="no">F.10</span></figcaption>
+          </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 10</div>
     </div>
   </section>
 
+  <section class="reel" id="began" data-roll="03">
+    <div class="reel-head">
+      <span class="slate-no">Roll 03</span>
+      <h2 class="reel-title">How It Began</h2>
+      <span class="reel-meta">6 frames · Chennai · Est. 2017</span>
+    </div>
+    <div class="reel-stage">
+      <div class="sprockets sprockets-l"></div>
+      <div class="sprockets sprockets-r"></div>
+      <div class="reel-strip" data-frames="6">
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_inaug_1.webp" decoding="async" alt="Inauguration Event"></div>
+            <figcaption class="frame-cap"><span>Inauguration Event</span><span class="no">F.01</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_inaug_2.webp" decoding="async" alt="Inauguration Guests"></div>
+            <figcaption class="frame-cap"><span>Inauguration Guests</span><span class="no">F.02</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_inaug_3.webp" decoding="async" alt="Founding Moment"></div>
+            <figcaption class="frame-cap"><span>Founding Moment</span><span class="no">F.03</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_inaug_4.webp" decoding="async" alt="Facility Day One"></div>
+            <figcaption class="frame-cap"><span>Facility Day One</span><span class="no">F.04</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_inaug_5.webp" decoding="async" alt="First Batch"></div>
+            <figcaption class="frame-cap"><span>First Batch</span><span class="no">F.05</span></figcaption>
+          </figure>
+          <figure class="frame">
+            <div class="frame-img"><img src="../assets/journey_academy_inaug_6.webp" decoding="async" alt="Ceremony"></div>
+            <figcaption class="frame-cap"><span>Ceremony</span><span class="no">F.06</span></figcaption>
+          </figure>
+      </div>
+      <div class="reel-hud reel-status"><span class="dot"></span><span class="reel-status-txt">Autoplay</span></div>
+      <div class="reel-hud reel-counter">FRAME 01 / 06</div>
+    </div>
+  </section>
+
+  <div class="reel-lead" style="margin-bottom: 0;">
+    <div class="cta-banner" style="margin-top: 0;">
+      <div class="cta-text">
+        <h3>START YOUR JOURNEY</h3>
+        <p>Skill acquisition and technical work for all ages. Join the next batch.</p>
+      </div>
+      <a href="https://wa.me/919840568137" class="cta-btn" target="_blank">Message on WhatsApp</a>
+      <a href="mailto:iplcoachthiyagarajan@gmail.com" class="cta-btn" style="margin-left: 16px; background: transparent; border: 1px solid var(--gold); color: var(--gold);">Email Us</a>
+    </div>
+  </div>
   <script>
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
@@ -374,6 +570,149 @@
         document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
       });
     }
+
+    /* ============================================================
+       FILM REEL ENGINE
+       - Buttery auto-scroll driven by requestAnimationFrame
+       - Seamless infinite loop via content duplication + wrap
+       - Any user interaction (wheel / touch / drag / keys) pauses
+         autoplay; it resumes after a short idle period.
+       ============================================================ */
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const IDLE_MS = 3200;
+    const SPEED = 56; // px per second — slow, cinematic
+
+    function initReel(strip) {
+      const stage = strip.closest('.reel-stage');
+      const status = stage.querySelector('.reel-status');
+      const statusTxt = status.querySelector('.reel-status-txt');
+      const counter = stage.querySelector('.reel-counter');
+      const frameCount = parseInt(strip.dataset.frames, 10) || 1;
+      const originals = Array.from(strip.children);
+
+      let oneSetH = 0;
+      let auto = !REDUCED;
+      let userScrolling = false;
+      let idleTimer = null;
+      let rafId = null;
+      let last = 0;
+      let dragPointer = null;
+
+      function measure() {
+        // Remove clones and re-derive one full set's height
+        strip.querySelectorAll('.frame--clone').forEach(c => c.remove());
+        oneSetH = originals.reduce((sum, f) => sum + f.offsetHeight, 0) +
+                  (originals.length - 1) * parseFloat(getComputedStyle(originals[0]).marginBottom);
+        const viewH = strip.clientHeight;
+        // Duplicate until at least one full set fits beyond the viewport
+        let copies = Math.max(2, Math.ceil((viewH * 1.5) / oneSetH) + 1);
+        for (let i = 1; i < copies; i++) {
+          originals.forEach(f => {
+            const c = f.cloneNode(true);
+            c.classList.add('frame--clone');
+            strip.appendChild(c);
+          });
+        }
+      }
+
+      function setStatus(manual) {
+        userScrolling = manual;
+        status.classList.toggle('is-manual', manual);
+        if (REDUCED) {
+          statusTxt.textContent = 'Manual — reduced motion';
+        } else {
+          statusTxt.textContent = manual ? 'You are scrolling' : 'Autoplay';
+        }
+      }
+
+      function updateCounter() {
+        const pos = strip.scrollTop % oneSetH;
+        const idx = Math.min(frameCount, Math.max(1, Math.floor(pos / (oneSetH / frameCount)) + 1));
+        counter.textContent = `FRAME ${String(idx).padStart(2, '0')} / ${String(frameCount).padStart(2, '0')}`;
+      }
+
+      function pauseForUser() {
+        setStatus(true);
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          setStatus(false);
+          last = performance.now();
+        }, IDLE_MS);
+      }
+
+      function tick(now) {
+        if (auto && !userScrolling) {
+          const dt = Math.min(0.05, (now - last) / 1000 || 0);
+          last = now;
+          strip.scrollTop += SPEED * dt;
+          if (strip.scrollTop >= oneSetH) strip.scrollTop -= oneSetH;
+          updateCounter();
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      // Scroll events now only refresh the HUD counter. Pause logic lives in
+      // the real input listeners above. A synthetic layout scroll can't pause us.
+      strip.addEventListener('scroll', updateCounter, { passive: true });
+
+      // User input → pause autoplay. We listen to real input events here
+      // (wheel / touch / pointer), NOT to 'scroll': browsers fire synthetic
+      // scroll events during layout settle / anchor restoration which would
+      // be misread as user interaction.
+      let lastUserInput = 0;
+      function markUser() {
+        lastUserInput = performance.now();
+        last = performance.now(); // reset dt so no speed burst after input
+      }
+      strip.addEventListener('wheel', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('touchstart', () => { markUser(); pauseForUser(); }, { passive: true });
+      strip.addEventListener('pointerdown', () => { if (!dragPointer) { markUser(); } pauseForUser(); }, { passive: true });
+      strip.addEventListener('keydown', () => { markUser(); pauseForUser(); }, { passive: true });
+
+      // Drag-to-scrub (mouse)
+      let dragging = false, lastY = 0;
+      strip.addEventListener('pointerdown', e => {
+        if (e.pointerType !== 'mouse') return;
+        dragPointer = e.pointerId;
+        dragging = true;
+        lastY = e.clientY;
+        strip.classList.add('is-dragging');
+        try { strip.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      strip.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dy = e.clientY - lastY;
+        lastY = e.clientY;
+        last = performance.now();
+        strip.scrollTop -= dy;
+        updateCounter();
+      });
+      ['pointerup', 'pointercancel'].forEach(ev =>
+        strip.addEventListener(ev, () => {
+          dragging = false;
+          dragPointer = null;
+          strip.classList.remove('is-dragging');
+        })
+      );
+
+      // Native wheel/touch scroll on the strip is enough — overscroll-behavior
+      // prevents the page from hijacking the gesture at the strip's limit.
+
+      measure();
+      updateCounter();
+      setStatus(false);
+      if (auto) {
+        last = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      window.addEventListener('resize', () => {
+        measure();
+        updateCounter();
+      });
+    }
+
+    document.querySelectorAll('.reel-strip').forEach(initReel);
   </script>
 <style>
   .site-footer {
