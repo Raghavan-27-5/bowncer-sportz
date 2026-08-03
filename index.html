@@ -37,125 +37,46 @@
   }
 
   /* ═══════════════════════════════════════════════
-     INTRO CINEMATIC — Ball → Bat Impact → Logo
+     BRANDED PRE-SPLASH — logo badge, ≤600ms
      ═══════════════════════════════════════════════ */
-  #intro-cinematic {
+  #pre-splash {
     position:fixed; inset:0;
     z-index:10000;
-    background:var(--void);
+    background:
+      radial-gradient(ellipse at 50% 38%, rgba(226,56,10,0.14) 0%, transparent 62%),
+      var(--void);
     display:flex; align-items:center; justify-content:center;
-    animation: introOut 0.4s linear 3.5s forwards;
+    animation: preSplashOut 0.28s cubic-bezier(.16,1,.3,1) 0.32s forwards;
   }
-  @keyframes introOut {
-    to { opacity:0; pointer-events:none; visibility:hidden; }
+  @keyframes preSplashOut {
+    to { opacity:0; visibility:hidden; pointer-events:none; }
   }
-
-  .c-ball {
-    position:absolute;
-    width:16px; height:16px;
-    background:#fff;
+  .pre-logo {
+    position:relative;
+    width:clamp(96px, 20vw, 148px);
+    aspect-ratio:1;
     border-radius:50%;
-    top:50%; left:110%;
-    box-shadow: 0 0 24px 12px #fff, 0 0 80px 30px var(--ember-glow);
-    animation: cBallSequence 3.5s linear forwards;
-    opacity:0;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow: 0 0 44px -8px rgba(224,56,10,0.6);
+    animation: preLogoPop 0.28s cubic-bezier(.16,1,.3,1) both;
   }
-  @keyframes cBallSequence {
-    0%   { left:110vw; top:50vh; opacity:1; transform:translate(-50%,-50%) rotate(0deg) scaleX(8); }
-    15%  { left:15vw; top:50vh; opacity:1; transform:translate(-50%,-50%) rotate(0deg) scaleX(1); }
-    17%  { left:15vw; top:50vh; opacity:1; transform:translate(-50%,-50%) scale(2.5); }
-    19%  { left:15vw; top:50vh; opacity:1; transform:translate(-50%,-50%) rotate(-35deg) scaleX(5); }
-    33%  { left:80vw; top:15vh; opacity:1; transform:translate(-50%,-50%) rotate(-35deg) scaleX(1); }
-    35%  { left:80vw; top:15vh; opacity:1; transform:translate(-50%,-50%) scale(2); }
-    37%  { left:80vw; top:15vh; opacity:1; transform:translate(-50%,-50%) rotate(155deg) scaleX(6); }
-    47%  { left:var(--logo-x, 50vw); top:var(--logo-y, 40vh); opacity:1; transform:translate(-50%,-50%) rotate(155deg) scaleX(1); }
-    49%  { left:var(--logo-x, 50vw); top:var(--logo-y, 40vh); opacity:0; }
-    100% { opacity:0; }
+  @keyframes preLogoPop {
+    from { opacity:0; transform:scale(0.72) rotate(-6deg); filter:brightness(1.8); }
+    to   { opacity:1; transform:scale(1) rotate(0deg); filter:brightness(1); }
   }
-
-  .c-batsman-wrap {
-    position:absolute;
-    left:15vw; top:50vh;
-    transform:translate(-50%,-50%);
-    width:220px; height:280px;
-    opacity:0;
-    animation: cBatsmanShow 3.5s linear forwards;
-  }
-  @keyframes cBatsmanShow {
-    0%, 10% { opacity:0; }
-    15% { opacity:0.95; }
-    25% { opacity:0.95; }
-    35%, 100% { opacity:0; }
-  }
-  .c-batsman-wrap svg {
-    width:100%; height:100%;
-    filter: drop-shadow(0 0 40px rgba(255,86,34,0.8));
-  }
-
-  .c-impact {
-    position:absolute;
-    left:15vw; top:50vh;
-    width:30px; height:30px;
+  .pre-logo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pre-ring {
+    position:absolute; inset:-8px;
     border-radius:50%;
-    background:#fff;
-    transform:translate(-50%,-50%) scale(0);
-    opacity:0;
-    animation: cImpact 3.5s linear forwards;
+    border:1px solid rgba(224,56,10,0.55);
+    animation: preRing 0.55s cubic-bezier(.16,1,.3,1) both;
   }
-  @keyframes cImpact {
-    0%, 14% { opacity:0; transform:translate(-50%,-50%) scale(0); }
-    16% { opacity:1; transform:translate(-50%,-50%) scale(3); }
-    20% { opacity:0.9; transform:translate(-50%,-50%) scale(20); }
-    30%, 100% { opacity:0; transform:translate(-50%,-50%) scale(40); }
+  @keyframes preRing {
+    0%   { opacity:0; transform:scale(0.78); }
+    35%  { opacity:1; }
+    100% { opacity:0; transform:scale(1.75); }
   }
-
-  .c-shockwave {
-    position:absolute;
-    left:var(--logo-x, 50vw); top:var(--logo-y, 40vh);
-    width:100px; height:100px;
-    border-radius:50%;
-    border:4px solid rgba(255,86,34,1);
-    box-shadow: 0 0 50px 20px rgba(255,86,34,0.8), inset 0 0 50px 20px rgba(255,86,34,0.8);
-    transform:translate(-50%,-50%) scale(0);
-    opacity:0;
-    animation: cShockwave 3.5s linear forwards;
-  }
-  @keyframes cShockwave {
-    0%, 45% { opacity:0; transform:translate(-50%,-50%) scale(0); border-width:4px; }
-    47% { opacity:1; transform:translate(-50%,-50%) scale(1); }
-    65% { opacity:0; transform:translate(-50%,-50%) scale(25); border-width:0px; }
-    100% { opacity:0; }
-  }
-
-  .c-spark {
-    position:absolute;
-    left:var(--logo-x, 50vw); top:var(--logo-y, 40vh);
-    width:10px; height:10px;
-    border-radius:50%;
-    background:var(--ember-glow);
-    box-shadow: 0 0 16px 8px var(--ember);
-    opacity:0;
-    animation: cSpark 3.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-  }
-  @keyframes cSpark {
-    0%, 45% { opacity:0; transform:translate(-50%,-50%) scale(2); }
-    47% { opacity:1; transform:translate(-50%,-50%) scale(2); }
-    75%, 100% { opacity:0; transform:translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(0); }
-  }
-
-  .c-whiteout {
-    position:absolute; inset:0;
-    background:#fff;
-    opacity:0;
-    animation: cWhiteout 3.5s linear forwards;
-  }
-  @keyframes cWhiteout {
-    0%, 50% { opacity:0; }
-    55% { opacity:1; }
-    85%, 100% { opacity:0; }
-  }
-
-  /* ═══════════════════════════════════════════════
      GRAIN OVERLAY (site-wide)
      ═══════════════════════════════════════════════ */
   .grain{
@@ -173,7 +94,7 @@
     padding:24px 40px;
     display:flex; justify-content:space-between; align-items:center;
     opacity: 0;
-    animation: fadeUp 1s ease 2.5s forwards;
+    animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.75s forwards;
   }
   .nav-logo {
     font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); text-decoration:none;
@@ -223,7 +144,7 @@
     margin-bottom: clamp(32px, 5vh, 48px);
     opacity: 0;
     display: flex; align-items: center; justify-content: center;
-    animation: logoReveal 1.5s cubic-bezier(0.16,1,0.3,1) 2.0s forwards;
+    animation: logoReveal 1.5s cubic-bezier(.16,1,.3,1) 0.6s forwards;
   }
   .logo-anchor::before {
     content: '';
@@ -269,7 +190,7 @@
     width: 100%;
     margin-bottom: clamp(32px, 5vh, 48px);
     opacity: 0;
-    animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 2.5s forwards;
+    animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 0.9s forwards;
   }
 
   .academy-name-glow, .academy-mantra-glow {
@@ -315,14 +236,14 @@
     color:var(--ink-dim);
     margin-bottom: clamp(32px,5vh,56px);
     opacity:0;
-    animation:fadeUp .8s ease 2.9s forwards;
+    animation:fadeUp .8s cubic-bezier(.16,1,.3,1) 1.35s forwards;
   }
   .academy-sub strong { color:var(--ink); font-weight:600; }
 
   .academy-cta {
     display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
     opacity:0;
-    animation:fadeUp .8s ease 3.1s forwards;
+    animation:fadeUp .8s cubic-bezier(.16,1,.3,1) 1.5s forwards;
   }
 
   .btn {
@@ -369,7 +290,7 @@
     background:rgba(7,8,10,0.5);
     backdrop-filter:blur(12px);
     opacity:0;
-    animation:fadeUp .8s ease 2.7s forwards;
+    animation:fadeUp .8s cubic-bezier(.16,1,.3,1) 1.1s forwards;
   }
   .stat-cell {
     padding: clamp(18px,2.5vw,36px) clamp(20px,4vw,60px);
@@ -540,7 +461,7 @@
     margin-top: clamp(40px, 6vh, 80px);
     margin-bottom: clamp(16px, 3vh, 32px);
     opacity: 0;
-    animation: fadeUp 1s ease 2.8s forwards;
+    animation: fadeUp 1s cubic-bezier(.16,1,.3,1) 1.2s forwards;
   }
   .marquee {
     overflow: hidden;
@@ -624,7 +545,7 @@
       animation-iteration-count:1 !important;
       transition-duration:0.01ms !important;
     }
-    #intro-cinematic { display:none; }
+    #pre-splash { display:none; }
     .nav { opacity:1; animation:none; }
   }
 
@@ -844,45 +765,13 @@
   </div>
 </nav>
 
-<!-- ═══ INTRO CINEMATIC ═══ -->
-<div id="intro-cinematic">
-  <!-- Fast ball -->
-  <div class="c-ball"></div>
-
-  <!-- Batsman silhouette at impact point -->
-  <div class="c-batsman-wrap">
-    <svg viewBox="0 0 90 130" fill="none">
-      <g stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round">
-        <circle cx="42" cy="14" r="9" fill="var(--ink)"/>
-        <line x1="42" y1="23" x2="38" y2="62"/>
-        <line x1="38" y1="62" x2="20" y2="118"/>
-        <line x1="38" y1="62" x2="60" y2="114"/>
-        <line x1="40" y1="32" x2="65" y2="24"/>
-        <line x1="65" y1="24" x2="88" y2="6" stroke="var(--gold)" stroke-width="4.5"/>
-      </g>
-    </svg>
+<!-- ═══ BRANDED PRE-SPLASH (≤600ms) ═══ -->
+<div id="pre-splash" aria-hidden="true">
+  <div class="pre-logo">
+    <span class="pre-ring"></span>
+    <img src="assets/logo.webp" alt="" decoding="async">
   </div>
-
-  <!-- Impact flash -->
-  <div class="c-impact"></div>
-
-  <!-- Shockwave ring -->
-  <div class="c-shockwave"></div>
-
-  <!-- Sparks -->
-  <div class="c-spark" style="--sx:-140px;--sy:-90px"></div>
-  <div class="c-spark" style="--sx:120px;--sy:-120px"></div>
-  <div class="c-spark" style="--sx:-90px;--sy:100px"></div>
-  <div class="c-spark" style="--sx:160px;--sy:70px"></div>
-  <div class="c-spark" style="--sx:-170px;--sy:-30px"></div>
-  <div class="c-spark" style="--sx:70px;--sy:-150px"></div>
-  <div class="c-spark" style="--sx:-50px;--sy:130px"></div>
-  <div class="c-spark" style="--sx:130px;--sy:110px"></div>
-  <div class="c-spark" style="--sx:-130px;--sy:60px"></div>
-  <div class="c-spark" style="--sx:40px;--sy:150px"></div>
-
-  <!-- White-out transition -->
-  <div class="c-whiteout"></div>
+</div>
 </div>
 
 
@@ -1464,40 +1353,12 @@
   </section>
 
 <script>
-  // Skip intro if already seen this session
-  if (sessionStorage.getItem('intro-seen')) {
-    var intro = document.getElementById('intro-cinematic');
-    if (intro) intro.style.display = 'none';
+  // Pre-splash: show once per session; reduced-motion users get none (CSS).
+  if (sessionStorage.getItem('presplash-seen')) {
+    var splash = document.getElementById('pre-splash');
+    if (splash) splash.style.display = 'none';
   } else {
-    sessionStorage.setItem('intro-seen', '1');
-    
-    // Sync Logo coordinates for exact explosion center
-    var logoEl = document.querySelector('.logo-anchor');
-    var introEl = document.getElementById('intro-cinematic');
-    if(logoEl && introEl) {
-      var rect = logoEl.getBoundingClientRect();
-      var cx = rect.left + rect.width / 2;
-      var cy = rect.top + rect.height / 2;
-      introEl.style.setProperty('--logo-x', cx + 'px');
-      introEl.style.setProperty('--logo-y', cy + 'px');
-    }
-
-    // Screen shake on first impact (Bat Hit at 0.17 * 3500 = 595ms)
-    setTimeout(function() {
-      document.documentElement.style.transform = 'translate(-8px, 5px)';
-      setTimeout(function(){ document.documentElement.style.transform = 'translate(6px, -6px)'; }, 40);
-      setTimeout(function(){ document.documentElement.style.transform = 'translate(-4px, 3px)'; }, 80);
-      setTimeout(function(){ document.documentElement.style.transform = ''; }, 120);
-    }, 595);
-
-    // Massive screen shake on second impact (Logo Smash at 0.47 * 3500 = 1645ms)
-    setTimeout(function() {
-      document.documentElement.style.transform = 'translate(14px, -10px)';
-      setTimeout(function(){ document.documentElement.style.transform = 'translate(-12px, 10px)'; }, 40);
-      setTimeout(function(){ document.documentElement.style.transform = 'translate(8px, -6px)'; }, 80);
-      setTimeout(function(){ document.documentElement.style.transform = 'translate(-6px, 4px)'; }, 120);
-      setTimeout(function(){ document.documentElement.style.transform = ''; }, 160);
-    }, 1645);
+    sessionStorage.setItem('presplash-seen', '1');
   }
 
   // Scroll reveal for founder section
