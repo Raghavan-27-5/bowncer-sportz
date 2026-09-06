@@ -271,6 +271,100 @@
     background: var(--ember-glow);
   }
 
+  /* ── Two-lane system: Films (editorial rows) + Shorts (card grid) ── */
+  .lane-nav { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .lane-pill {
+    font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 12px;
+    letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+    color: var(--ink); border: 1px solid var(--line); padding: 16px 32px; border-radius: 999px;
+    transition: transform 0.35s cubic-bezier(.16,1,.3,1), border-color 0.3s, background 0.3s, box-shadow 0.35s;
+  }
+  .lane-pill:hover { transform: translateY(-3px); border-color: var(--ink-dim); background: rgba(244,241,234,0.04); }
+  .lane-pill.is-active { border-color: rgba(201,161,90,0.5); color: var(--gold); box-shadow: 0 0 32px -8px rgba(201,161,90,0.6); }
+  .lane-pill.is-active:hover { border-color: var(--gold); }
+
+  .lane-head { scroll-margin-top: 24px; max-width: 720px; }
+  .lane-head + .video-block { margin-top: 8px; }
+  .lane-eyebrow {
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); font-weight: 700; margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .lane-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+  .lane-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 88px);
+    line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .lane-title span {
+    background: linear-gradient(92deg, var(--ink) 20%, var(--ember-glow) 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lane-sub { font-size: 15px; line-height: 1.6; color: var(--ink-dim); max-width: 58ch; }
+  #shorts.lane-head {
+    margin-top: 24px; padding-top: 64px;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  #shorts.lane-head::before {
+    content: ''; position: absolute; top: -1px; left: 0; width: 120px; height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* Shorts card grid */
+  .shorts-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  .short-card {
+    display: block; text-decoration: none;
+    border: 1px solid var(--line); background: var(--void-2);
+    border-radius: 10px; overflow: hidden;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1),
+      border-color 0.4s ease, box-shadow 0.5s ease;
+  }
+  .short-card.is-visible { opacity: 1; transform: translateY(0); }
+  .short-card:hover {
+    transform: translateY(-4px); border-color: rgba(201,161,90,0.55);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.6), 0 0 40px -10px rgba(226,56,10,0.55);
+  }
+  .short-thumb { aspect-ratio: 4 / 3; overflow: hidden; position: relative; background: #000; }
+  .short-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(.16,1,.3,1); }
+  .short-card:hover .short-thumb img { transform: scale(1.07); }
+  .short-thumb .play-overlay svg { width: 46px; height: 46px; }
+  .short-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 3;
+    background: rgba(7,8,10,0.82); backdrop-filter: blur(6px);
+    color: var(--gold); border: 1px solid rgba(201,161,90,0.5);
+    font-size: 10px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 6px 10px; border-radius: 2px;
+  }
+  .short-body { padding: 18px 18px 20px; }
+  .short-tag { font-size: 10px; color: var(--gold); letter-spacing: 0.16em; font-weight: 800; text-transform: uppercase; }
+  .short-title {
+    font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--ink); margin: 8px 0 8px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .short-desc {
+    font-size: 13px; line-height: 1.6; color: var(--ink-dim);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .video-embed:focus-visible, .short-card:focus-visible, .lane-pill:focus-visible {
+    outline: 2px solid var(--gold); outline-offset: 3px;
+  }
+  .lane-head {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .lane-head.is-visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 720px) {
+    .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .short-body { padding: 12px 12px 14px; }
+    .short-title { font-size: 13px; }
+    .short-desc { font-size: 12px; -webkit-line-clamp: 2; }
+    .lane-pill { padding: 14px 24px; }
+  }
+
   /* Responsive */
   @media (max-width: 900px) {
     .video-block, .video-block.reverse {
@@ -323,6 +417,25 @@
     .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
   }
 </style>
+
+<style>
+  [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  [data-reveal].is-visible{opacity:1;transform:translateY(0)}
+  .stagger>[data-reveal]:nth-child(2){transition-delay:.12s}
+  .stagger>[data-reveal]:nth-child(3){transition-delay:.24s}
+  .stagger>[data-reveal]:nth-child(4){transition-delay:.36s}
+  .stagger>[data-reveal]:nth-child(5){transition-delay:.48s}
+  .stagger>[data-reveal]:nth-child(6){transition-delay:.6s}
+  .stagger>[data-reveal]:nth-child(7){transition-delay:.72s}
+  .stagger>[data-reveal]:nth-child(8){transition-delay:.84s}
+  @media (prefers-reduced-motion: reduce){[data-reveal]{opacity:1!important;transform:none!important;transition:none!important}}
+
+  .video-embed{transition:box-shadow .5s cubic-bezier(.16,1,.3,1),border-color .5s ease,transform .45s cubic-bezier(.16,1,.3,1)}
+  .video-embed:hover{transform:translateY(-4px);border-color:rgba(201,161,90,.45);box-shadow:0 24px 50px rgba(0,0,0,.65),0 0 44px -10px rgba(226,56,10,.6)}
+  .video-embed:hover img{transform:scale(1.07)}
+  @media (prefers-reduced-motion: reduce){.video-block,.subscribe-cta-box,.lane-head,.short-card{opacity:1!important;transform:none!important;transition:none!important}}
+</style>
+
 </head>
 <body>
 
@@ -360,10 +473,119 @@
 
 <section class="media-grid">
 
-  <!-- Video 1 -->
+  <!-- ═══ LANE NAV ═══ -->
+  <nav class="lane-nav" aria-label="Browse videos">
+    <a href="#films" class="lane-pill is-active">The Films</a>
+    <a href="#shorts" class="lane-pill">The Shorts</a>
+  </nav>
+
+  <!-- ═══ LANE 1 — LONG FILMS ═══ -->
+  <div class="lane-head" id="films">
+    <span class="lane-eyebrow">Long-form breakdowns</span>
+    <h2 class="lane-title">THE <span>FILMS.</span></h2>
+    <p class="lane-sub">Deep dives from the academy floor — mindset, formats, comebacks, mentorship and the global game. Newest first.</p>
+  </div>
+
+  <!-- F1 · WXbYu1mm0r4 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=WXbYu1mm0r4" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/WXbYu1mm0r4/hqdefault.jpg" alt="Desire and Deserving: The Inner Battle" loading="lazy" decoding="async">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">MENTAL CONDITIONING</span>
+      <h2 class="v-title">Desire and Deserving: The Inner Battle</h2>
+      <p class="v-desc">Desire gives you the dream — discipline, consistency and character make you deserving of it. Internal vs external pressure, the parents' comparison trap, and why practice must feel like a match.</p>
+      <a href="https://www.youtube.com/watch?v=WXbYu1mm0r4" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- F2 · wNQqNUkY6Ow -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=wNQqNUkY6Ow" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/wNQqNUkY6Ow/hqdefault.jpg" alt="Red, White &amp; Pink Ball — Part 1" loading="lazy" decoding="async">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">TACTICAL INSIGHTS</span>
+      <h2 class="v-title">Red, White &amp; Pink Ball — Part 1</h2>
+      <p class="v-desc">How matches, innings and players transformed cricket — and what each format demands from batters and bowlers, plus the greats who defined every era.</p>
+      <a href="https://www.youtube.com/watch?v=wNQqNUkY6Ow" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- F3 · wPZgcuJULp0 -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=wPZgcuJULp0" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/wPZgcuJULp0/hqdefault.jpg" alt="From Rejection to Redemption" loading="lazy" decoding="async">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">RESILIENCE</span>
+      <h2 class="v-title">From Rejection to Redemption</h2>
+      <p class="v-desc">Performing yet overlooked — including the TNPL selection heartbreak. Stay match-ready, fix weaknesses, prepare like the call comes tomorrow. Selection may be out of your hands. Preparation never is.</p>
+      <a href="https://www.youtube.com/watch?v=wPZgcuJULp0" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- F4 · wLgGh6djpFY -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=wLgGh6djpFY" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/wLgGh6djpFY/hqdefault.jpg" alt="The Ultimate Guru–Shishya Journey" loading="lazy" decoding="async">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">MENTORSHIP</span>
+      <h2 class="v-title">The Ultimate Guru–Shishya Journey</h2>
+      <p class="v-desc">Trust, respect, discipline, humility — through Rajinikanth, Bharathiraja and Bhagyaraj, how a true Guru builds character and leadership, not just technique.</p>
+      <a href="https://www.youtube.com/watch?v=wLgGh6djpFY" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- F5 · QgvmfUPW7XM -->
+  <article class="video-block">
+    <a href="https://www.youtube.com/watch?v=QgvmfUPW7XM" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/QgvmfUPW7XM/hqdefault.jpg" alt="Cricket in USA: Knowns &amp; Unknowns" loading="lazy" decoding="async">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">GLOBAL GAME</span>
+      <h2 class="v-title">Cricket in USA: Knowns &amp; Unknowns</h2>
+      <p class="v-desc">T20 World Cup hosting, the MLC rise, franchise money — and beneath the headlines, the real development story of coaching standards and pathways.</p>
+      <a href="https://www.youtube.com/watch?v=QgvmfUPW7XM" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- F6 · fRdye7TK150 -->
+  <article class="video-block reverse">
+    <a href="https://www.youtube.com/watch?v=fRdye7TK150" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/fRdye7TK150/hqdefault.jpg" alt="Traditional vs Corporate — Part 2" loading="lazy" decoding="async">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    <div class="video-info">
+      <span class="v-tag">COACHING ANALYSIS</span>
+      <h2 class="v-title">Traditional vs Corporate — Part 2</h2>
+      <p class="v-desc">The untold facts both systems won't advertise — long-term mentorship and match awareness on one side, opportunity engines on the other.</p>
+      <a href="https://www.youtube.com/watch?v=fRdye7TK150" target="_blank" rel="noopener" class="btn">Watch Video</a>
+    </div>
+  </article>
+
+  <!-- F7 · sKQWImv-CIs -->
   <article class="video-block">
     <a href="https://www.youtube.com/watch?v=sKQWImv-CIs" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/sKQWImv-CIs/hqdefault.jpg" alt="Pro Mentality & Match Preparation">
+      <img src="https://img.youtube.com/vi/sKQWImv-CIs/hqdefault.jpg" alt="Pro Mentality & Match Preparation" loading="lazy" decoding="async">
       <div class="play-overlay">
         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </div>
@@ -376,10 +598,10 @@
     </div>
   </article>
 
-  <!-- Video 2 -->
+  <!-- F8 · waZmKyal9Oo -->
   <article class="video-block reverse">
     <a href="https://www.youtube.com/watch?v=waZmKyal9Oo" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/waZmKyal9Oo/hqdefault.jpg" alt="Attitude & Aggression on the Field">
+      <img src="https://img.youtube.com/vi/waZmKyal9Oo/hqdefault.jpg" alt="Attitude & Aggression on the Field" loading="lazy" decoding="async">
       <div class="play-overlay">
         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </div>
@@ -392,26 +614,10 @@
     </div>
   </article>
 
-  <!-- Video 3 -->
+  <!-- F9 · DFsPU92Pxy0 -->
   <article class="video-block">
-    <a href="https://www.youtube.com/watch?v=PycqanlzFAA" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/PycqanlzFAA/hqdefault.jpg" alt="X-Factor In Cricket">
-      <div class="play-overlay">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-    </a>
-    <div class="video-info">
-      <span class="v-tag">TACTICAL INSIGHTS</span>
-      <h2 class="v-title">X-Factor In Cricket</h2>
-      <p class="v-desc">A deep dive into the constant evolution of the game. Discover the unique elements and game-changing skills that define modern cricket.</p>
-      <a href="https://www.youtube.com/watch?v=PycqanlzFAA" target="_blank" rel="noopener" class="btn">Watch Video</a>
-    </div>
-  </article>
-
-  <!-- Video 4 -->
-  <article class="video-block reverse">
     <a href="https://www.youtube.com/watch?v=DFsPU92Pxy0" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/DFsPU92Pxy0/hqdefault.jpg" alt="RCB's Winning Formula">
+      <img src="https://img.youtube.com/vi/DFsPU92Pxy0/hqdefault.jpg" alt="RCB's Winning Formula" loading="lazy" decoding="async">
       <div class="play-overlay">
         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </div>
@@ -424,101 +630,520 @@
     </div>
   </article>
 
-  <!-- Video 5 -->
-  <article class="video-block">
-    <a href="https://www.youtube.com/watch?v=IqtVJuOwYkE" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/IqtVJuOwYkE/hqdefault.jpg" alt="Grit Defines Attitude">
-      <div class="play-overlay">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-    </a>
-    <div class="video-info">
-      <span class="v-tag">MENTAL CONDITIONING</span>
-      <h2 class="v-title">Grit Defines Attitude</h2>
-      <p class="v-desc">Exploring the mindset required to win tough situations. Discover why mental toughness is the ultimate differentiator at the highest level.</p>
-      <a href="https://www.youtube.com/watch?v=IqtVJuOwYkE" target="_blank" rel="noopener" class="btn">Watch Video</a>
-    </div>
-  </article>
-
-  <!-- Video 6 -->
+  <!-- F10 · PycqanlzFAA -->
   <article class="video-block reverse">
-    <a href="https://www.youtube.com/watch?v=zgvMQN0uZpM" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/zgvMQN0uZpM/hqdefault.jpg" alt="The Art of Captaincy">
-      <div class="play-overlay">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-    </a>
-    <div class="video-info">
-      <span class="v-tag">LEADERSHIP</span>
-      <h2 class="v-title">The Art of Captaincy</h2>
-      <p class="v-desc">Selfless leadership that wins championships. An analysis of how effective captains manage pressure, dictate play, and inspire their squad.</p>
-      <a href="https://www.youtube.com/watch?v=zgvMQN0uZpM" target="_blank" rel="noopener" class="btn">Watch Video</a>
-    </div>
-  </article>
-
-  <!-- Video 7 -->
-  <article class="video-block">
-    <a href="https://www.youtube.com/watch?v=WPzWCgsYblc" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/WPzWCgsYblc/hqdefault.jpg" alt="RCB's Biggest Tactical Revolution">
+    <a href="https://www.youtube.com/watch?v=PycqanlzFAA" target="_blank" rel="noopener" class="video-embed">
+      <img src="https://img.youtube.com/vi/PycqanlzFAA/hqdefault.jpg" alt="X-Factor In Cricket" loading="lazy" decoding="async">
       <div class="play-overlay">
         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </div>
     </a>
     <div class="video-info">
       <span class="v-tag">TACTICAL INSIGHTS</span>
-      <h2 class="v-title">Tactical Revolution</h2>
-      <p class="v-desc">Breaking down the bold tactical shifts and data-driven strategies that transformed a franchise's fortunes in the IPL.</p>
-      <a href="https://www.youtube.com/watch?v=WPzWCgsYblc" target="_blank" rel="noopener" class="btn">Watch Video</a>
+      <h2 class="v-title">X-Factor In Cricket</h2>
+      <p class="v-desc">A deep dive into the constant evolution of the game. Discover the unique elements and game-changing skills that define modern cricket.</p>
+      <a href="https://www.youtube.com/watch?v=PycqanlzFAA" target="_blank" rel="noopener" class="btn">Watch Video</a>
     </div>
   </article>
 
-  <!-- Video 8 -->
-  <article class="video-block reverse">
-    <a href="https://www.youtube.com/watch?v=51h53t5GDxk" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/51h53t5GDxk/hqdefault.jpg" alt="Dhoni's Team-Building Masterclass">
-      <div class="play-overlay">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-    </a>
-    <div class="video-info">
-      <span class="v-tag">STRATEGY</span>
-      <h2 class="v-title">Team-Building Masterclass</h2>
-      <p class="v-desc">Lessons in squad construction, role clarity, and unwavering trust from one of the greatest cricketing minds in history.</p>
-      <a href="https://www.youtube.com/watch?v=51h53t5GDxk" target="_blank" rel="noopener" class="btn">Watch Video</a>
-    </div>
-  </article>
+  <!-- ═══ LANE 2 — SHORTS ═══ -->
+  <div class="lane-head" id="shorts">
+    <span class="lane-eyebrow">Vertical cuts</span>
+    <h2 class="lane-title">THE <span>SHORTS.</span></h2>
+    <p class="lane-sub">Sixty-second fire — one idea per cut, from the month's big themes to the all-time reels. Tap any card to play.</p>
+  </div>
 
-  <!-- Video 9 -->
-  <article class="video-block">
-    <a href="https://www.youtube.com/watch?v=URYSqG5hWWk" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/URYSqG5hWWk/hqdefault.jpg" alt="MS Dhoni: The Face of IPL">
-      <div class="play-overlay">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  <div class="shorts-grid">
+  <!-- S1 · Egp5Yl83rK4 -->
+    <a href="https://www.youtube.com/shorts/Egp5Yl83rK4" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/Egp5Yl83rK4/hqdefault.jpg" alt="The Right Mindset for Cricket Parents" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">PARENTS</span>
+        <h3 class="short-title">The Right Mindset for Cricket Parents</h3>
+        <p class="short-desc">When a child starts cricket, the goal is learning, not immediate results — give time, patience and encouragement before expecting outcomes.</p>
       </div>
     </a>
-    <div class="video-info">
-      <span class="v-tag">LEADERSHIP</span>
-      <h2 class="v-title">The Face of the Franchise</h2>
-      <p class="v-desc">Examining the impact of a talismanic leader on a franchise's identity, brand value, and sustained on-field success.</p>
-      <a href="https://www.youtube.com/watch?v=URYSqG5hWWk" target="_blank" rel="noopener" class="btn">Watch Video</a>
-    </div>
-  </article>
 
-  <!-- Video 10 -->
-  <article class="video-block reverse">
-    <a href="https://www.youtube.com/watch?v=TqIpuMhXLXk" target="_blank" rel="noopener" class="video-embed">
-      <img src="https://img.youtube.com/vi/TqIpuMhXLXk/hqdefault.jpg" alt="The Truth About Kids' Fitness">
-      <div class="play-overlay">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  <!-- S2 · w4c0VdBx7oE -->
+    <a href="https://www.youtube.com/shorts/w4c0VdBx7oE" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/w4c0VdBx7oE/hqdefault.jpg" alt="Desiring vs Deserving Parents" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">PARENTS</span>
+        <h3 class="short-title">Desiring vs Deserving Parents</h3>
+        <p class="short-desc">Desiring parents chase results and question the coach; deserving parents trust the process and wait for the right results to come.</p>
       </div>
     </a>
-    <div class="video-info">
-      <span class="v-tag">JUNIOR ATHLETICS</span>
-      <h2 class="v-title">Truth About Youth Fitness</h2>
-      <p class="v-desc">Addressing the common misconceptions in junior physical conditioning. How to properly build foundational strength and prevent early injuries.</p>
-      <a href="https://www.youtube.com/watch?v=TqIpuMhXLXk" target="_blank" rel="noopener" class="btn">Watch Video</a>
-    </div>
-  </article>
+
+  <!-- S3 · r8hjV2nvMEQ -->
+    <a href="https://www.youtube.com/shorts/r8hjV2nvMEQ" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/r8hjV2nvMEQ/hqdefault.jpg" alt="The Deserving Player's Approach" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">The Deserving Player's Approach</h3>
+        <p class="short-desc">Excellence is not wished for — it is built through disciplined practice and focus on the process, even when nobody is watching.</p>
+      </div>
+    </a>
+
+  <!-- S4 · QxN9NDqBf_Q -->
+    <a href="https://www.youtube.com/shorts/QxN9NDqBf_Q" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/QxN9NDqBf_Q/hqdefault.jpg" alt="The Need to Prove Yourself" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">The Need to Prove Yourself</h3>
+        <p class="short-desc">Thinking 'I need to prove myself' shifts focus from improvement to impression — prepare before match day instead of performing for it.</p>
+      </div>
+    </a>
+
+  <!-- S5 · ZpS6Ca7qs4Y -->
+    <a href="https://www.youtube.com/shorts/ZpS6Ca7qs4Y" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/ZpS6Ca7qs4Y/hqdefault.jpg" alt="Desire and Deserving" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">Desire and Deserving</h3>
+        <p class="short-desc">Thoughts like 'I must perform' or 'what if I fail' shape confidence and decisions — shift from desiring the result to deserving it.</p>
+      </div>
+    </a>
+
+  <!-- S6 · K7tjAMMkBAI -->
+    <a href="https://www.youtube.com/shorts/K7tjAMMkBAI" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/K7tjAMMkBAI/hqdefault.jpg" alt="Process Over Pressure" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">Process Over Pressure</h3>
+        <p class="short-desc">A deserving player ignores outside noise and expectations, completes his task every day, and lets performance speak for itself.</p>
+      </div>
+    </a>
+
+  <!-- S7 · mNqbHz7TEe0 -->
+    <a href="https://www.youtube.com/shorts/mNqbHz7TEe0" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/mNqbHz7TEe0/hqdefault.jpg" alt="Desire vs Deserving" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">Desire vs Deserving</h3>
+        <p class="short-desc">Desire creates pressure around outcomes; deserving comes from trusting the process, improving daily, and letting preparation speak.</p>
+      </div>
+    </a>
+
+  <!-- S8 · O9HAiZ4goYI -->
+    <a href="https://www.youtube.com/shorts/O9HAiZ4goYI" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/O9HAiZ4goYI/hqdefault.jpg" alt="White Ball Cricket 101" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">FORMATS</span>
+        <h3 class="short-title">White Ball Cricket 101</h3>
+        <p class="short-desc">Why batters don't attack every ball and bowlers keep changing pace, length and fields — the tactical battle inside white-ball phases.</p>
+      </div>
+    </a>
+
+  <!-- S9 · 6cQ66RcDqFw -->
+    <a href="https://www.youtube.com/shorts/6cQ66RcDqFw" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/6cQ66RcDqFw/hqdefault.jpg" alt="From Ranji to India" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">FORMATS</span>
+        <h3 class="short-title">From Ranji to India</h3>
+        <p class="short-desc">The IPL isn't the only door to India — red-ball cricket and the Ranji Trophy still test technique, temperament and patience like nothing else.</p>
+      </div>
+    </a>
+
+  <!-- S10 · Lz37YWo4ieA -->
+    <a href="https://www.youtube.com/shorts/Lz37YWo4ieA" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/Lz37YWo4ieA/hqdefault.jpg" alt="Red-Ball Batting's Mental Game" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">FORMATS</span>
+        <h3 class="short-title">Red-Ball Batting's Mental Game</h3>
+        <p class="short-desc">Surviving the opening phase, respecting a good spell, handling sledging and pressure — the mindset needed to stay at the crease and build big.</p>
+      </div>
+    </a>
+
+  <!-- S11 · J2pDBDF9zxU -->
+    <a href="https://www.youtube.com/shorts/J2pDBDF9zxU" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/J2pDBDF9zxU/hqdefault.jpg" alt="The Art of Red-Ball Cricket" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">FORMATS</span>
+        <h3 class="short-title">The Art of Red-Ball Cricket</h3>
+        <p class="short-desc">A solid batting approach and smart risk for batters; movement, accuracy and consistency for bowlers — what it takes to excel in the longest format.</p>
+      </div>
+    </a>
+
+  <!-- S12 · Eh5S-SzghaA -->
+    <a href="https://www.youtube.com/shorts/Eh5S-SzghaA" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/Eh5S-SzghaA/hqdefault.jpg" alt="IPL Selection: Old vs Modern" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">IPL</span>
+        <h3 class="short-title">IPL Selection: Old vs Modern</h3>
+        <p class="short-desc">From traditional scouting and trials to data, analytics and performance tracking — how identifying IPL talent actually works today.</p>
+      </div>
+    </a>
+
+  <!-- S13 · 82pXaiqQB3Q -->
+    <a href="https://www.youtube.com/shorts/82pXaiqQB3Q" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/82pXaiqQB3Q/hqdefault.jpg" alt="The Bowler's Battle" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">BOWLING</span>
+        <h3 class="short-title">The Bowler's Battle</h3>
+        <p class="short-desc">Handling pressure and criticism when nothing works, staying disciplined and hungry when everything does — a bowler's complete mindset.</p>
+      </div>
+    </a>
+
+  <!-- S14 · s1RDBN8ADDE -->
+    <a href="https://www.youtube.com/shorts/s1RDBN8ADDE" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/s1RDBN8ADDE/hqdefault.jpg" alt="How M. Vijay Earned India" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">PATHWAY</span>
+        <h3 class="short-title">How M. Vijay Earned India</h3>
+        <p class="short-desc">The relentless journey through domestic cricket behind earning the India cap.</p>
+      </div>
+    </a>
+
+  <!-- S15 · s9zubskhFX0 -->
+    <a href="https://www.youtube.com/shorts/s9zubskhFX0" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/s9zubskhFX0/hqdefault.jpg" alt="Different Formats, Different Mindsets" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">Different Formats, Different Mindsets</h3>
+        <p class="short-desc">What happened to cricket's mental toughness as formats keep demanding different mindsets.</p>
+      </div>
+    </a>
+
+  <!-- S16 · zA1DrbTlJno -->
+    <a href="https://www.youtube.com/shorts/zA1DrbTlJno" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/zA1DrbTlJno/hqdefault.jpg" alt="Why State Leagues Changed the Game" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">TNPL</span>
+        <h3 class="short-title">Why State Leagues Changed the Game</h3>
+        <p class="short-desc">Why state leagues changed the game this year — and why every TNPL trail keeps following the IPL.</p>
+      </div>
+    </a>
+
+  <!-- S17 · zpJX9MBaDi8 -->
+    <a href="https://www.youtube.com/shorts/zpJX9MBaDi8" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/zpJX9MBaDi8/hqdefault.jpg" alt="The Coach's Voice in Your Mind" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">The Coach's Voice in Your Mind</h3>
+        <p class="short-desc">When a coach's guidance becomes a player's own instinct on the field.</p>
+      </div>
+    </a>
+
+  <!-- S18 · LkyCUIRfdtU -->
+    <a href="https://www.youtube.com/shorts/LkyCUIRfdtU" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/LkyCUIRfdtU/hqdefault.jpg" alt="When a Guru Owns His Shishya" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">GURU</span>
+        <h3 class="short-title">When a Guru Owns His Shishya</h3>
+        <p class="short-desc">When a Guru truly owns his Shishya, success multiplies — the power of real guidance.</p>
+      </div>
+    </a>
+
+  <!-- S19 · JOSNnw_HYJ4 -->
+    <a href="https://www.youtube.com/shorts/JOSNnw_HYJ4" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/JOSNnw_HYJ4/hqdefault.jpg" alt="Guru Dakshina &amp; Guru Sevai" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">GURU</span>
+        <h3 class="short-title">Guru Dakshina &amp; Guru Sevai</h3>
+        <p class="short-desc">The true meaning of serving your Guru — Guru Dakshina and Guru Sevai, explained.</p>
+      </div>
+    </a>
+
+  <!-- S20 · Za1Z9hiqLI4 -->
+    <a href="https://www.youtube.com/shorts/Za1Z9hiqLI4" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/Za1Z9hiqLI4/hqdefault.jpg" alt="Guru–Shishya: A Bond Above All" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">GURU</span>
+        <h3 class="short-title">Guru–Shishya: A Bond Above All</h3>
+        <p class="short-desc">A bond above all bonds — the legacy of true guidance between Guru and Shishya.</p>
+      </div>
+    </a>
+
+  <!-- S21 · IQe-9IpLH6c -->
+    <a href="https://www.youtube.com/shorts/IQe-9IpLH6c" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/IQe-9IpLH6c/hqdefault.jpg" alt="A Better Future for Young Cricketers" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">PATHWAY</span>
+        <h3 class="short-title">A Better Future for Young Cricketers</h3>
+        <p class="short-desc">A new path opening up for young players — a better future for the next generation of cricketers.</p>
+      </div>
+    </a>
+
+  <!-- S22 · VDlmXbjlvNk -->
+    <a href="https://www.youtube.com/shorts/VDlmXbjlvNk" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/VDlmXbjlvNk/hqdefault.jpg" alt="USA Cricket's Biggest Challenge" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">USA</span>
+        <h3 class="short-title">USA Cricket's Biggest Challenge</h3>
+        <p class="short-desc">How new grounds are changing the game — the biggest challenge facing USA cricket.</p>
+      </div>
+    </a>
+
+  <!-- S23 · 2Mf7n9CYDLM -->
+    <a href="https://www.youtube.com/shorts/2Mf7n9CYDLM" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/2Mf7n9CYDLM/hqdefault.jpg" alt="The Goal Behind Every Coaching System" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">COACHING</span>
+        <h3 class="short-title">The Goal Behind Every Coaching System</h3>
+        <p class="short-desc">The goal behind every coaching system — and the way each handles a player's mistakes.</p>
+      </div>
+    </a>
+
+  <!-- S24 · uSB8kfRU2So -->
+    <a href="https://www.youtube.com/shorts/uSB8kfRU2So" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/uSB8kfRU2So/hqdefault.jpg" alt="The Foundation of USA Cricket" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">USA</span>
+        <h3 class="short-title">The Foundation of USA Cricket</h3>
+        <p class="short-desc">How premium grounds were built — the foundation USA cricket stands on.</p>
+      </div>
+    </a>
+
+  <!-- S25 · oSjYPyA4aUI -->
+    <a href="https://www.youtube.com/shorts/oSjYPyA4aUI" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/oSjYPyA4aUI/hqdefault.jpg" alt="Your Game Comes First" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">Your Game Comes First</h3>
+        <p class="short-desc">Your game comes first — what to keep from every coach, and what to learn.</p>
+      </div>
+    </a>
+
+  <!-- S26 · bE4kraHzhRE -->
+    <a href="https://www.youtube.com/shorts/bE4kraHzhRE" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/bE4kraHzhRE/hqdefault.jpg" alt="Beyond Cricket Skills" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">Beyond Cricket Skills</h3>
+        <p class="short-desc">Beyond cricket skills — the unknown trait every cricketer needs.</p>
+      </div>
+    </a>
+
+  <!-- S27 · l-oT9VIYfNU -->
+    <a href="https://www.youtube.com/shorts/l-oT9VIYfNU" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/l-oT9VIYfNU/hqdefault.jpg" alt="The Traditional Coaching Framework" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">COACHING</span>
+        <h3 class="short-title">The Traditional Coaching Framework</h3>
+        <p class="short-desc">The complete player-development model — the traditional coaching framework.</p>
+      </div>
+    </a>
+
+  <!-- S28 · QJGnOleAuFo -->
+    <a href="https://www.youtube.com/shorts/QJGnOleAuFo" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/QJGnOleAuFo/hqdefault.jpg" alt="The Coaching Philosophy, Explained" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">COACHING</span>
+        <h3 class="short-title">The Coaching Philosophy, Explained</h3>
+        <p class="short-desc">What traditional and corporate academies actually focus on — the coaching philosophy, explained.</p>
+      </div>
+    </a>
+
+  <!-- S29 · Rzw6wlqFXRs -->
+    <a href="https://www.youtube.com/shorts/Rzw6wlqFXRs" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/Rzw6wlqFXRs/hqdefault.jpg" alt="The Truth About Player Freedom" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MINDSET</span>
+        <h3 class="short-title">The Truth About Player Freedom</h3>
+        <p class="short-desc">Player locking and rotation — the truth about freedom inside a squad.</p>
+      </div>
+    </a>
+
+  <!-- S30 · WPzWCgsYblc -->
+    <a href="https://www.youtube.com/shorts/WPzWCgsYblc" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/WPzWCgsYblc/hqdefault.jpg" alt="RCB's Biggest Tactical Revolution" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">TACTICAL INSIGHTS</span>
+        <h3 class="short-title">Tactical Revolution</h3>
+        <p class="short-desc">Breaking down the bold tactical shifts and data-driven strategies that transformed a franchise's fortunes in the IPL.</p>
+      </div>
+    </a>
+
+  <!-- S31 · IqtVJuOwYkE -->
+    <a href="https://www.youtube.com/shorts/IqtVJuOwYkE" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/IqtVJuOwYkE/hqdefault.jpg" alt="Grit Defines Attitude" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">MENTAL CONDITIONING</span>
+        <h3 class="short-title">Grit Defines Attitude</h3>
+        <p class="short-desc">Exploring the mindset required to win tough situations. Discover why mental toughness is the ultimate differentiator at the highest level.</p>
+      </div>
+    </a>
+
+  <!-- S32 · TqIpuMhXLXk -->
+    <a href="https://www.youtube.com/shorts/TqIpuMhXLXk" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/TqIpuMhXLXk/hqdefault.jpg" alt="The Truth About Kids' Fitness" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">JUNIOR ATHLETICS</span>
+        <h3 class="short-title">Truth About Youth Fitness</h3>
+        <p class="short-desc">Addressing the common misconceptions in junior physical conditioning. How to properly build foundational strength and prevent early injuries.</p>
+      </div>
+    </a>
+
+  <!-- S33 · zgvMQN0uZpM -->
+    <a href="https://www.youtube.com/shorts/zgvMQN0uZpM" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/zgvMQN0uZpM/hqdefault.jpg" alt="The Art of Captaincy" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">LEADERSHIP</span>
+        <h3 class="short-title">The Art of Captaincy</h3>
+        <p class="short-desc">Selfless leadership that wins championships. An analysis of how effective captains manage pressure, dictate play, and inspire their squad.</p>
+      </div>
+    </a>
+
+  <!-- S34 · URYSqG5hWWk -->
+    <a href="https://www.youtube.com/shorts/URYSqG5hWWk" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/URYSqG5hWWk/hqdefault.jpg" alt="MS Dhoni: The Face of IPL" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">LEADERSHIP</span>
+        <h3 class="short-title">The Face of the Franchise</h3>
+        <p class="short-desc">Examining the impact of a talismanic leader on a franchise's identity, brand value, and sustained on-field success.</p>
+      </div>
+    </a>
+
+  <!-- S35 · 51h53t5GDxk -->
+    <a href="https://www.youtube.com/shorts/51h53t5GDxk" target="_blank" rel="noopener" class="short-card">
+      <div class="short-thumb">
+        <img src="https://img.youtube.com/vi/51h53t5GDxk/hqdefault.jpg" alt="Dhoni's Team-Building Masterclass" loading="lazy" decoding="async">
+        <span class="short-badge">Short</span>
+        <div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="short-body">
+        <span class="short-tag">STRATEGY</span>
+        <h3 class="short-title">Team-Building Masterclass</h3>
+        <p class="short-desc">Lessons in squad construction, role clarity, and unwavering trust from one of the greatest cricketing minds in history.</p>
+      </div>
+    </a>
+  </div>
 
   <!-- Subscribe CTA Box -->
   <div class="subscribe-cta-box" style="margin-top: 80px; padding: 60px 40px; background: var(--void-2); border: 1px solid var(--line); border-radius: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden;">
@@ -553,19 +1178,52 @@
 <script>
   // Scroll Reveal Observer
   document.addEventListener('DOMContentLoaded', function() {
-    var blocks = document.querySelectorAll('.video-block, .subscribe-cta-box');
+    var blocks = document.querySelectorAll('.video-block, .subscribe-cta-box, .lane-head, .short-card, .shorts-grid');
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            obs.unobserve(entry.target);
+            var el = entry.target;
+            el.classList.add('is-visible');
+            if (el.classList.contains('shorts-grid')) {
+              var cards = el.querySelectorAll('.short-card');
+              for (var i = 0; i < cards.length; i++) {
+                cards[i].style.transitionDelay = Math.min(i * 60, 480) + 'ms';
+                cards[i].classList.add('is-visible');
+                obs.unobserve(cards[i]);
+              }
+            }
+            obs.unobserve(el);
           }
         });
       }, { threshold: 0.15 });
       blocks.forEach(function(el) { obs.observe(el); });
     } else {
       blocks.forEach(function(el) { el.classList.add('is-visible'); });
+    }
+
+    // Lane scroll-spy: glow the pill for the lane currently in view
+    var lanePills = document.querySelectorAll('.lane-nav .lane-pill');
+    function setActiveLane(id) {
+      lanePills.forEach(function(p) {
+        p.classList.toggle('is-active', p.getAttribute('href') === '#' + id);
+      });
+    }
+    lanePills.forEach(function(p) {
+      p.addEventListener('click', function() {
+        setActiveLane(p.getAttribute('href').slice(1));
+      });
+    });
+    if ('IntersectionObserver' in window) {
+      var spy = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) setActiveLane(entry.target.id);
+        });
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      ['films', 'shorts'].forEach(function(id) {
+        var lane = document.getElementById(id);
+        if (lane) spy.observe(lane);
+      });
     }
 
     // Mobile Menu
@@ -856,5 +1514,9 @@
     })();
   </script>
 </footer>
+
+<script>
+  (function(){var e=document.querySelectorAll('[data-reveal]');if(!e.length)return;var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;function s(x){x.classList.add('is-visible')}if(r||!('IntersectionObserver' in window)){for(var i=0;i<e.length;i++)s(e[i]);return}var io=new IntersectionObserver(function(n){for(var i=0;i<n.length;i++)if(n[i].isIntersecting){s(n[i].target);io.unobserve(n[i].target)}},{threshold:.12,rootMargin:'0px 0px -6% 0px'});for(var i=0;i<e.length;i++)io.observe(e[i])})();
+</script>
 </body>
 </html>
