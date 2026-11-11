@@ -984,10 +984,12 @@
   }
 </style>
 <script>
-  document.querySelector('.career-toggle').addEventListener('click', function () {
-    const paused = this.closest('.career-gallery').classList.toggle('is-paused');
-    this.setAttribute('aria-pressed', String(paused));
-    this.textContent = paused ? 'Play photos' : 'Pause photos';
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.career-toggle').forEach(button => button.addEventListener('click', function () {
+      const paused = this.closest('.career-gallery, .manifesto-section').classList.toggle('is-paused');
+      this.setAttribute('aria-pressed', String(paused));
+      this.textContent = paused ? 'Play photos' : 'Pause photos';
+    }));
   });
 </script>
 
@@ -998,16 +1000,20 @@
      ═══════════════════════════════════════════ -->
 <style>
 /* MANIFESTO */
-.manifesto-section { padding:clamp(32px,4vw,64px) clamp(24px,4vw,64px); background:linear-gradient(180deg,var(--void),var(--void-2),var(--void)); position:relative; }
-.manifesto-scroll-container { display:flex; align-items:center; justify-content:center; padding:clamp(32px,4vw,64px) 0; }
-.manifesto-photos { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; max-width:1440px; margin:0 auto; }
-.manifesto-photos--bottom { grid-template-columns:repeat(5,minmax(0,1fr)); }
-.manifesto-photos figure { margin:0; min-width:0; background:var(--void); }
+.manifesto-section { padding:clamp(32px,3vw,48px) clamp(24px,4vw,64px); background:linear-gradient(180deg,var(--void),var(--void-2),var(--void)); position:relative; }
+.manifesto-scroll-container { display:flex; align-items:center; justify-content:center; padding:clamp(32px,3vw,48px) 0; }
+.manifesto-controls { display:flex; justify-content:flex-end; max-width:1440px; margin:0 auto 16px; }
+.manifesto-photos { overflow-x:auto; max-width:1440px; margin:0 auto; scrollbar-width:thin; scrollbar-color:var(--gold) var(--void-2); }
+.moments-track { display:flex; width:max-content; }
+.moments-group { display:flex; gap:16px; padding-right:16px; }
+.manifesto-photos figure { flex:0 0 clamp(240px,24vw,348px); margin:0; min-width:0; background:var(--void); }
+.manifesto-photos--bottom figure { flex-basis:clamp(220px,18vw,280px); }
+@media(prefers-reduced-motion:reduce) { .moments-group[aria-hidden="true"], .manifesto-controls { display:none; } }
 .manifesto-photos img { display:block; width:100%; height:clamp(200px,23vw,320px); object-fit:contain; }
 .manifesto-photos:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
 @media(max-width:720px) {
-  .manifesto-photos { display:flex; overflow-x:auto; gap:12px; scroll-snap-type:x proximity; scrollbar-width:thin; scrollbar-color:var(--gold) var(--void-2); }
-  .manifesto-photos figure { flex:0 0 72vw; scroll-snap-align:start; }
+  .moments-group { gap:12px; padding-right:12px; }
+  .manifesto-photos figure { flex-basis:72vw; }
   .manifesto-photos img { height:300px; }
 }
 .manifesto-text {
@@ -1228,7 +1234,12 @@
 
 <!-- SECTION 3 — MANIFESTO -->
 <section class="manifesto-section" aria-label="Our coaching philosophy">
-  <div class="manifesto-photos" tabindex="0" role="region" aria-label="Cricket career moments">
+  <div class="manifesto-controls">
+    <button class="career-toggle" type="button" aria-pressed="false" aria-controls="moments-top moments-bottom">Pause photos</button>
+  </div>
+  <div class="manifesto-photos" id="moments-top" tabindex="0" role="region" aria-label="Cricket career moments">
+    <div class="moments-track">
+      <div class="moments-group">
       <figure>
         <img src="assets/moments/michael-bevan.webp" width="900" height="1200" alt="Cricket career photograph with a fellow player" loading="lazy" decoding="async">
       </figure>
@@ -1241,6 +1252,22 @@
       <figure>
         <img src="assets/moments/ccl-trophy.webp" width="720" height="960" alt="Celebrity Cricket League players holding a trophy" loading="lazy" decoding="async">
       </figure>
+      </div>
+      <div class="moments-group" aria-hidden="true">
+      <figure>
+        <img src="assets/moments/michael-bevan.webp" width="900" height="1200" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/rcb-training.webp" width="400" height="600" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/presentation.webp" width="1000" height="666" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/ccl-trophy.webp" width="720" height="960" alt="" loading="lazy" decoding="async">
+      </figure>
+      </div>
+    </div>
   </div>
   <div class="manifesto-scroll-container">
     <div class="manifesto-text">
@@ -1248,7 +1275,9 @@
       <span class="manifesto-highlight">We engineer athletes.</span>
     </div>
   </div>
-  <div class="manifesto-photos manifesto-photos--bottom" tabindex="0" role="region" aria-label="More cricket career moments">
+  <div class="manifesto-photos manifesto-photos--bottom" id="moments-bottom" tabindex="0" role="region" aria-label="More cricket career moments">
+    <div class="moments-track">
+      <div class="moments-group">
       <figure>
         <img src="assets/moments/rcb-fielding.webp" width="1000" height="665" alt="Fielding practice in Royal Challengers Bangalore kit" loading="lazy" decoding="async">
       </figure>
@@ -1264,6 +1293,25 @@
       <figure>
         <img src="assets/moments/dhoni.webp" width="710" height="772" alt="A photograph together with a player in Chennai Super Kings kit" loading="lazy" decoding="async">
       </figure>
+      </div>
+      <div class="moments-group" aria-hidden="true">
+      <figure>
+        <img src="assets/moments/rcb-fielding.webp" width="1000" height="665" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/dav-whatmore.webp" width="674" height="1200" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/sachin.webp" width="1000" height="1000" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/ab-de-villiers.webp" width="900" height="1200" alt="" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/dhoni.webp" width="710" height="772" alt="" loading="lazy" decoding="async">
+      </figure>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1576,9 +1624,9 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.roster-strip, .career-strip').forEach(rosterStrip => {
+      document.querySelectorAll('.roster-strip, .career-strip, .manifesto-photos').forEach(rosterStrip => {
       const rosterTrack = rosterStrip.firstElementChild;
-      const gallery = rosterStrip.closest('.career-gallery');
+      const gallery = rosterStrip.closest('.career-gallery, .manifesto-section');
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       
       let isScrolling = true;
