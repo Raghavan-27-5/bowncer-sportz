@@ -891,9 +891,106 @@
       <span class="eyebrow-name">S. Thiyagarajan</span>
       <span class="eyebrow-title">Ex-IPL (RCB) Player & Founder of Bowncer Sportz Cricket Academy</span>
     </div>
-    <img src="assets/thiyagarajan_hero_graded.webp" alt="S. Thiyagarajan, Founder and Director of Bowncer Sportz Cricket Academy" decoding="async" loading="lazy">
+    <img src="assets/thiyagarajan_rcb_899w.webp" srcset="assets/thiyagarajan_rcb_480w.webp 480w, assets/thiyagarajan_rcb_899w.webp 899w" sizes="(max-width: 720px) 100vw, 50vw" width="899" height="1280" alt="S. Thiyagarajan in his Royal Challengers Bangalore jersey" decoding="async" loading="lazy">
   </div>
 </section>
+
+<!-- CAREER GALLERY -->
+<section class="career-gallery" aria-labelledby="career-title">
+  <div class="career-header">
+    <h2 id="career-title">A journey through cricket.</h2>
+    <button class="career-toggle" type="button" aria-pressed="false" aria-controls="career-strip">Pause photos</button>
+  </div>
+  <div class="career-strip" id="career-strip" tabindex="0" role="region" aria-label="Career photographs: IPL, TNPL, USA and CCL">
+    <div class="career-track">
+      <div class="career-group">
+        <figure class="career-card">
+          <img src="assets/career/ipl-rcb-team.webp" width="1503" height="1000" alt="Royal Challengers Bangalore team photograph" loading="lazy" decoding="async">
+          <figcaption>IPL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/tnpl-team.webp" width="950" height="633" alt="Team photograph supplied for the TNPL gallery" loading="lazy" decoding="async">
+          <figcaption>TNPL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/usa-team.webp" width="1280" height="960" alt="NCCA cricket team in the USA" loading="lazy" decoding="async">
+          <figcaption>USA</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-1.webp" width="720" height="431" alt="Celebrity Cricket League team photograph 1" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-2.webp" width="1280" height="960" alt="Celebrity Cricket League team photograph 2" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-3.webp" width="960" height="420" alt="Celebrity Cricket League team photograph 3" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-4.webp" width="368" height="320" alt="Celebrity Cricket League team photograph 4" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+      </div>
+      <div class="career-group" aria-hidden="true">
+        <figure class="career-card">
+          <img src="assets/career/ipl-rcb-team.webp" width="1503" height="1000" alt="" loading="lazy" decoding="async">
+          <figcaption>IPL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/tnpl-team.webp" width="950" height="633" alt="" loading="lazy" decoding="async">
+          <figcaption>TNPL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/usa-team.webp" width="1280" height="960" alt="" loading="lazy" decoding="async">
+          <figcaption>USA</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-1.webp" width="720" height="431" alt="" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-2.webp" width="1280" height="960" alt="" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-3.webp" width="960" height="420" alt="" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/ccl-4.webp" width="368" height="320" alt="" loading="lazy" decoding="async">
+          <figcaption>CCL</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .career-gallery { padding:clamp(48px,6vw,88px) 0; border-top:1px solid var(--line); background:linear-gradient(180deg,var(--void-2),var(--void)); }
+  .career-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px; padding:0 clamp(24px,5vw,80px); margin-bottom:32px; }
+  .career-header h2 { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(40px,5vw,72px); line-height:1; }
+  .career-toggle { min-height:44px; padding:10px 18px; border:1px solid var(--gold); background:transparent; color:var(--ink); font:inherit; cursor:pointer; }
+  .career-toggle:hover { background:var(--void-2); }
+  .career-toggle:focus-visible, .career-strip:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
+  .career-strip { overflow-x:auto; scrollbar-width:thin; scrollbar-color:var(--gold) var(--void-2); }
+  .career-track { display:flex; width:max-content; }
+  .career-group { display:flex; gap:24px; padding-right:24px; }
+  .career-card { flex:0 0 auto; width:clamp(300px,82vw,640px); margin:0; }
+  .career-card img { display:block; width:100%; height:clamp(240px,52vw,400px); object-fit:contain; background:var(--void-2); }
+  .career-card figcaption { padding:16px 0; font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:.04em; color:var(--gold); }
+  @media (prefers-reduced-motion:reduce) {
+    .career-group[aria-hidden="true"], .career-toggle { display:none; }
+  }
+</style>
+<script>
+  document.querySelector('.career-toggle').addEventListener('click', function () {
+    const paused = this.closest('.career-gallery').classList.toggle('is-paused');
+    this.setAttribute('aria-pressed', String(paused));
+    this.textContent = paused ? 'Play photos' : 'Pause photos';
+  });
+</script>
+
 
 
 <!-- ═══════════════════════════════════════════
@@ -1440,9 +1537,10 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const rosterStrip = document.querySelector('.roster-strip');
-      if (!rosterStrip) return;
-      const rosterTrack = document.querySelector('.roster-track');
+      document.querySelectorAll('.roster-strip, .career-strip').forEach(rosterStrip => {
+      const rosterTrack = rosterStrip.firstElementChild;
+      const gallery = rosterStrip.closest('.career-gallery');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       
       let isScrolling = true;
       let scrollSpeed = 1.5;
@@ -1459,7 +1557,8 @@
       }, {passive: true});
 
       function autoScroll() {
-        if (isScrolling) {
+        const paused = gallery && gallery.classList.contains('is-paused');
+        if (isScrolling && !paused && !reducedMotion.matches && !rosterStrip.contains(document.activeElement)) {
           rosterStrip.scrollLeft += scrollSpeed;
           // Duplicate track detection for infinite scroll
           if (rosterStrip.scrollLeft >= rosterTrack.scrollWidth / 2) {
@@ -1469,6 +1568,7 @@
         requestAnimationFrame(autoScroll);
       }
       requestAnimationFrame(autoScroll);
+      });
     });
   </script>
 
