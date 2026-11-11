@@ -901,7 +901,7 @@
     <h2 id="career-title">A journey through cricket.</h2>
     <button class="career-toggle" type="button" aria-pressed="false" aria-controls="career-strip">Pause photos</button>
   </div>
-  <div class="career-strip" id="career-strip" tabindex="0" role="region" aria-label="Career photographs: IPL, TNPL, USA and CCL">
+  <div class="career-strip" id="career-strip" tabindex="0" role="region" aria-label="Career photographs: IPL, TNPL, ICC Level 1, BCCI Level 1, USA and CCL">
     <div class="career-track">
       <div class="career-group">
         <figure class="career-card">
@@ -909,27 +909,27 @@
           <figcaption>IPL</figcaption>
         </figure>
         <figure class="career-card">
+          <img src="assets/career/ipl-rcb-2.webp" width="960" height="1008" alt="Royal Challengers Bangalore players together in their team jerseys" loading="lazy" decoding="async">
+          <figcaption>IPL</figcaption>
+        </figure>
+        <figure class="career-card">
           <img src="assets/career/tnpl-team.webp" width="950" height="633" alt="Team photograph supplied for the TNPL gallery" loading="lazy" decoding="async">
           <figcaption>TNPL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/icc-level-1.webp" width="1280" height="960" alt="Coaching group at the ICC Academy in Dubai" loading="lazy" decoding="async">
+          <figcaption>ICC Level 1 Coach</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/bcci-level-1.webp" width="1800" height="1200" alt="BCCI Centre of Excellence Level 1 coaches course group photograph" loading="lazy" decoding="async">
+          <figcaption>BCCI Level 1 Coach</figcaption>
         </figure>
         <figure class="career-card">
           <img src="assets/career/usa-team.webp" width="1280" height="960" alt="NCCA cricket team in the USA" loading="lazy" decoding="async">
           <figcaption>USA</figcaption>
         </figure>
         <figure class="career-card">
-          <img src="assets/career/ccl-1.webp" width="720" height="431" alt="Celebrity Cricket League team photograph 1" loading="lazy" decoding="async">
-          <figcaption>CCL</figcaption>
-        </figure>
-        <figure class="career-card">
-          <img src="assets/career/ccl-2.webp" width="1280" height="960" alt="Celebrity Cricket League team photograph 2" loading="lazy" decoding="async">
-          <figcaption>CCL</figcaption>
-        </figure>
-        <figure class="career-card">
-          <img src="assets/career/ccl-3.webp" width="960" height="420" alt="Celebrity Cricket League team photograph 3" loading="lazy" decoding="async">
-          <figcaption>CCL</figcaption>
-        </figure>
-        <figure class="career-card">
-          <img src="assets/career/ccl-4.webp" width="368" height="320" alt="Celebrity Cricket League team photograph 4" loading="lazy" decoding="async">
+          <img src="assets/career/ccl-2.webp" width="1280" height="960" alt="Celebrity Cricket League team photograph" loading="lazy" decoding="async">
           <figcaption>CCL</figcaption>
         </figure>
       </div>
@@ -939,27 +939,27 @@
           <figcaption>IPL</figcaption>
         </figure>
         <figure class="career-card">
+          <img src="assets/career/ipl-rcb-2.webp" width="960" height="1008" alt="" loading="lazy" decoding="async">
+          <figcaption>IPL</figcaption>
+        </figure>
+        <figure class="career-card">
           <img src="assets/career/tnpl-team.webp" width="950" height="633" alt="" loading="lazy" decoding="async">
           <figcaption>TNPL</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/icc-level-1.webp" width="1280" height="960" alt="" loading="lazy" decoding="async">
+          <figcaption>ICC Level 1 Coach</figcaption>
+        </figure>
+        <figure class="career-card">
+          <img src="assets/career/bcci-level-1.webp" width="1800" height="1200" alt="" loading="lazy" decoding="async">
+          <figcaption>BCCI Level 1 Coach</figcaption>
         </figure>
         <figure class="career-card">
           <img src="assets/career/usa-team.webp" width="1280" height="960" alt="" loading="lazy" decoding="async">
           <figcaption>USA</figcaption>
         </figure>
         <figure class="career-card">
-          <img src="assets/career/ccl-1.webp" width="720" height="431" alt="" loading="lazy" decoding="async">
-          <figcaption>CCL</figcaption>
-        </figure>
-        <figure class="career-card">
           <img src="assets/career/ccl-2.webp" width="1280" height="960" alt="" loading="lazy" decoding="async">
-          <figcaption>CCL</figcaption>
-        </figure>
-        <figure class="career-card">
-          <img src="assets/career/ccl-3.webp" width="960" height="420" alt="" loading="lazy" decoding="async">
-          <figcaption>CCL</figcaption>
-        </figure>
-        <figure class="career-card">
-          <img src="assets/career/ccl-4.webp" width="368" height="320" alt="" loading="lazy" decoding="async">
           <figcaption>CCL</figcaption>
         </figure>
       </div>
@@ -998,9 +998,17 @@
      ═══════════════════════════════════════════ -->
 <style>
 /* MANIFESTO */
-.manifesto-section { height: 150vh; background: var(--void); position: relative; }
-.manifesto-scroll-container {
-  position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;
+.manifesto-section { padding:clamp(32px,4vw,64px) clamp(24px,4vw,64px); background:linear-gradient(180deg,var(--void),var(--void-2),var(--void)); position:relative; }
+.manifesto-scroll-container { display:flex; align-items:center; justify-content:center; padding:clamp(32px,4vw,64px) 0; }
+.manifesto-photos { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; max-width:1440px; margin:0 auto; }
+.manifesto-photos--bottom { grid-template-columns:repeat(5,minmax(0,1fr)); }
+.manifesto-photos figure { margin:0; min-width:0; background:var(--void); }
+.manifesto-photos img { display:block; width:100%; height:clamp(200px,23vw,320px); object-fit:contain; }
+.manifesto-photos:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
+@media(max-width:720px) {
+  .manifesto-photos { display:flex; overflow-x:auto; gap:12px; scroll-snap-type:x proximity; scrollbar-width:thin; scrollbar-color:var(--gold) var(--void-2); }
+  .manifesto-photos figure { flex:0 0 72vw; scroll-snap-align:start; }
+  .manifesto-photos img { height:300px; }
 }
 .manifesto-text {
   font-family: 'Bebas Neue', sans-serif; font-size: 8vw; line-height: 0.9; text-align: center;
@@ -1219,12 +1227,43 @@
 </style>
 
 <!-- SECTION 3 — MANIFESTO -->
-<section class="manifesto-section">
+<section class="manifesto-section" aria-label="Our coaching philosophy">
+  <div class="manifesto-photos" tabindex="0" role="region" aria-label="Cricket career moments">
+      <figure>
+        <img src="assets/moments/michael-bevan.webp" width="900" height="1200" alt="Cricket career photograph with a fellow player" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/rcb-training.webp" width="400" height="600" alt="Royal Challengers Bangalore players during a training session" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/presentation.webp" width="1000" height="666" alt="A presentation with a commemorative award" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/ccl-trophy.webp" width="720" height="960" alt="Celebrity Cricket League players holding a trophy" loading="lazy" decoding="async">
+      </figure>
+  </div>
   <div class="manifesto-scroll-container">
     <div class="manifesto-text">
       We don't just train cricketers.<br>
       <span class="manifesto-highlight">We engineer athletes.</span>
     </div>
+  </div>
+  <div class="manifesto-photos manifesto-photos--bottom" tabindex="0" role="region" aria-label="More cricket career moments">
+      <figure>
+        <img src="assets/moments/rcb-fielding.webp" width="1000" height="665" alt="Fielding practice in Royal Challengers Bangalore kit" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/dav-whatmore.webp" width="674" height="1200" alt="Cricket career photograph with a fellow coach" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/sachin.webp" width="1000" height="1000" alt="A photograph together in Royal Challengers Bangalore and Mumbai Indians jerseys" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/ab-de-villiers.webp" width="900" height="1200" alt="A photograph together away from the cricket field" loading="lazy" decoding="async">
+      </figure>
+      <figure>
+        <img src="assets/moments/dhoni.webp" width="710" height="772" alt="A photograph together with a player in Chennai Super Kings kit" loading="lazy" decoding="async">
+      </figure>
   </div>
 </section>
 
