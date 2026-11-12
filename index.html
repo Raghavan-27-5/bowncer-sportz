@@ -754,7 +754,7 @@
 .video-controls{display:flex;flex-wrap:wrap;gap:8px}.video-controls button{min-height:44px;padding:10px 16px;border:1px solid var(--gold);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 .video-strip{overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--gold) var(--void-2)}.video-track,.video-group{display:flex;width:max-content}.video-group{gap:24px;padding-right:24px}
 .video-card{display:block;flex:0 0 clamp(280px,78vw,440px);width:clamp(280px,78vw,440px);color:var(--ink);text-decoration:none}.video-card h3{font-family:'Bebas Neue',sans-serif;font-size:28px;font-weight:400;line-height:1.1;padding:20px 0;max-width:24ch}
-.home-videos a:focus-visible,.home-videos button:focus-visible,.video-strip:focus-visible{outline:2px solid var(--gold);outline-offset:4px}.home-programs-link{margin-top:48px;text-align:center}
+.home-videos a:focus-visible,.home-videos button:focus-visible,.video-strip:focus-visible{outline:2px solid var(--gold);outline-offset:4px}.home-channel-link{margin-top:48px;text-align:center}.home-channel-link .btn{font-size:14px;padding:20px 40px;border-radius:4px;max-width:100%}
 @media(max-width:720px){.home-videos .video-block,.home-videos .video-block.reverse{grid-template-columns:1fr}.home-videos .reverse .video-embed{order:0}}
 @media(prefers-reduced-motion:reduce){.video-group[aria-hidden="true"],.home-video-gallery .career-toggle{display:none}.home-videos .video-embed img{transition:none}}
 </style>
@@ -1271,6 +1271,7 @@
     <div class="video-info"><h3 class="v-title">Building a Career in Cricket</h3><a class="btn btn--outline" href="https://www.youtube.com/watch?v=Ek7Sx1C9Hlw" target="_blank" rel="noopener">Watch Video</a></div>
   </article>
   </div>
+  <div class="home-channel-link"><a class="btn btn--ember" href="https://www.youtube.com/@bowncersportzcricketacadem9911" target="_blank" rel="noopener">View all videos on YouTube</a></div>
   <div class="home-video-gallery" aria-labelledby="interviews-title">
     <div class="career-header"><h2 id="interviews-title">Conversations beyond the boundary.</h2>
       <div class="video-controls"><button type="button" class="video-prev" aria-label="Previous video" aria-controls="home-video-strip">Previous</button><button class="career-toggle" type="button" aria-pressed="false" aria-controls="home-video-strip">Pause videos</button><button type="button" class="video-next" aria-label="Next video" aria-controls="home-video-strip">Next</button></div>
@@ -1296,7 +1297,6 @@
       </div>
     </div>
   </div>
-  <div class="home-programs-link"><a class="btn btn--ember" href="programs.html#pipeline">Explore Programs</a></div>
 </section>
 
   <!-- USA CRICKET NATIONALS -->
