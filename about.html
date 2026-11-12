@@ -329,7 +329,6 @@
   /* Staggered sticky tops to create the cascading stack effect */
   .hof-card:nth-child(1) { top: 80px; z-index: 1; }
   .hof-card:nth-child(2) { top: 120px; z-index: 2; }
-  .hof-card:nth-child(3) { top: 160px; z-index: 3; }
   
   .hof-card-inner {
     width: 100%; height: 100%;
@@ -346,7 +345,7 @@
   
   .hof-card-inner img {
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     filter: contrast(1.05) saturate(1.1);
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
   }
@@ -354,7 +353,6 @@
   /* Precision framing for specific images */
   .hof-card:nth-child(1) .hof-card-inner img { object-position: center 15%; } /* Preserve head */
   .hof-card:nth-child(2) .hof-card-inner img { object-position: center center; } /* Wide group shot */
-  .hof-card:nth-child(3) .hof-card-inner img { object-position: center 10%; } /* Preserve head */
   
   .hof-card:hover .hof-card-inner::after {
     opacity: 0.4;
@@ -368,10 +366,10 @@
     .hof-card { aspect-ratio: 1 / 1; }
     .hof-card:nth-child(1) { top: 90px; }
     .hof-card:nth-child(2) { top: 110px; }
-    .hof-card:nth-child(3) { top: 130px; }
   }
 
 </style>
+<style>.architect-title .architect-name{white-space:nowrap;color:var(--ink);font-size:clamp(32px,7.7vw,100px)}@media(max-width:768px){.architect-title .architect-name{font-size:clamp(26px,8vw,60px)}}</style>
 </head>
 <body>
 
@@ -402,7 +400,7 @@
     <div class="architect-grid">
       <div class="architect-content">
         <div class="architect-eyebrow">The Architect</div>
-        <h1 class="architect-title">S. Thiyagarajan <span>Founder & Director</span></h1>
+        <h1 class="architect-title"><span class="architect-name">S. Thiyagarajan</span><span>Founder & Director</span></h1>
         <p class="architect-bio">
           Built from the inside out. S. Thiyagarajan brings elite professional playing experience and global coaching pedigree to Bowncer Sportz, ensuring every player receives world-class tactical and technical instruction.
         </p>
@@ -478,21 +476,8 @@
     </div>
     
     <div class="hof-stack-container">
-      <div class="hof-card">
-        <div class="hof-card-inner">
-          <img src="assets/detroit_award_v3_1.webp" alt="USA Hall of Fame Award Ceremony" loading="lazy">
-        </div>
-      </div>
-      <div class="hof-card">
-        <div class="hof-card-inner">
-          <img src="assets/detroit_award_v3_2.webp" alt="USA Hall of Fame Award Presentation" loading="lazy">
-        </div>
-      </div>
-      <div class="hof-card">
-        <div class="hof-card-inner">
-          <img src="assets/detroit_award_v3_3.webp" alt="S. Thiyagarajan with USA Hall of Fame Award" loading="lazy">
-        </div>
-      </div>
+      <div class="hof-card"><div class="hof-card-inner"><img src="assets/detroit_award_v3_3.webp" alt="USA Hall of Fame framed award presentation" loading="lazy" decoding="async"></div></div>
+      <div class="hof-card"><div class="hof-card-inner"><img src="assets/detroit_award_v3_1.webp" alt="S. Thiyagarajan holding the trophy and framed award" loading="lazy" decoding="async"></div></div>
     </div>
   </section>
 
@@ -796,8 +781,6 @@
       <h4>Contact</h4>
       <a href="tel:+919840568137">+91 98405 68137</a>
       <a href="tel:+919840456506">+91 98404 64506</a>
-      <a href="tel:+919445395906">+91 94453 95906</a>
-      <a href="tel:+919428385158">+91 84283 85158</a>
       <a href="mailto:iplcoachthiyagarajan@gmail.com">iplcoachthiyagarajan@gmail.com</a>
       <a href="https://wa.me/919840568137" class="footer-wa" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
     </div>
