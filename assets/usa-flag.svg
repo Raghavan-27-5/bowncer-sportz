@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 1000" role="img" aria-labelledby="title"><title id="title">Flag of the United States of America</title>
+<rect width="1900" height="1000" fill="#ffffff"/>
+<rect y="0.000" width="1900" height="76.923" fill="#b31942"/>
+<rect y="153.846" width="1900" height="76.923" fill="#b31942"/>
+<rect y="307.692" width="1900" height="76.923" fill="#b31942"/>
+<rect y="461.538" width="1900" height="76.923" fill="#b31942"/>
+<rect y="615.385" width="1900" height="76.923" fill="#b31942"/>
+<rect y="769.231" width="1900" height="76.923" fill="#b31942"/>
+<rect y="923.077" width="1900" height="76.923" fill="#b31942"/>
+<rect width="760" height="538.462" fill="#0a3161"/>
+<defs><polygon id="star" points="0.000,-30.800 6.915,-9.518 29.293,-9.518 11.189,3.636 18.104,24.918 0.000,11.765 -18.104,24.918 -11.189,3.636 -29.293,-9.518 -6.915,-9.518" fill="#ffffff"/></defs>
+<use href="#star" transform="translate(63.333 53.846)"/>
+<use href="#star" transform="translate(190.000 53.846)"/>
+<use href="#star" transform="translate(316.667 53.846)"/>
+<use href="#star" transform="translate(443.333 53.846)"/>
+<use href="#star" transform="translate(570.000 53.846)"/>
+<use href="#star" transform="translate(696.667 53.846)"/>
+<use href="#star" transform="translate(126.667 107.692)"/>
+<use href="#star" transform="translate(253.333 107.692)"/>
+<use href="#star" transform="translate(380.000 107.692)"/>
+<use href="#star" transform="translate(506.667 107.692)"/>
+<use href="#star" transform="translate(633.333 107.692)"/>
+<use href="#star" transform="translate(63.333 161.539)"/>
+<use href="#star" transform="translate(190.000 161.539)"/>
+<use href="#star" transform="translate(316.667 161.539)"/>
+<use href="#star" transform="translate(443.333 161.539)"/>
+<use href="#star" transform="translate(570.000 161.539)"/>
+<use href="#star" transform="translate(696.667 161.539)"/>
+<use href="#star" transform="translate(126.667 215.385)"/>
+<use href="#star" transform="translate(253.333 215.385)"/>
+<use href="#star" transform="translate(380.000 215.385)"/>
+<use href="#star" transform="translate(506.667 215.385)"/>
+<use href="#star" transform="translate(633.333 215.385)"/>
+<use href="#star" transform="translate(63.333 269.231)"/>
+<use href="#star" transform="translate(190.000 269.231)"/>
+<use href="#star" transform="translate(316.667 269.231)"/>
+<use href="#star" transform="translate(443.333 269.231)"/>
+<use href="#star" transform="translate(570.000 269.231)"/>
+<use href="#star" transform="translate(696.667 269.231)"/>
+<use href="#star" transform="translate(126.667 323.077)"/>
+<use href="#star" transform="translate(253.333 323.077)"/>
+<use href="#star" transform="translate(380.000 323.077)"/>
+<use href="#star" transform="translate(506.667 323.077)"/>
+<use href="#star" transform="translate(633.333 323.077)"/>
+<use href="#star" transform="translate(63.333 376.923)"/>
+<use href="#star" transform="translate(190.000 376.923)"/>
+<use href="#star" transform="translate(316.667 376.923)"/>
+<use href="#star" transform="translate(443.333 376.923)"/>
+<use href="#star" transform="translate(570.000 376.923)"/>
+<use href="#star" transform="translate(696.667 376.923)"/>
+<use href="#star" transform="translate(126.667 430.770)"/>
+<use href="#star" transform="translate(253.333 430.770)"/>
+<use href="#star" transform="translate(380.000 430.770)"/>
+<use href="#star" transform="translate(506.667 430.770)"/>
+<use href="#star" transform="translate(633.333 430.770)"/>
+<use href="#star" transform="translate(63.333 484.616)"/>
+<use href="#star" transform="translate(190.000 484.616)"/>
+<use href="#star" transform="translate(316.667 484.616)"/>
+<use href="#star" transform="translate(443.333 484.616)"/>
+<use href="#star" transform="translate(570.000 484.616)"/>
+<use href="#star" transform="translate(696.667 484.616)"/>
+</svg>

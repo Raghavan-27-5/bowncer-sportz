@@ -370,6 +370,43 @@
 
 </style>
 <style>.architect-title .architect-name{white-space:nowrap;color:var(--ink);font-size:clamp(32px,7.7vw,100px)}@media(max-width:768px){.architect-title .architect-name{font-size:clamp(32px,11vw,76px)}.architect-title > span:not(.architect-name){font-size:clamp(22px,6vw,44px);margin-top:10px}}</style>
+
+<style>
+  .foundation-section{padding:clamp(64px,7vw,112px) clamp(20px,5vw,80px);background:linear-gradient(180deg,var(--void),var(--void-2))}
+  .foundation-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:1200px;gap:0;border-top:1px solid var(--line)}
+  .foundation-block{min-width:0;padding:clamp(24px,3vw,44px);text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent}
+  .foundation-block:not(:nth-child(3n)){border-right:1px solid var(--line)}
+  .foundation-block .f-num{font-size:clamp(64px,7vw,100px);color:var(--gold);margin-bottom:20px}
+  .foundation-block .f-label{font-size:15px;line-height:1.6;text-transform:none;letter-spacing:0;color:var(--ink)}
+  .foundation-block .f-stars{justify-content:flex-start;gap:5px;margin:12px 0 24px}
+  .foundation-block .f-stars svg{width:28px;height:28px;flex-shrink:0}
+  .foundation-block .f-tags{justify-content:flex-start;margin-top:16px;gap:6px}.foundation-block .f-tags li{font-size:10px;padding:4px 8px}
+  .foundation-block .f-subtext{font-size:12px;line-height:1.5}
+  .hof-stack-section{background:radial-gradient(ellipse at 50% 0%,rgba(201,161,90,.08),transparent 55%),var(--void)}
+  .hof-stack-header{max-width:1000px;margin-bottom:64px}
+  .hof-stack-title{font-size:clamp(48px,8vw,104px);line-height:.95;color:var(--ink);text-wrap:balance}
+  .hof-stack-title span{display:block;margin-top:24px;font-family:'Archivo',sans-serif;font-size:clamp(16px,2vw,24px);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+  .hof-card{border-radius:12px;border-color:var(--line);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .hof-card::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#b31942 0% 33.33%,#ffffff 33.33% 66.66%,#0a3161 66.66%);z-index:2}
+  .hof-card-inner{height:calc(100% - 80px)}
+  .hof-photo-caption{height:80px;display:flex;align-items:center;justify-content:flex-start;flex-direction:row;gap:16px;padding:14px 24px;background:linear-gradient(110deg,var(--void-2),var(--void));border-top:1px solid var(--line)}
+  .hof-us-flag{width:76px;height:40px;object-fit:contain;flex-shrink:0;border:1px solid var(--line)}
+  .hof-photo-caption span{display:block;font-size:10px;line-height:1.4;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  .hof-photo-caption strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:24px;font-weight:400;letter-spacing:.03em;margin-top:4px;color:var(--ink)}
+  .certification-section{padding:clamp(64px,8vw,120px) 5%;border-top:1px solid var(--line);background:linear-gradient(180deg,var(--void-2),var(--void))}
+  .certification-content{max-width:1100px;margin:0 auto}
+  .certification-content h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,72px);font-weight:400;line-height:1;max-width:20ch;margin-bottom:64px;color:var(--ink)}
+  .certification-block+.certification-block{margin-top:80px}
+  .certification-block h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,4vw,48px);font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:12px}
+  .certification-block p{font-size:14px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px}
+  .certification-block img{display:block;width:100%;height:auto;border:1px solid var(--line)}
+  @media(max-width:720px){
+    .foundation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .foundation-block{padding:28px 16px}.foundation-block:not(:nth-child(3n)){border-right:0}.foundation-block:nth-child(odd){border-right:1px solid var(--line)}
+    .foundation-block .f-num{font-size:60px}.foundation-block .f-label{font-size:13px}.foundation-block .f-stars{gap:3px}.foundation-block .f-stars svg{width:19px;height:19px}
+    .hof-photo-caption{padding:12px 16px;gap:12px}.hof-photo-caption strong{font-size:20px}.hof-photo-caption span{font-size:8px}.hof-us-flag{width:65px;height:35px}
+  }
+</style>
 </head>
 <body>
 
@@ -461,23 +498,60 @@
         </ul>
         <div class="f-subtext">Rated by parents & players on Justdial</div>
       </div>
+      <div class="foundation-block">
+        <div class="f-num">300+</div>
+        <div class="f-label">Professional players trained in the USA and other countries</div>
+      </div>
+      <div class="foundation-block">
+        <div class="f-num">500+</div>
+        <div class="f-label">Professional cricketers trained in India</div>
+      </div>
+      <div class="foundation-block">
+        <div class="f-num">35+</div>
+        <div class="f-label">Cricketers who have represented TNPL and other franchise leagues</div>
+      </div>
+      <div class="foundation-block">
+        <div class="f-num">5+</div>
+        <div class="f-label">Players coached in the IPL</div>
+      </div>
     </div>
   </section>
 
 
-  <!-- THE DETROIT RECOGNITION (STACK) -->
+  <!-- USA HALL OF FAME AWARD -->
   <section class="hof-stack-section">
     <div class="hof-stack-header">
-      <div class="hof-stack-eyebrow">USA Hall of Fame Award // Michigan</div>
-      <h2 class="hof-stack-title">The Detroit Recognition</h2>
+      <h2 class="hof-stack-title">USA Hall of Fame Award <span>// Michigan</span></h2>
       <p class="hof-stack-desc">
         An honor reserved for the game's finest architects. Recognized on a global stage, S. Thiyagarajan was officially inducted into the USA Hall of Fame in Detroit—cementing a legacy forged by uncompromising standards and an elite coaching pedigree that transcends borders.
       </p>
     </div>
     
     <div class="hof-stack-container">
-      <div class="hof-card"><div class="hof-card-inner"><img src="assets/detroit_award_v3_3.webp" alt="USA Hall of Fame framed award presentation" loading="lazy" decoding="async"></div></div>
-      <div class="hof-card"><div class="hof-card-inner"><img src="assets/detroit_award_v3_1.webp" alt="S. Thiyagarajan holding the trophy and framed award" loading="lazy" decoding="async"></div></div>
+      <div class="hof-card">
+        <div class="hof-card-inner"><img src="assets/detroit_award_v3_3.webp" alt="USA Hall of Fame framed award presentation" loading="lazy" decoding="async"></div>
+        <div class="hof-photo-caption"><img class="hof-us-flag" src="assets/usa-flag.svg" width="95" height="50" alt="Flag of the United States" loading="lazy" decoding="async"><div><span>USA Hall of Fame Award</span><strong>Michigan, United States</strong></div></div>
+      </div>
+      <div class="hof-card">
+        <div class="hof-card-inner"><img src="assets/detroit_award_v3_1.webp" alt="S. Thiyagarajan holding the trophy and framed award" loading="lazy" decoding="async"></div>
+        <div class="hof-photo-caption"><img class="hof-us-flag" src="assets/usa-flag.svg" width="95" height="50" alt="Flag of the United States" loading="lazy" decoding="async"><div><span>USA Hall of Fame Award</span><strong>Michigan, United States</strong></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="certification-section" aria-labelledby="certification-title">
+    <div class="certification-content">
+      <h2 id="certification-title">Certified to develop the next generation</h2>
+      <article class="certification-block">
+        <h3>International Cricket Council (ICC)</h3>
+        <p>Level 1 Certified Coach</p>
+        <img src="assets/career/icc-level-1.webp" width="1280" height="960" alt="Coaching group at the ICC Academy in Dubai" loading="lazy" decoding="async">
+      </article>
+      <article class="certification-block">
+        <h3>Board of Control for Cricket in India (BCCI)</h3>
+        <p>Level 1 Certified Coach</p>
+        <img src="assets/career/bcci-level-1.webp" width="1800" height="1200" alt="BCCI Centre of Excellence Level 1 coaches course group photograph" loading="lazy" decoding="async">
+      </article>
     </div>
   </section>
 
@@ -759,7 +833,6 @@
         <img src="assets/logo.webp" alt="Bowncer Sportz logo" loading="lazy" decoding="async">
         BOWNCER SPORTZ
       </a>
-      <p class="footer-tag">Cricket for all. We work on TEST, ODI &amp; T/20 formats — coached by S. Thiyagarajan, Ex-IPL RCB player and ICC/BCCI Level 1 certified coach.</p>
     </div>
     <nav class="footer-col" aria-label="Quick links">
       <h4>Quick Links</h4>

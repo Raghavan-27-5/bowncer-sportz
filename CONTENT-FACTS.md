@@ -125,3 +125,11 @@ issue with the old site and should not be repeated.
   personally" vs. "trained at the academy" — the PPT slide does not
   make the mechanism explicit. Use the neutral site framing
   ("institutional credibility") unless a human clarifies.
+
+
+## User-provided coaching achievements — 12 November 2026
+
+- 300+ professional players trained in the USA and other countries. `[VERIFIED — user]`
+- 500+ professional cricketers trained in India. `[VERIFIED — user]`
+- 35+ cricketers who have represented TNPL and other franchise leagues. `[VERIFIED — user]`
+- 5+ players coached in the IPL. `[VERIFIED — user]`
